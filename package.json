@@ -4,5 +4,8 @@
   "repository": "https://github.com/wdr-data/tim-bot",
   "author": "Hacking Studio <github.com/wdr-data>",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "serverless-offline": "^3.16.0"
+  }
 }

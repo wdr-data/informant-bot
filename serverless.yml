@@ -1,0 +1,16 @@
+service: tim-bot 
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+
+functions:
+  fbEntrypoint:
+    handler: entrypoint/fb.main
+    events: 
+      - http: 
+          path: fb
+          method: get
+
+plugins:
+  - serverless-offline
