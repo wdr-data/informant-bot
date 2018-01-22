@@ -1,0 +1,8 @@
+{
+  "name": "tim-bot",
+  "version": "0.1.0",
+  "repository": "https://github.com/wdr-data/tim-bot",
+  "author": "Hacking Studio <github.com/wdr-data>",
+  "license": "MIT",
+  "private": true
+}
