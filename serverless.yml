@@ -2,11 +2,13 @@ service: tim-bot
 
 provider:
   name: aws
+  region: eu-central-1
   runtime: nodejs6.10
+  environment: ${file(.env.yml)}
 
 functions:
-  fbEntrypoint:
-    handler: entrypoint/fb.main
+  fbVerify:
+    handler: entrypoint/fb.verify
     events: 
       - http: 
           path: fb
