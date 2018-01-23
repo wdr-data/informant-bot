@@ -1,5 +1,6 @@
 const fbLibInit = require('../lib/facebook');
 const fbLib = fbLibInit();
+const dialogflow = require('dialogflow');
 
 module.exports.verify = (event, context, callback) => {
   const params = event.queryStringParameters || {};
@@ -31,9 +32,44 @@ module.exports.message = (event, context, callback) => {
     statusCode: 200,
     body: 'works',
   });
+
   const text = payload.entry[0].messaging[0].message.text;
   const psid = payload.entry[0].messaging[0].sender.id;
-  fbLib.sendTextMessage(psid, `Und Du so zu mir: ${text}` )
+  
+  const sessionClient = new dialogflow.SessionsClient({
+    keyFilename: '.df_id.json'
+  });
+  const sessionPath = sessionClient.sessionPath(process.env.DF_PROJECTID, psid);
+
+  const request = {
+    session: sessionPath,
+    queryInput: {
+      text: {
+        text: text,
+        languageCode: 'de-DE',
+      },
+    },
+  };
+  
+  sessionClient
+  .detectIntent(request)
+  .then(responses => {
+    console.log('Detected intent');
+    const result = responses[0].queryResult;
+    console.log(`  Query: ${result.queryText}`);
+    console.log(`  Response: ${result.fulfillmentText}`);
+    if (result.intent) {
+      console.log(`  Intent: ${result.intent.displayName}`);
+      fbLib.sendTextMessage(psid, result.fulfillmentText)
+    } else {
+      console.log(`  No intent matched.`);
+      fbLib.sendTextMessage(psid, `Da bin ich jetzt überfragt. Kannst Du das anders formulieren?`)
+    }
+  })
+  .catch(err => {
+    console.error('ERROR:', err);
+    fbLib.sendTextMessage(psid, `Da ist was schief gelaufen.`)
+  });
   console.log(text);
   console.log(psid);
 }
