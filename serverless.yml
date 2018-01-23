@@ -13,6 +13,12 @@ functions:
       - http: 
           path: fb
           method: get
+  fbMessage:
+    handler: entrypoint/fb.message
+    events:
+      - http:
+          path: fb
+          method: post
 
 plugins:
   - serverless-offline
