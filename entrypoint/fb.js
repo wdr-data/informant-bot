@@ -10,14 +10,14 @@ module.exports.verify = (event, context, callback) => {
       (token === process.env.FB_VERIFYTOKEN)
      ) {
     callback(null, {
-    statusCode: 200,
-    body: challenge,
+      statusCode: 200,
+      body: challenge,
     });
     return;
   }
 
   callback(null, {
-  statusCode: 400,
-  body: 'Parameter missing'
+    statusCode: 400,
+    body: 'Parameter missing'
   });
 };
