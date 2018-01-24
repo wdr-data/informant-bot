@@ -11,6 +11,15 @@ before_deploy:
 deploy:
   - provider: script
     skip_cleanup: true
-    script: serverless deploy --stage prod
+    script:
+      - serverless create_domain
+      - serverless deploy --stage staging
     on:
       branch: master
+  - provider: script
+    skip_cleanup: true
+    script:
+      - serverless create_domain
+      - serverless deploy --stage prod
+    on:
+      branch: production
