@@ -6,6 +6,7 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
+    "js-yaml": "^3.10.0",
     "serverless-domain-manager": "^2.2.1",
     "serverless-offline": "^3.16.0"
   },

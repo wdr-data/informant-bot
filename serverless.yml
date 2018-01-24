@@ -4,8 +4,8 @@ provider:
   name: aws
   region: ${file(config.yml):region}
   runtime: nodejs6.10
-  stage: ${file(.env.yml):DEPLOY_ALIAS, "dev"}
-  environment: ${file(.env.yml)}
+  stage: ${file(config/env.js):stage}
+  environment: ${file(config/env.js):env}
 
 functions:
   fbVerify:
