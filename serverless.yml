@@ -4,6 +4,7 @@ provider:
   name: aws
   region: eu-central-1
   runtime: nodejs6.10
+  stage: ${file(.env.yml):DEPLOY_ALIAS, "dev"}
   environment: ${file(.env.yml)}
 
 functions:
