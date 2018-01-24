@@ -14,6 +14,8 @@
     "fb-messenger": "^1.2.0"
   },
   "scripts": {
-    "deploy": "yarn && sls deploy"
+    "deploy": "yarn && sls deploy",
+    "postinstall": "npm run rebuild-grpc",
+    "rebuild-grpc": "npm rebuild --target=6.1.0 --target_arch=x64 --target_platform=linux --target_libc=glibc"
   }
 }
