@@ -38,8 +38,7 @@ Resources:
         Statement:
           - Effect: Allow
             Action:
-            - 's3:Get*'
-            - 's3:List*'
+            - 's3:*'
             Resource:
             - !Sub 'arn:aws:s3:::${ServiceName}-*'
 
@@ -101,15 +100,11 @@ Resources:
             - 'apigateway:POST'
             - 'apigateway:PUT'
             - 'apigateway:DELETE'
-            Resource: !Sub 'arn:aws:apigateway:${AWS::Region}::/restapis'
-
-          - Effect: Allow
-            Action:
-            - 'apigateway:GET'
-            - 'apigateway:POST'
-            - 'apigateway:PUT'
-            - 'apigateway:DELETE'
-            Resource: !Sub 'arn:aws:apigateway:${AWS::Region}::/restapis/*'
+            Resource:
+            - !Sub 'arn:aws:apigateway:${AWS::Region}::/restapis'
+            - !Sub 'arn:aws:apigateway:${AWS::Region}::/restapis/*'
+            - !Sub 'arn:aws:apigateway:${AWS::Region}::/domainnames'
+            - !Sub 'arn:aws:apigateway:${AWS::Region}::/domainnames/*'
 
           - Effect: Allow
             Action:
