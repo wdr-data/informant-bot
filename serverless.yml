@@ -21,5 +21,13 @@ functions:
           path: fb
           method: post
 
+custom:
+  customDomain:
+    domainName: "${self:provider.stage}.bot.tim.app.wdr.cloud"
+    basePath: ''
+    stage: ${self:provider.stage}
+    createRoute53Record: true
+
 plugins:
   - serverless-offline
+  - serverless-domain-manager
