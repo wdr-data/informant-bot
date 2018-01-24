@@ -30,6 +30,6 @@ const fetch_env = () => {
 };
 
 module.exports.stage = () => {
-    return fetch_env()['DEPLOY_ALIAS'] || 'dev';
+    return process.env.SLS_STAGE || fetch_env()['DEPLOY_ALIAS'] || 'dev';
 };
 module.exports.env = fetch_env;
