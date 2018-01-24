@@ -60,7 +60,12 @@ module.exports.message = (event, context, callback) => {
     console.log(`  Response: ${result.fulfillmentText}`);
     if (result.intent) {
       console.log(`  Intent: ${result.intent.displayName}`);
-      fbLib.sendTextMessage(psid, result.fulfillmentText)
+      console.log(`  Action: ${result.action}`);
+      if (result.action === 'current_time') {
+          current_time(psid);
+      } else {
+        fbLib.sendTextMessage(psid, result.fulfillmentText);
+      }
     } else {
       console.log(`  No intent matched.`);
       fbLib.sendTextMessage(psid, `Da bin ich jetzt überfragt. Kannst Du das anders formulieren?`)
@@ -72,4 +77,12 @@ module.exports.message = (event, context, callback) => {
   });
   console.log(text);
   console.log(psid);
+}
+
+const current_time = (psid) => {
+    const currentdate = new Date();
+    const time = currentdate.getHours() + ":"
+                    + currentdate.getMinutes() + ":"
+                    + currentdate.getSeconds();
+    fbLib.sendTextMessage(psid, `Die exakte Uhrzeit lautet: ${time}`)
 }
