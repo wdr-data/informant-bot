@@ -2,7 +2,7 @@ service: tim-bot
 
 provider:
   name: aws
-  region: eu-central-1
+  region: ${file(config.yml):region}
   runtime: nodejs6.10
   stage: ${file(.env.yml):DEPLOY_ALIAS, "dev"}
   environment: ${file(.env.yml)}
@@ -23,7 +23,7 @@ functions:
 
 custom:
   customDomain:
-    domainName: "${self:provider.stage}.bot.tim.app.wdr.cloud"
+    domainName: "${self:provider.stage}.${file(config.yml):domain_base}"
     basePath: ''
     stage: ${self:provider.stage}
     createRoute53Record: true
