@@ -1,4 +1,4 @@
-service: tim-bot 
+service: tim-bot
 
 provider:
   name: aws
@@ -9,8 +9,8 @@ provider:
 functions:
   fbVerify:
     handler: entrypoint/fb.verify
-    events: 
-      - http: 
+    events:
+      - http:
           path: fb
           method: get
   fbMessage:

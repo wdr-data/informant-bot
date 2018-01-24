@@ -11,5 +11,8 @@
   "dependencies": {
     "dialogflow": "^0.1.0",
     "fb-messenger": "^1.2.0"
+  },
+  "scripts": {
+    "deploy": "yarn && sls deploy"
   }
 }
