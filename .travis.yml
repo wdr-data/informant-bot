@@ -5,6 +5,9 @@ sudo: false
 node_js:
 - 6
 
+before_script:
+  - ./config/prepare-ci.js
+
 before_deploy:
   - npm i -g serverless
 
