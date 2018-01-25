@@ -6,6 +6,10 @@ Parameters:
   ServiceName:
     Description: Name of the Service you want to deploy
     Type: String
+  HostedZoneId:
+    AllowedPattern: '[A-Za-z0-9]+'
+    Description: ID of the hosted zone to grant permissions to
+    Type: String
 
 Resources:
   ## Managed policies
@@ -103,8 +107,6 @@ Resources:
             Resource:
             - !Sub 'arn:aws:apigateway:${AWS::Region}::/restapis'
             - !Sub 'arn:aws:apigateway:${AWS::Region}::/restapis/*'
-            - !Sub 'arn:aws:apigateway:${AWS::Region}::/domainnames'
-            - !Sub 'arn:aws:apigateway:${AWS::Region}::/domainnames/*'
 
           - Effect: Allow
             Action:
@@ -127,3 +129,41 @@ Resources:
             - 'events:Describe*'
             Resource:
             - !Sub 'arn:aws:events::${AWS::AccountId}:rule/${ServiceName}-*'
+
+  ServerlessDomainManagerDeployPolicy:
+    Type: "AWS::IAM::ManagedPolicy"
+    Properties:
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - apigateway:POST
+            Resource: !Sub arn:aws:apigateway:${AWS::Region}::/domainnames
+          - Effect: Allow
+            Action:
+              - apigateway:GET
+              - apigateway:DELETE
+            Resource: !Sub arn:aws:apigateway:${AWS::Region}::/domainnames/*
+          - Effect: Allow
+            Action:
+              - apigateway:POST
+            Resource: !Sub arn:aws:apigateway:${AWS::Region}::/domainnames/*/basepathmappings
+          - Effect: Allow
+            Action:
+              - cloudfront:UpdateDistribution
+            Resource: '*'
+          - Effect: Allow
+            Action:
+              - route53:ListHostedZones
+            Resource: '*'
+          - Effect: Allow
+            Action:
+              - acm:ListCertificates
+            Resource: '*'
+          - Effect: Allow
+            Action:
+              - route53:ChangeResourceRecordSets
+              - route53:GetHostedZone
+              - route53:ListResourceRecordSets
+            Resource: !Sub arn:aws:route53:::hostedzone/${HostedZoneId}
