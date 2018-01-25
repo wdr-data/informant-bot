@@ -9,6 +9,8 @@ module.exports.verify = (event, context, callback) => {
   const challenge = params['hub.challenge'];
   const mode = params['hub.mode'];
 
+  console.debug("ENV", process.env);
+
   if ((mode && token && challenge) &&
       (mode === 'subscribe') &&
       (token === process.env.FB_VERIFYTOKEN)
@@ -35,7 +37,7 @@ module.exports.message = (event, context, callback) => {
 
   const text = payload.entry[0].messaging[0].message.text;
   const psid = payload.entry[0].messaging[0].sender.id;
-  
+
   const sessionClient = new dialogflow.SessionsClient({
     keyFilename: '.df_id.json'
   });
@@ -50,7 +52,7 @@ module.exports.message = (event, context, callback) => {
       },
     },
   };
-  
+
   sessionClient
   .detectIntent(request)
   .then(responses => {
