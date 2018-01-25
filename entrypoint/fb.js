@@ -9,7 +9,7 @@ module.exports.verify = (event, context, callback) => {
   const challenge = params['hub.challenge'];
   const mode = params['hub.mode'];
 
-  console.debug("ENV", process.env);
+  console.log("ENV", process.env);
 
   if ((mode && token && challenge) &&
       (mode === 'subscribe') &&
