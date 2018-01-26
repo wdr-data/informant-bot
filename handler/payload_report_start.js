@@ -8,7 +8,7 @@ const report_start = fbLib => (psid, payload) => {
         const report = JSON.parse(body);
         console.log(report);
 
-        fbLib.sendTextMessage(psid, report.intro);
+        fbLib.sendTextMessage(psid, report.text);
 
     })
 };
