@@ -1,6 +1,7 @@
 const fbLibInit = require('../lib/facebook');
 const fbLib = fbLibInit();
 const dialogflow = require('dialogflow');
+const handler = require('../handler');
 
 module.exports.verify = (event, context, callback) => {
   const params = event.queryStringParameters || {};
@@ -64,7 +65,7 @@ module.exports.message = (event, context, callback) => {
       console.log(`  Intent: ${result.intent.displayName}`);
       console.log(`  Action: ${result.action}`);
       if (result.action === 'current_time') {
-          current_time(psid);
+          handler.actions.current_time(psid);
       } else {
         fbLib.sendTextMessage(psid, result.fulfillmentText);
       }
@@ -79,12 +80,4 @@ module.exports.message = (event, context, callback) => {
   });
   console.log(text);
   console.log(psid);
-}
-
-const current_time = (psid) => {
-    const currentdate = new Date();
-    const time = currentdate.getHours() + ":"
-                    + currentdate.getMinutes() + ":"
-                    + currentdate.getSeconds();
-    fbLib.sendTextMessage(psid, `Die exakte Uhrzeit lautet: ${time}`)
 }
