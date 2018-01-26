@@ -40,10 +40,18 @@ module.exports.message = (event, context, callback) => {
   const psid = msgEvent.sender.id;
   console.log(psid);
 
+  let replyPayload;
   if (msgEvent.postback) {
-    const payload = JSON.parse(msgEvent.postback.payload);
-    if (payload.action in handler.payloads) {
-        handler.payloads[payload.action](psid, payload);
+    replyPayload = JSON.parse(msgEvent.postback.payload);
+  }
+
+  if ('message' in msgEvent && 'quick_reply' in msgEvent.message) {
+    replyPayload = JSON.parse(msgEvent.message.quick_reply.payload);
+  }
+
+  if (replyPayload) {
+    if (replyPayload.action in handler.payloads) {
+      handler.payloads[replyPayload.action](psid, replyPayload);
     } else {
       fbLib.sendTextMessage(psid, `Da ist was schief gelaufen.`);
     }

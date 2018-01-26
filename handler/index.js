@@ -8,5 +8,6 @@ module.exports = {
     },
     payloads: {
         report_start: require('./payload_report_start')(fbLib),
+        fragment_next: require('./payload_fragment_next')(fbLib),
     },
 };
