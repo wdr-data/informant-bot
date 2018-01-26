@@ -31,13 +31,25 @@ module.exports.verify = (event, context, callback) => {
 
 module.exports.message = (event, context, callback) => {
   const payload = JSON.parse(event.body);
+  console.log(payload);
   callback(null, {
     statusCode: 200,
     body: 'works',
   });
+  const msgEvent = payload.entry[0].messaging[0]
+  const psid = msgEvent.sender.id;
 
-  const text = payload.entry[0].messaging[0].message.text;
-  const psid = payload.entry[0].messaging[0].sender.id;
+  if (msgEvent.postback) {
+    const payload = JSON.parse(msgEvent.postback.payload);
+    if (payload.action in handler.payloads) {
+        handler.payloads[payload.action](psid, payload);
+    } else {
+      fbLib.sendTextMessage(psid, `Da ist was schief gelaufen.`);
+    }
+    return;
+  }
+
+  const text = msgEvent.message.text;
 
   const sessionClient = new dialogflow.SessionsClient({
     keyFilename: '.df_id.json'
