@@ -1,6 +1,6 @@
 const request = require('request') 
 
-const url = 'https://tim-cms-prod.herokuapp.com/api/v1/pushes/?limit=1';
+const url = `${process.env.CMS_API_URL}pushes/?limit=1`;
 
 const current_news = fbLib => psid => {
   request(url, (error, res, body) => {

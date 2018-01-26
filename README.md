@@ -13,6 +13,7 @@ DEPLOY_ALIAS: <your name> # the suffix for your personal development deployment
 FB_PAGETOKEN:             # Facebook API Token for the page
 FB_VERIFYTOKEN:           # Facebook Webhook Verification Token
 DF_PROJECTID:             # Dialogflow Project ID to use
+CMS_API_URL:              # Base URL for CMS (https://github.com/wdr-data/tim-cms) REST API (with trailing slash)
 ```
 
 Also, you need to create a Service Account for Dialogflow and save it to `.df_id.json`. It needs the `client` permission for Dialogflow.

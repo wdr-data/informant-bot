@@ -6,6 +6,7 @@ const required_env = [
     'FB_PAGETOKEN',
     'FB_VERIFYTOKEN',
     'DF_PROJECTID',
+    'CMS_API_URL',
 ];
 
 const fetch_env = () => {
