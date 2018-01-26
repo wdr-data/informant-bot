@@ -36,8 +36,9 @@ module.exports.message = (event, context, callback) => {
     statusCode: 200,
     body: 'works',
   });
-  const msgEvent = payload.entry[0].messaging[0]
+  const msgEvent = payload.entry[0].messaging[0];
   const psid = msgEvent.sender.id;
+  console.log(psid);
 
   if (msgEvent.postback) {
     const payload = JSON.parse(msgEvent.postback.payload);
@@ -90,6 +91,4 @@ module.exports.message = (event, context, callback) => {
     console.error('ERROR:', err);
     fbLib.sendTextMessage(psid, `Da ist was schief gelaufen.`)
   });
-  console.log(text);
-  console.log(psid);
-}
+};
