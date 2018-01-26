@@ -64,8 +64,8 @@ module.exports.message = (event, context, callback) => {
     if (result.intent) {
       console.log(`  Intent: ${result.intent.displayName}`);
       console.log(`  Action: ${result.action}`);
-      if (result.action === 'current_time') {
-          handler.actions.current_time(psid);
+      if (result.action in handler.actions) {
+          handler.actions[result.action](psid);
       } else {
         fbLib.sendTextMessage(psid, result.fulfillmentText);
       }
