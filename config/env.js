@@ -12,15 +12,16 @@ const required_env = [
 ];
 
 const load_s3 = (filename, json = false) => {
-    const branch = process.env.BRANCH;
-    const s3client = new S3({ region:'eu-central-1' });
+    const branch = process.env.TRAVIS_BRANCH || process.env.BRANCH;
+    const s3client = new S3({ region: 'eu-central-1' });
+    const s3path = `${branch}/${filename}`;
     const uri = s3client.getSignedUrl('getObject', {
         Bucket: 'wdr-tim-bot-env',
-        Key: `${branch}/${filename}`,
+        Key: s3path,
     });
     return request({ uri, json })
         .catch(err => {
-            throw new Error(`Fetching env from S3 failed with: ` +
+            throw new Error(`Fetching env from S3 (${s3path}) failed with: ` +
                             `${err.name === 'StatusCodeError' ? err.statusCode : err.message}`);
         });
 };
