@@ -46,7 +46,12 @@ module.exports.message = (event, context, callback) => {
   }
 
   if ('message' in msgEvent && 'quick_reply' in msgEvent.message) {
-    replyPayload = JSON.parse(msgEvent.message.quick_reply.payload);
+    try {
+      replyPayload = JSON.parse(msgEvent.message.quick_reply.payload);
+    } catch(e) {
+      console.error("Parsing of quick reply payload failed:", msgEvent.message.quick_reply.payload);
+      replyPayload = null;
+    }
   }
 
   if (replyPayload) {
