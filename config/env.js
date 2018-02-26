@@ -63,3 +63,7 @@ module.exports.env = fetch_env;
 module.exports.stage = () => {
     return process.env.SLS_STAGE || fetch_env()['DEPLOY_ALIAS'] || 'dev';
 };
+
+module.exports.enableDomain = () => {
+    return 'DEPLOY_ALIAS' in fetch_env() || 'SLS_STAGE' in process.env;
+}

@@ -27,6 +27,7 @@ custom:
     basePath: ''
     stage: ${self:provider.stage}
     createRoute53Record: true
+    enabled: ${file(config/env.js):enableDomain}
 
 plugins:
   - serverless-offline
