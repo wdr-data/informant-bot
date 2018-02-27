@@ -1,4 +1,4 @@
-import { buttonPostback } from '../lib/facebook';
+const { buttonPostback } = require('../lib/facebook');
 const request = require('request');
 
 const url = `${process.env.CMS_API_URL}pushes/?limit=1`;
