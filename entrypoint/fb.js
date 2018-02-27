@@ -1,5 +1,4 @@
-const fbLibInit = require('../lib/facebook');
-const fbLib = fbLibInit();
+const facebook = require('../lib/facebook');
 const dialogflow = require('dialogflow');
 const handler = require('../handler');
 
@@ -40,6 +39,8 @@ module.exports.message = (event, context, callback) => {
   const psid = msgEvent.sender.id;
   console.log(psid);
 
+  const chat = new facebook.Chat(msgEvent);
+
   let replyPayload;
   if (msgEvent.postback) {
     replyPayload = JSON.parse(msgEvent.postback.payload);
@@ -56,9 +57,9 @@ module.exports.message = (event, context, callback) => {
 
   if (replyPayload) {
     if (replyPayload.action in handler.payloads) {
-      handler.payloads[replyPayload.action](psid, replyPayload);
+      handler.payloads[replyPayload.action](chat, replyPayload);
     } else {
-      fbLib.sendTextMessage(psid, `Da ist was schief gelaufen.`);
+      chat.sendText(`Da ist was schief gelaufen.`);
     }
     return;
   }
@@ -91,17 +92,17 @@ module.exports.message = (event, context, callback) => {
       console.log(`  Intent: ${result.intent.displayName}`);
       console.log(`  Action: ${result.action}`);
       if (result.action in handler.actions) {
-          handler.actions[result.action](psid);
+          handler.actions[result.action](chat);
       } else {
-        fbLib.sendTextMessage(psid, result.fulfillmentText);
+        chat.sendText(result.fulfillmentText);
       }
     } else {
       console.log(`  No intent matched.`);
-      fbLib.sendTextMessage(psid, `Da bin ich jetzt überfragt. Kannst Du das anders formulieren?`)
+      chat.sendText(`Da bin ich jetzt überfragt. Kannst Du das anders formulieren?`)
     }
   })
   .catch(err => {
     console.error('ERROR:', err);
-    fbLib.sendTextMessage(psid, `Da ist was schief gelaufen.`)
+    chat.sendText('Da ist was schief gelaufen.');
   });
 };
