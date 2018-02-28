@@ -19,6 +19,7 @@ const current_news = chat => {
         action: 'report_start',
         push: push.id,
         report: firstReport.id,
+        type: 'push',
       });
     chat.sendButtons(headlines, [button]);
   })
