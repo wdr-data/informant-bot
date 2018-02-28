@@ -13,7 +13,6 @@
   "dependencies": {
     "aws-sdk": "^2.188.0",
     "dialogflow": "^0.1.0",
-    "fb-messenger": "^1.2.0",
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5"
   },
