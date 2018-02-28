@@ -9,7 +9,6 @@ const current_news = chat => {
     console.log(data);
 
     const push = data.results[0];
-    chat.sendText(push.intro);
 
     const introHeadlines = push.intro.concat("\n").concat(push.reports.map(r => "➡ ".concat(r.headline)).join('\n'));
     const firstReport = push.reports[0];
