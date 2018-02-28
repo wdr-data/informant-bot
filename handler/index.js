@@ -7,5 +7,6 @@ module.exports = {
     payloads: {
         report_start: require('./payload_report_start'),
         fragment_next: require('./payload_fragment_next'),
+        pushOutro: require('./payloadPushOutro'),
     },
 };
