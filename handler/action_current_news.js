@@ -11,16 +11,16 @@ const current_news = chat => {
     const push = data.results[0];
     chat.sendText(push.intro);
 
-    const headlines = push.reports.map(r => r.headline).join(' +++ ');
+    const introHeadlines = push.intro.concat("\n").concat(push.reports.map(r => "➡ ".concat(r.headline)).join('\n'));
     const firstReport = push.reports[0];
     const button = buttonPostback(
-      'Los geht\'s',
+      'Leg los',
       {
         action: 'report_start',
         push: push.id,
         report: firstReport.id,
       });
-    chat.sendButtons(headlines, [button]);
+    chat.sendButtons(introHeadlines, [button]);
   })
 };
 
