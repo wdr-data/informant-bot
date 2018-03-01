@@ -1,11 +1,16 @@
 const { buttonPostback, listElement } = require('../lib/facebook');
 
+const getHasLabel = function (chat) {
+    return chat.getLabels().then(
+        labels => labelName => labels.indexOf(labelName) !== -1
+    )
+}
+
 module.exports.subscriptions = function (chat) {
     chat.sendText("Wenn du magst, bringe ich dich zwei Mal am Tag auf den neuesten Stand. Hier kannst du die Benachrichtigungen aktivieren und deaktivieren:");
 
-    chat.getLabels().then(
-        function (labels) {
-            const hasLabel = labelName => labels.indexOf(labelName) !== -1;
+    getHasLabel(chat).then(
+        function (hasLabel) {
             const elements = [];
             elements.push(listElement(
                 'Deine Infos am Morgen',
@@ -50,6 +55,7 @@ module.exports.subscriptions = function (chat) {
 };
 
 module.exports.subscribe = function (chat, payload) {
+    chat.addLabel('push-breaking');
     if (payload.subscription == 'morning' || payload.subscription == 'all') {
         chat.addLabel('push-morning');
     }
@@ -60,11 +66,22 @@ module.exports.subscribe = function (chat, payload) {
 }
 
 module.exports.unsubscribe = function (chat, payload) {
-    if (payload.subscription == 'morning' || payload.subscription == 'all') {
-        chat.removeLabel('push-morning');
-    }
-    if (payload.subscription == 'evening' || payload.subscription == 'all') {
-        chat.removeLabel('push-evening');
-    }
-    chat.sendText(`Schade. Deine Entscheidung. Ich bin hier, wenn Du mich brauchst.`);
+    getHasLabel(chat).then (
+        function (hasLabel) {
+            if (payload.subscription == 'morning' || payload.subscription == 'all') {
+                chat.removeLabel('push-morning');
+            }
+            if (payload.subscription == 'evening' || payload.subscription == 'all') {
+                chat.removeLabel('push-evening');
+            }
+            if (
+                payload.subscription == 'all' ||
+                !hasLabel('push-' + (payload.subscription == 'morning' ? 'evening' : 'morning'))
+            ) {
+                chat.removeLabel('push-breaking');
+            }
+
+            chat.sendText(`Schade. Deine Entscheidung. Ich bin hier, wenn Du mich brauchst.`);
+        }
+    )
 }
