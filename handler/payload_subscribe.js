@@ -25,7 +25,7 @@ module.exports.subscriptions = function (chat) {
             ));
 
             elements.push(listElement(
-                hasLabel('push-evening') ? '✔' : '❌' + ' Deine Infos am Abend',
+                (hasLabel('push-evening') ? '✔' : '❌') + ' Deine Infos am Abend',
                 'Um 18.30 Uhr kriegst Du das, was am Tag wichtig war.',
                 buttonPostback(
                     !hasLabel('push-evening') ? 'Anmelden' : 'Abmelden',
@@ -37,7 +37,7 @@ module.exports.subscriptions = function (chat) {
             ));
 
             elements.push(listElement(
-                (hasLabel('push-morning') && hasLabel('push-evening')) ? '✔' : '❌' + ' Beides',
+                ((hasLabel('push-morning') && hasLabel('push-evening')) ? '✔' : '❌') + ' Beides',
                 'Deine Infos morgens und abends.',
                 buttonPostback(
                     !(hasLabel('push-morning') && hasLabel('push-evening')) ? 'Anmelden' : 'Abmelden',
