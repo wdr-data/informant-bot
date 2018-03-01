@@ -1,3 +1,4 @@
+const { buttonPostback, listElement } = require('../lib/facebook');
 const request = require('request');
 const urls = require('../lib/urls');
 
@@ -13,15 +14,24 @@ const subscribe = fbLib => (psid, payload) => {
     };
     const elements = [
         {
-            title: "Dein Update am morgen",
-            subtitle: "So, gegen 7:30Uhr gibt's die ersten Infos",
-        },
-        {
-            title: "Abends sind die News noch besser!",
-            subtitle: "18:30Uhr ist ok? Kannste haben!",
-        },
-      ];
-    fbLib.sendListMessage(psid, elements, button);
+          action: 'subscribe',
+          subscriptions: 'all',
+        });
+    console.log('button: ', button);
+
+    const elements = [];
+    elements.push(listElement(
+        'Dein Update am morgen',
+        'So, gegen 7:30Uhr gibt\'s die ersten Infos'
+    ));
+
+    elements.push(listElement(
+        'Abends sind die News noch besser!',
+        '18:30Uhr ist ok? Kannste haben!',
+    ));
+
+    console.log('elements: ', elements);
+    chat.sendList(elements, button);
 };
 
 module.exports = subscribe;
