@@ -60,7 +60,8 @@ function subscriptionChange (chat, payload) {
     if (payload.action == 'subscribe') {
         if (payload.subscription == 'morning' || payload.subscription == 'all') {
             chat.addLabel('push-morning');
-        } else if (payload.subscription == 'evening' || payload.subscription == 'all') {
+        }
+        if (payload.subscription == 'evening' || payload.subscription == 'all') {
             chat.addLabel('push-evening');
         }
         chat.sendText(`👍🏼 Bis später!`);
@@ -69,7 +70,8 @@ function subscriptionChange (chat, payload) {
 
     if (payload.subscription == 'morning' || payload.subscription == 'all') {
         chat.removeLabel('push-morning');
-    } else if (payload.subscription == 'evening' || payload.subscription == 'all') {
+    }
+    if (payload.subscription == 'evening' || payload.subscription == 'all') {
         chat.removeLabel('push-evening');
     }
     chat.sendText(`Schade. Deine Entscheidung. Ich bin hier, wenn Du mich brauchst.`);
