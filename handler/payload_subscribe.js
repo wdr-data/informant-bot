@@ -1,8 +1,6 @@
 const { buttonPostback, listElement } = require('../lib/facebook');
-const request = require('request');
-const urls = require('../lib/urls');
 
-module.exports.subscriptions = function (chat, payload) {
+module.exports.subscriptions = function (chat) {
     chat.sendText("Wenn du magst, bringe ich dich zwei Mal am Tag auf den neuesten Stand. Hier kannst du die Benachrichtigungen aktivieren und deaktivieren:");
 
     chat.getLabels().then(
