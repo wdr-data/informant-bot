@@ -2,7 +2,7 @@ const { buttonPostback, listElement } = require('../lib/facebook');
 const request = require('request');
 const urls = require('../lib/urls');
 
-module.exports = function (chat, payload) {
+module.exports = function (chat, payload = {}) {
     if (payload.subscription) {
         subscriptionChange(chat, payload);
         return;
