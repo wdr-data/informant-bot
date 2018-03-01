@@ -17,7 +17,7 @@ const fragment_next = (chat, payload) => {
                 fragment = fragment[0];
             }
 
-            fragmentSender(chat, fragment.next_fragments, payload, fragment.text);
+            fragmentSender(chat, fragment.next_fragments, payload, fragment.text, fragment.media);
         });
     }
 };
