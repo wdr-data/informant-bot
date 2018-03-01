@@ -2,8 +2,7 @@ const facebook = require('../lib/facebook');
 const dialogflow = require('dialogflow');
 const handler = require('../handler');
 const request = require('request-promise-native');
-
-const pushes_url = `${process.env.CMS_API_URL}pushes/`;
+const { pushesUrl } = require('../lib/urls');
 
 
 module.exports.verify = (event, context, callback) => {
@@ -131,7 +130,7 @@ module.exports.push = (event, context, callback = console.log) => {
   const today = new Date();
   const isoDate = today.toISOString().split('T')[0];
 
-  request.get({uri: pushes_url, json: true, qs: {timing: params.timing, pub_date: isoDate, limit: 1}}).then(data => {
+  request.get({uri: pushesUrl, json: true, qs: {timing: params.timing, pub_date: isoDate, limit: 1}}).then(data => {
     console.log(data);
 
     if (data.results.length === 0) {
