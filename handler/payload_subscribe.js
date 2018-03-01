@@ -9,7 +9,7 @@ const getHasLabel = function (chat) {
 module.exports.subscriptions = function (chat) {
     chat.sendText("Wenn du magst, bringe ich dich zwei Mal am Tag auf den neuesten Stand. Hier kannst du die Benachrichtigungen aktivieren und deaktivieren:");
 
-    getHasLabel().then(
+    getHasLabel(chat).then(
         function (hasLabel) {
             const elements = [];
             elements.push(listElement(
@@ -66,7 +66,7 @@ module.exports.subscribe = function (chat, payload) {
 }
 
 module.exports.unsubscribe = function (chat, payload) {
-    getHasLabel().then (
+    getHasLabel(chat).then (
         function (hasLabel) {
             if (payload.subscription == 'morning' || payload.subscription == 'all') {
                 chat.removeLabel('push-morning');
