@@ -27,7 +27,12 @@ const load_s3 = (filename, json = false) => {
 };
 module.exports.load_s3 = load_s3;
 
+let env_cache = null;
 const fetch_env = () => {
+    if (env_cache) {
+        return Promise.resolve(env_cache);
+    }
+
     if ('CI' in process.env){
         return load_s3('env.json', true)
             .then(env => {
@@ -35,6 +40,7 @@ const fetch_env = () => {
                 if (missing_env.length > 0) {
                     throw new Error(`Missing environment variables: ${missing_env.join(', ')}`);
                 }
+                env_cache = env;
                 return env;
             });
     }
@@ -56,6 +62,7 @@ const fetch_env = () => {
         }
     });
 
+    env_cache = environment;
     return Promise.resolve(environment);
 };
 module.exports.env = fetch_env;
