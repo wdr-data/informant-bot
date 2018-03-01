@@ -111,12 +111,12 @@ module.exports.message = (event, context, callback) => {
 };
 
 module.exports.push = (event, context, callback = console.log) => {
-  let params = null;
+  let timing = null;
 
   if ('timing' in event) {
-    params = event;
+    timing = event.timing;
   } else if (event.queryStringParameters && 'timing' in event.queryStringParameters) {
-    params = event.queryStringParameters;
+    timing = event.queryStringParameters.timing;
   } else {
     callback(null, {
       statusCode: 400,
@@ -128,7 +128,7 @@ module.exports.push = (event, context, callback = console.log) => {
   const today = new Date();
   const isoDate = today.toISOString().split('T')[0];
 
-  request.get({uri: pushes, json: true, qs: {timing: params.timing, pub_date: isoDate, limit: 1}}).then(data => {
+  request.get({uri: pushes, json: true, qs: {timing: timing, pub_date: isoDate, limit: 1}}).then(data => {
     console.log(data);
 
     if (data.results.length === 0) {
@@ -150,7 +150,7 @@ module.exports.push = (event, context, callback = console.log) => {
         push: push.id,
         report: firstReport.id,
       });
-    facebook.sendBroadcastButtons(introHeadlines, [button], 'push-' + params.timing).then(message => {
+    facebook.sendBroadcastButtons(introHeadlines, [button], 'push-' + timing).then(message => {
       callback(null, {
         statusCode: 200,
         body: "Successfully sent push: " + message,
