@@ -1,6 +1,10 @@
 const facebook = require('../lib/facebook');
 const dialogflow = require('dialogflow');
 const handler = require('../handler');
+const request = require('request-promise-native');
+
+const pushes_url = `${process.env.CMS_API_URL}pushes/`;
+
 
 module.exports.verify = (event, context, callback) => {
   const params = event.queryStringParameters || {};
@@ -105,4 +109,65 @@ module.exports.message = (event, context, callback) => {
     console.error('ERROR:', err);
     chat.sendText('Da ist was schief gelaufen.');
   });
+};
+
+module.exports.push = (event, context, callback = console.log) => {
+  let params = null;
+
+  if (event.queryStringParameters !== undefined) {
+    params = event.queryStringParameters;  // Called from web
+  } else {
+    params = event;  // Called from scheduler
+  }
+
+  if (params.timing === undefined) {
+    callback(null, {
+      statusCode: 400,
+      body: "Missing parameter 'timing'",
+    });
+    return;
+  }
+
+  const today = new Date();
+  const isoDate = today.toISOString().split('T')[0];
+
+  request.get({uri: pushes_url, json: true, qs: {timing: params.timing, pub_date: isoDate, limit: 1}}).then(data => {
+    console.log(data);
+
+    if (data.results.length === 0) {
+      callback(null, {
+        statusCode: 200,
+        body: "No Push found",
+      });
+      return;
+    }
+
+    const push = data.results[0];
+
+    const introHeadlines = push.intro.concat("\n").concat(push.reports.map(r => "➡ ".concat(r.headline)).join('\n'));
+    const firstReport = push.reports[0];
+    const button = facebook.buttonPostback(
+      'Leg los',
+      {
+        action: 'report_start',
+        push: push.id,
+        report: firstReport.id,
+      });
+    facebook.sendBroadcastButtons(introHeadlines, [button], 'push-' + params.timing).then(message => {
+      callback(null, {
+        statusCode: 200,
+        body: "Successfully sent push: " + message,
+      })
+    }).catch(message => {
+      callback(null, {
+        statusCode: 500,
+        body: "Sending push failed: " + message,
+      })
+    });
+  }).catch(error => {
+    callback(null, {
+      statusCode: 500,
+      body: "Querying push failed: " + error,
+    })
+  })
 };

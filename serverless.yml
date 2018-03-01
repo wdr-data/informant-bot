@@ -20,6 +20,23 @@ functions:
       - http:
           path: fb
           method: post
+  cronPush:
+    handler: entrypoint/fb.push
+    timeout: 30
+    events:
+      - http:
+          path: push
+          method: get
+      - schedule:
+          name: push-morning
+          rate: cron(30 7 * * ? *)
+          input:
+            timing: morning
+      - schedule:
+          name: push-evening
+          rate: cron(30 18 * * ? *)
+          input:
+            timing: evening
 
 custom:
   customDomain:
