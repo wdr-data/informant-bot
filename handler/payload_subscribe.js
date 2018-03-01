@@ -10,55 +10,57 @@ module.exports = function (chat, payload) {
 
     chat.sendText("Wenn du magst, bringe ich dich zwei Mal am Tag auf den neuesten Stand. Hier kannst du die Benachrichtigungen aktivieren und deaktivieren:");
 
-    const elements = [];
-    elements.push(listElement(
-        'Dein Update am Morgen',
-        'Gegen 7:30 Uhr gibt\'s die ersten Infos.',
-        buttonPostback(
-            'Anmelden',
-            {
-                action: 'subscribe',
-                subscription: 'morning',
-            }
-        )
-    ));
+    chat.getLabels().then(
+        function (labels) {
+            const hasLabel = labelName => labels.indexOf(labelName) !== -1;
+            const elements = [];
+            elements.push(listElement(
+                'Deine Infos am Morgen',
+                'Um 7.30 Uhr gibt\'s Dein erstes Update.',
+                buttonPostback(
+                    !hasLabel('push-morning') ? 'Anmelden' : 'Abmelden',
+                    {
+                        action: !hasLabel('push-morning') ? 'subscribe' : 'unsubscribe',
+                        subscription: 'morning',
+                    }
+                )
+            ));
 
-    elements.push(listElement(
-        'Dein Update am Abend',
-        'Um 18:30 Uhr kommt alles was am Tag interessant war.',
-        buttonPostback(
-            'Anmelden',
-            {
-                action: 'subscribe',
-                subscription: 'evening',
-            }
-        )
-    ));
+            elements.push(listElement(
+                'Deine Infos am Abend',
+                'Um 18.30 Uhr kriegst Du das, was am Tag wichtig war.',
+                buttonPostback(
+                    !hasLabel('push-evening') ? 'Anmelden' : 'Abmelden',
+                    {
+                        action: !hasLabel('push-evening') ? 'subscribe' : 'unsubscribe',
+                        subscription: 'evening',
+                    }
+                )
+            ));
 
-    elements.push(listElement(
-        'Immer Up-to-date',
-        'Ich informiere dich um 7:30 Uhr und um 18:30 Uhr.',
-        buttonPostback(
-            'Anmelden',
-            {
-                action: 'subscribe',
-                subscription: 'all',
-            }
-        )
-    ));
+            elements.push(listElement(
+                'Beides',
+                'Deine Infos morgens und abends.',
+                buttonPostback(
+                    !(hasLabel('push-morning') && hasLabel('push-evening')) ? 'Anmelden' : 'Abmelden',
+                    {
+                        action: !(hasLabel('push-morning') && hasLabel('push-evening')) ? 'subscribe' : 'unsubscribe',
+                        subscription: 'all',
+                    }
+                )
+            ));
 
-    console.log('elements: ', elements);
-    chat.sendList(elements);
+            console.log('elements: ', elements);
+            chat.sendList(elements);
+        }
+    )
 };
 
 function subscriptionChange (chat, payload) {
-    let time = '';
-    if (payload.subscription == 'morning') {
-        time = '7:30 Uhr';
-    } else if (payload.subscription == 'evening') {
-        time = '18:30 Uhr';
-    } else {
-        time = '7:30 Uhr und um 18:30 Uhr';
+    if (payload.subscription == 'morning' || payload.subscription == 'all') {
+        chat.addLabel('push-morning');
+    } else if (payload.subscription == 'evening' || payload.subscription == 'all') {
+        chat.addLabel('push-evening');
     }
-    chat.sendText(`Alles klar! Täglich um ${time} gibt es dein Update.`);
+    chat.sendText(`👍🏼 Bis später!`);
 }
