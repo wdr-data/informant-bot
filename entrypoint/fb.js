@@ -113,13 +113,11 @@ module.exports.message = (event, context, callback) => {
 module.exports.push = (event, context, callback = console.log) => {
   let params = null;
 
-  if (event['detail-type'] === "Scheduled Event") {
+  if ('timing' in event) {
     params = event;
+  } else if ('queryStringParameters' in event && 'timing' in event.queryStringParameters) {
+    params = event.queryStringParameters;
   } else {
-    params = event.queryStringParameters || {};
-  }
-
-  if (params.timing === undefined) {
     callback(null, {
       statusCode: 400,
       body: "Missing parameter 'timing'",
