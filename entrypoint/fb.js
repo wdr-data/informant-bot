@@ -113,10 +113,10 @@ module.exports.message = (event, context, callback) => {
 module.exports.push = (event, context, callback = console.log) => {
   let params = null;
 
-  if (event.queryStringParameters !== undefined) {
-    params = event.queryStringParameters;  // Called from web
+  if (event['detail-type'] === "Scheduled Event") {
+    params = event;
   } else {
-    params = event;  // Called from scheduler
+    params = event.queryStringParameters || {};
   }
 
   if (params.timing === undefined) {
