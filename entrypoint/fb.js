@@ -56,7 +56,6 @@ module.exports.message = (event, context, callback) => {
   }
 
   if (replyPayload) {
-    console.log('payload: ', replyPayload);
     if (replyPayload.action in handler.payloads) {
       handler.payloads[replyPayload.action](chat, replyPayload);
     } else {
