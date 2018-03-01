@@ -2,12 +2,7 @@ const { buttonPostback, listElement } = require('../lib/facebook');
 const request = require('request');
 const urls = require('../lib/urls');
 
-module.exports = function (chat, payload = {}) {
-    if (payload.subscription) {
-        subscriptionChange(chat, payload);
-        return;
-    }
-
+module.exports.subscriptions = function (chat, payload) {
     chat.sendText("Wenn du magst, bringe ich dich zwei Mal am Tag auf den neuesten Stand. Hier kannst du die Benachrichtigungen aktivieren und deaktivieren:");
 
     chat.getLabels().then(
@@ -56,18 +51,17 @@ module.exports = function (chat, payload = {}) {
     )
 };
 
-function subscriptionChange (chat, payload) {
-    if (payload.action == 'subscribe') {
-        if (payload.subscription == 'morning' || payload.subscription == 'all') {
-            chat.addLabel('push-morning');
-        }
-        if (payload.subscription == 'evening' || payload.subscription == 'all') {
-            chat.addLabel('push-evening');
-        }
-        chat.sendText(`👍🏼 Bis später!`);
-        return;
+module.exports.subscribe = function (chat, payload) {
+    if (payload.subscription == 'morning' || payload.subscription == 'all') {
+        chat.addLabel('push-morning');
     }
+    if (payload.subscription == 'evening' || payload.subscription == 'all') {
+        chat.addLabel('push-evening');
+    }
+    chat.sendText(`👍🏼 Bis später!`);
+}
 
+module.exports.unsubscribe = function (chat, payload) {
     if (payload.subscription == 'morning' || payload.subscription == 'all') {
         chat.removeLabel('push-morning');
     }
