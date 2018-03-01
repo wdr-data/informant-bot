@@ -28,7 +28,11 @@ custom:
     stage: ${self:provider.stage}
     createRoute53Record: true
     enabled: ${file(config/env.js):enableDomain}
+  scripts:
+    hooks:
+      'package:initialize': npm run lint
 
 plugins:
   - serverless-offline
   - serverless-domain-manager
+  - serverless-plugin-scripts

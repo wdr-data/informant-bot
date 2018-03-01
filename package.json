@@ -11,7 +11,8 @@
     "js-yaml": "^3.10.0",
     "serverless": "^1.26.1",
     "serverless-domain-manager": "^2.3.2",
-    "serverless-offline": "^3.16.0"
+    "serverless-offline": "^3.16.0",
+    "serverless-plugin-scripts": "^1.0.2"
   },
   "dependencies": {
     "aws-sdk": "^2.188.0",
