@@ -5,11 +5,17 @@
   "author": "Hacking Studio <github.com/wdr-data>",
   "license": "MIT",
   "private": true,
+  "bin": {
+    "prepare-ci": "./config/prepare-ci.js"
+  },
   "devDependencies": {
+    "eslint": "^4.18.1",
+    "eslint-plugin-node": "^6.0.1",
     "js-yaml": "^3.10.0",
     "serverless": "^1.26.1",
     "serverless-domain-manager": "^2.3.2",
-    "serverless-offline": "^3.16.0"
+    "serverless-offline": "^3.16.0",
+    "serverless-plugin-scripts": "^1.0.2"
   },
   "dependencies": {
     "aws-sdk": "^2.188.0",
@@ -17,10 +23,14 @@
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5"
   },
+  "engines": {
+    "node": ">=6.10.0"
+  },
   "scripts": {
     "deploy": "yarn && sls deploy",
+    "lint": "eslint .",
     "postinstall": "npm run rebuild",
     "rebuild": "npm rebuild --target=6.1.0 --target_arch=x64 --target_platform=linux --target_libc=glibc",
-    "test": "exit 0"
+    "test": "npm run lint"
   }
 }
