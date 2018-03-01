@@ -12,7 +12,7 @@ const fragment_next = (chat, payload) => {
 
     if (url) {
         request(url, (error, res, body) => {
-            const fragment = JSON.parse(body);
+            let fragment = JSON.parse(body);
             if (fragment.isArray) {
                 fragment = fragment[0];
             }
