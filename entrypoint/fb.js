@@ -115,7 +115,7 @@ module.exports.push = (event, context, callback = console.log) => {
 
   if ('timing' in event) {
     params = event;
-  } else if ('queryStringParameters' in event && 'timing' in event.queryStringParameters) {
+  } else if (event.queryStringParameters && 'timing' in event.queryStringParameters) {
     params = event.queryStringParameters;
   } else {
     callback(null, {
