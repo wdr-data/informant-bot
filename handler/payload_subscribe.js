@@ -76,7 +76,7 @@ module.exports.unsubscribe = function (chat, payload) {
             }
             if (
                 payload.subscription == 'all' ||
-                !hasLabel('push-' + payload.subscription == 'morning' ? 'evening' : 'morning')
+                !hasLabel('push-' + (payload.subscription == 'morning' ? 'evening' : 'morning'))
             ) {
                 chat.removeLabel('push-breaking');
             }
