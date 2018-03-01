@@ -55,6 +55,7 @@ module.exports.subscriptions = function (chat) {
 };
 
 module.exports.subscribe = function (chat, payload) {
+    chat.addLabel('push-breaking');
     if (payload.subscription == 'morning' || payload.subscription == 'all') {
         chat.addLabel('push-morning');
     }
@@ -65,11 +66,22 @@ module.exports.subscribe = function (chat, payload) {
 }
 
 module.exports.unsubscribe = function (chat, payload) {
-    if (payload.subscription == 'morning' || payload.subscription == 'all') {
-        chat.removeLabel('push-morning');
-    }
-    if (payload.subscription == 'evening' || payload.subscription == 'all') {
-        chat.removeLabel('push-evening');
-    }
-    chat.sendText(`Schade. Deine Entscheidung. Ich bin hier, wenn Du mich brauchst.`);
+    getHasLabel().then (
+        function (hasLabel) {
+            if (payload.subscription == 'morning' || payload.subscription == 'all') {
+                chat.removeLabel('push-morning');
+            }
+            if (payload.subscription == 'evening' || payload.subscription == 'all') {
+                chat.removeLabel('push-evening');
+            }
+            if (
+                payload.subscription == 'all' ||
+                !hasLabel('push-' + payload.subscription == 'morning' ? 'evening' : 'morning')
+            ) {
+                chat.removeLabel('push-breaking');
+            }
+
+            chat.sendText(`Schade. Deine Entscheidung. Ich bin hier, wenn Du mich brauchst.`);
+        }
+    )
 }
