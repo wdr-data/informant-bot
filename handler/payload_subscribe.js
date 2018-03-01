@@ -1,11 +1,16 @@
 const { buttonPostback, listElement } = require('../lib/facebook');
 
+const getHasLabel = function (chat) {
+    return chat.getLabels().then(
+        labels => labelName => labels.indexOf(labelName) !== -1
+    )
+}
+
 module.exports.subscriptions = function (chat) {
     chat.sendText("Wenn du magst, bringe ich dich zwei Mal am Tag auf den neuesten Stand. Hier kannst du die Benachrichtigungen aktivieren und deaktivieren:");
 
-    chat.getLabels().then(
-        function (labels) {
-            const hasLabel = labelName => labels.indexOf(labelName) !== -1;
+    getHasLabel().then(
+        function (hasLabel) {
             const elements = [];
             elements.push(listElement(
                 'Deine Infos am Morgen',
