@@ -5,6 +5,9 @@
   "author": "Hacking Studio <github.com/wdr-data>",
   "license": "MIT",
   "private": true,
+  "bin": {
+    "prepare-ci": "./config/prepare-ci.js"
+  },
   "devDependencies": {
     "eslint": "^4.18.1",
     "eslint-plugin-node": "^6.0.1",
