@@ -56,14 +56,14 @@ const fetch_env = () => {
         }
     });
 
-    return environment;
+    return Promise.resolve(environment);
 };
 module.exports.env = fetch_env;
 
-module.exports.stage = () => {
-    return process.env.SLS_STAGE || fetch_env()['DEPLOY_ALIAS'] || 'dev';
+const getStage = () => {
+    return fetch_env().then(env => process.env.SLS_STAGE || env['DEPLOY_ALIAS'] || 'dev');
 };
+module.exports.stage = getStage;
 
-module.exports.enableDomain = () => {
-    return 'DEPLOY_ALIAS' in fetch_env() || 'SLS_STAGE' in process.env;
-}
+module.exports.enableDomain = () => fetch_env().then(env => 'DEPLOY_ALIAS' in env || 'SLS_STAGE' in process.env);
+
