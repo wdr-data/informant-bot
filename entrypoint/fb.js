@@ -59,8 +59,6 @@ module.exports.message = (event, context, callback) => {
     console.log('payload: ', replyPayload);
     if (replyPayload.action in handler.payloads) {
       handler.payloads[replyPayload.action](chat, replyPayload);
-    } else if (replyPayload.action in handler.menu) {
-      handler.menu[replyPayload.action](chat, replyPayload);
     } else {
       chat.sendText(`Da ist was schief gelaufen.`);
     }

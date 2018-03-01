@@ -3,7 +3,7 @@ const urls = require('../lib/urls');
 const fragmentSender = require('../lib/fragmentSender');
 
 const faq_start = (chat, payload) => {
-    const url = `${urls.faqBySlug(payload.action)}`;
+    const url = `${urls.faqBySlug(payload.slug)}`;
 
     request(url, (error, res, body) => {
         const faq = JSON.parse(body);
@@ -12,9 +12,8 @@ const faq_start = (chat, payload) => {
             chat.sendText(`Dazu habe ich noch keine Info...🤔`);
             return;
         }
-        console.log('faq: ', faq)
 
-        payload.type = 'faq';
+        payload.type = payload.action;
         fragmentSender(chat, faq[0].next_fragments, payload, faq[0].text);
     })
 };
