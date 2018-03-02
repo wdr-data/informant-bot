@@ -28,22 +28,22 @@ functions:
           path: push
           method: get
       - schedule:
-          name: push-morning
+          name: push_morning
           rate: cron(30 6 * * ? *)  # UTC+1 (No DST)
           input:
             timing: morning
       - schedule:
-          name: push-morning-dst
+          name: push_morning_dst
           rate: cron(30 5 * * ? *)  # UTC+2 (DST)
           input:
             timing: morning
       - schedule:
-          name: push-evening
+          name: push_evening
           rate: cron(30 17 * * ? *)  # UTC+1 (No DST)
           input:
             timing: evening
       - schedule:
-          name: push-evening-dst
+          name: push_evening_dst
           rate: cron(30 16 * * ? *)  # UTC+2 (DST)
           input:
             timing: evening
