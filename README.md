@@ -1,6 +1,6 @@
 # Der 1LIVE Informant - Infos, über die der Sektor spricht
 
-## Über den 1LIVE Informant 🕶️ 
+## Über den 1LIVE Informanten 🕶️ 
 
 Hallo, 
 hier bei 1LIVE nennen mich alle nur "Der Informant". 
