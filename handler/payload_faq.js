@@ -14,7 +14,7 @@ const faq_start = (chat, payload) => {
         }
 
         payload.type = payload.action;
-        fragmentSender(chat, faq[0].next_fragments, payload, faq[0].text);
+        fragmentSender(chat, faq[0].next_fragments, payload, faq[0].text, faq[0].media);
     })
 };
 

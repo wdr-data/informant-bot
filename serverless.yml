@@ -6,6 +6,16 @@ provider:
   runtime: nodejs6.10
   stage: ${file(config/env.js):stage}
   environment: ${file(config/env.js):env}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:service}-${self:provider.stage}-*"
 
 functions:
   fbVerify:
@@ -16,6 +26,7 @@ functions:
           method: get
   fbMessage:
     handler: entrypoint/fb.message
+    timeout: 15
     events:
       - http:
           path: fb
@@ -63,3 +74,6 @@ plugins:
   - serverless-offline
   - serverless-domain-manager
   - serverless-plugin-scripts
+
+resources:
+  Resources: ${file(config/env.js):resources}
