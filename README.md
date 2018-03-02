@@ -1,4 +1,4 @@
-# TIM - The infos machine
+# Der 1LIVE Informant - Infos, über die der Sektor spricht
 
 ## Über den 1LIVE Informant 🕶️ 
 
