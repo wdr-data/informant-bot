@@ -7,7 +7,7 @@ const fragment_next = (chat, payload) => {
     if (payload.type == 'push') {
         url = `${urls.reportFragment(payload.fragment)}?withNext=yes`;
     } else if (payload.type == 'faq') {
-        url = `${urls.faqFragment(payload.fragment)}?withFragments=1`;
+        url = `${urls.faqFragment(payload.fragment)}?withNext=yes`;
     }
 
     if (url) {
