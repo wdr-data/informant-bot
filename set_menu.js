@@ -67,8 +67,7 @@ const GET_STARTED_DATA = {
 
 
 if (FB_PAGETOKEN === undefined) {
-  console.log("Please set 'FB_PAGETOKEN' environment variable.");
-  process.exit(1);
+  throw "Please set 'FB_PAGETOKEN' environment variable.";
 }
 
 
