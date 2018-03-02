@@ -129,7 +129,7 @@ module.exports.push = (event, context, callback = console.log) => {
   } else {
     callback(null, {
       statusCode: 400,
-      body: "Missing parameter 'timing'",
+      body: JSON.stringify({success: false, message: "Missing parameter 'timing'"}),
     });
     return;
   }
@@ -143,7 +143,7 @@ module.exports.push = (event, context, callback = console.log) => {
     if (data.results.length === 0) {
       callback(null, {
         statusCode: 200,
-        body: "No Push found",
+        body: JSON.stringify({success: false, message: "No Push found"}),
       });
       return;
     }
@@ -162,18 +162,18 @@ module.exports.push = (event, context, callback = console.log) => {
     facebook.sendBroadcastButtons(introHeadlines, [button], 'push-' + timing).then(message => {
       callback(null, {
         statusCode: 200,
-        body: "Successfully sent push: " + message,
+        body: JSON.stringify({success: true, message: "Successfully sent push: " + message}),
       })
     }).catch(message => {
       callback(null, {
         statusCode: 500,
-        body: "Sending push failed: " + message,
+        body: JSON.stringify({success: false, message: "Sending push failed: " + message}),
       })
     });
   }).catch(error => {
     callback(null, {
       statusCode: 500,
-      body: "Querying push failed: " + error,
+      body: JSON.stringify({success: false, message: "Querying push failed: " + error}),
     })
   })
 };
