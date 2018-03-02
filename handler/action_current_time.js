@@ -1,9 +1,8 @@
+const moment = require('moment-timezone');
+
 const current_time = chat => {
-    const currentdate = new Date();
-    const time = currentdate.getHours() + ":"
-                    + currentdate.getMinutes() + ":"
-                    + currentdate.getSeconds();
+    const time = moment.tz('Europe/Berlin').format('H:m:s');
     chat.sendText(`Die exakte Uhrzeit lautet: ${time}`)
-}
+};
 
 module.exports = current_time;
