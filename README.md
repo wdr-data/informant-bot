@@ -32,7 +32,7 @@ Zunächst sollte der Source-Code lokal vorhanden sein. Dieses Git Kommando legt 
 
 ```
 git clone https://github.com/wdr-data/informant-bot.git
-git clone https://github.com/wdr-data/informant-bot.git
+git clone https://github.com/wdr-data/informant-cms.git
 ```
 
 ### Local development
