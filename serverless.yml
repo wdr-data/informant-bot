@@ -26,6 +26,7 @@ functions:
           method: get
   fbMessage:
     handler: entrypoint/fb.message
+    timeout: 15
     events:
       - http:
           path: fb
