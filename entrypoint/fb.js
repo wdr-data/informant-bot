@@ -2,6 +2,7 @@ const facebook = require('../lib/facebook');
 const dialogflow = require('dialogflow');
 const handler = require('../handler');
 const request = require('request-promise-native');
+const moment = require('moment-timezone');
 const { pushes } = require('../lib/urls');
 
 
@@ -115,6 +116,14 @@ module.exports.push = (event, context, callback = console.log) => {
 
   if ('timing' in event) {
     timing = event.timing;
+
+    // Confirm that this is the cron job for the current DST state
+    const currentHour = moment.tz('Europe/Berlin').hour();
+    if (timing === 'morning' && currentHour !== 7 ||
+        timing === 'evening' && currentHour !== 18) {
+      console.log("Wrong cron job for current local time");
+      return;
+    }
   } else if (event.queryStringParameters && 'timing' in event.queryStringParameters) {
     timing = event.queryStringParameters.timing;
   } else {
