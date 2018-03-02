@@ -158,6 +158,7 @@ module.exports.push = (event, context, callback = console.log) => {
         action: 'report_start',
         push: push.id,
         report: firstReport.id,
+        type: 'push',
       });
     facebook.sendBroadcastButtons(introHeadlines, [button], 'push-' + timing).then(message => {
       callback(null, {
