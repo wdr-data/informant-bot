@@ -1,6 +1,10 @@
 const facebook = require('../lib/facebook');
 const dialogflow = require('dialogflow');
 const handler = require('../handler');
+const request = require('request-promise-native');
+const moment = require('moment-timezone');
+const { pushes } = require('../lib/urls');
+
 
 module.exports.verify = (event, context, callback) => {
   const params = event.queryStringParameters || {};
@@ -105,4 +109,71 @@ module.exports.message = (event, context, callback) => {
     console.error('ERROR:', err);
     chat.sendText('Da ist was schief gelaufen.');
   });
+};
+
+module.exports.push = (event, context, callback = console.log) => {
+  let timing = null;
+
+  if ('timing' in event) {
+    timing = event.timing;
+
+    // Confirm that this is the cron job for the current DST state
+    const currentHour = moment.tz('Europe/Berlin').hour();
+    if (timing === 'morning' && currentHour !== 7 ||
+        timing === 'evening' && currentHour !== 18) {
+      console.log("Wrong cron job for current local time");
+      return;
+    }
+  } else if (event.queryStringParameters && 'timing' in event.queryStringParameters) {
+    timing = event.queryStringParameters.timing;
+  } else {
+    callback(null, {
+      statusCode: 400,
+      body: JSON.stringify({success: false, message: "Missing parameter 'timing'"}),
+    });
+    return;
+  }
+
+  const today = new Date();
+  const isoDate = today.toISOString().split('T')[0];
+
+  request.get({uri: pushes, json: true, qs: {timing: timing, pub_date: isoDate, limit: 1}}).then(data => {
+    console.log(data);
+
+    if (data.results.length === 0) {
+      callback(null, {
+        statusCode: 200,
+        body: JSON.stringify({success: false, message: "No Push found"}),
+      });
+      return;
+    }
+
+    const push = data.results[0];
+
+    const introHeadlines = push.intro.concat("\n").concat(push.reports.map(r => "➡ ".concat(r.headline)).join('\n'));
+    const firstReport = push.reports[0];
+    const button = facebook.buttonPostback(
+      'Leg los',
+      {
+        action: 'report_start',
+        push: push.id,
+        report: firstReport.id,
+      });
+    facebook.sendBroadcastButtons(introHeadlines, [button], 'push-' + timing).then(message => {
+      callback(null, {
+        statusCode: 200,
+        body: JSON.stringify({success: true, message: "Successfully sent push: " + message}),
+      })
+    }).catch(message => {
+      callback(null, {
+        statusCode: 500,
+        body: JSON.stringify({success: false, message: "Sending push failed: " + message}),
+      })
+    });
+  }).catch(error => {
+    callback(null, {
+      statusCode: 500,
+      body: JSON.stringify({success: false, message: "Querying push failed: " + error}),
+    })
+  })
 };
