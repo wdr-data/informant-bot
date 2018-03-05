@@ -9,7 +9,7 @@ const pushOutro = (chat, payload) => {
             chat.sendText(push.outro).then(() => {
                 chat.sendAttachment(push.media);
             }).catch(error => {
-                console.log('Sending outro media failed', error)
+                console.log('Sending outro text failed', error)
             });
             return;
         }
