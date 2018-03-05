@@ -6,8 +6,11 @@ const pushOutro = (chat, payload) => {
         const push = JSON.parse(body);
 
         if (push.media) {
-            chat.sendText(push.outro);
-            chat.sendAttachment(push.media);
+            chat.sendText(push.outro).then(() => {
+                chat.sendAttachment(push.media);
+            }).catch(error => {
+                console.log('Sending outro media failed', error)
+            });
             return;
         }
 
