@@ -7,7 +7,7 @@ const getHasLabel = function (chat) {
 }
 
 module.exports.subscriptions = function (chat) {
-    chat.sendText("Wenn du magst, bringe ich dich zwei Mal am Tag auf den neuesten Stand. Hier kannst du die Benachrichtigungen aktivieren und deaktivieren:");
+    chat.sendText("Meine Infos kannst du ein oder zweimal am Tag haben: Morgens, abends oder beides. Und ich melde mich, wenn etwas wirklich Wichtiges passiert.");
 
     getHasLabel(chat).then(
         function (hasLabel) {
