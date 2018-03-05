@@ -80,19 +80,19 @@ request.post({
   body: GET_STARTED_DATA,
 }).then(() => {
   console.log("Successfully set 'get started' button");
+  request.post({
+    uri: MESSENGER_PROFILE_URL,
+    qs: {
+      access_token: FB_PAGETOKEN,
+    },
+    json: true,
+    body: PERSISTENT_MENU_DATA,
+  }).then(() => {
+    console.log("Successfully set persistent menu");
+  }).catch(error => {
+    console.log("Setting persistent menu failed: ", error);
+  });
 }).catch(error => {
   console.log("Setting 'get started' button failed: ", error);
 });
 
-request.post({
-  uri: MESSENGER_PROFILE_URL,
-  qs: {
-    access_token: FB_PAGETOKEN,
-  },
-  json: true,
-  body: PERSISTENT_MENU_DATA,
-}).then(() => {
-  console.log("Successfully set persistent menu");
-}).catch(error => {
-  console.log("Setting persistent menu failed: ", error);
-});
