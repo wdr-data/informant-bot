@@ -12,6 +12,19 @@ module.exports.subscriptions = function (chat) {
     getHasLabel(chat).then(
         function (hasLabel) {
             const elements = [];
+
+            elements.push(listElement(
+                ((hasLabel('push-morning') && hasLabel('push-evening')) ? '✔' : '❌') + ' Beides',
+                'Deine Infos morgens und abends.',
+                buttonPostback(
+                    !(hasLabel('push-morning') && hasLabel('push-evening')) ? 'Anmelden' : 'Abmelden',
+                    {
+                        action: !(hasLabel('push-morning') && hasLabel('push-evening')) ? 'subscribe' : 'unsubscribe',
+                        subscription: 'all',
+                    }
+                )
+            ));
+
             elements.push(listElement(
                 (hasLabel('push-morning') ? '✔' : '❌') + ' Deine Infos am Morgen',
                 'Um 7.30 Uhr gibt\'s Dein erstes Update.',
@@ -32,18 +45,6 @@ module.exports.subscriptions = function (chat) {
                     {
                         action: !hasLabel('push-evening') ? 'subscribe' : 'unsubscribe',
                         subscription: 'evening',
-                    }
-                )
-            ));
-
-            elements.push(listElement(
-                ((hasLabel('push-morning') && hasLabel('push-evening')) ? '✔' : '❌') + ' Beides',
-                'Deine Infos morgens und abends.',
-                buttonPostback(
-                    !(hasLabel('push-morning') && hasLabel('push-evening')) ? 'Anmelden' : 'Abmelden',
-                    {
-                        action: !(hasLabel('push-morning') && hasLabel('push-evening')) ? 'subscribe' : 'unsubscribe',
-                        subscription: 'all',
                     }
                 )
             ));
