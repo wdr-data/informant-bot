@@ -10,5 +10,5 @@ module.exports = function (chat) {
 
   const sharedContent = [genericElement(title, subtitle, null, [buttonUrl(callToAction, informantUrl)])];
   const message = genericElement(text, null, null, [buttonShare(sharedContent)]);
-  chat.sendGeneric(message);
+  chat.sendGeneric([message]);
 };
