@@ -13,5 +13,6 @@ module.exports = {
         subscriptions: require('./payload_subscribe').subscriptions,
         subscribe: require('./payload_subscribe').subscribe,
         unsubscribe: require('./payload_subscribe').unsubscribe,
+        share: require('./payload_share.js'),
     },
 };
