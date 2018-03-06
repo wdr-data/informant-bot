@@ -118,9 +118,24 @@ module.exports.push = (event, context, callback = console.log) => {
     timing = event.timing;
 
     // Confirm that this is the cron job for the current DST state
-    const currentHour = moment.tz('Europe/Berlin').hour();
-    if (timing === 'morning' && currentHour !== 7 ||
-        timing === 'evening' && currentHour !== 18) {
+    const currentTime = moment.tz('Europe/Berlin');
+
+    const currentDay = currentTime.isoWeekday();  // 1 = Monday, 7 = Sunday
+
+    let expectedTime = null;
+
+    if (timing === 'morning' && 1 <= currentDay <= 5) {
+      expectedTime = moment(currentTime).hour(7).minute(30);
+    } else if (timing === 'morning' && 6 <= currentDay <= 7) {
+      expectedTime = moment(currentTime).hour(9).minute(0);
+    } else if (timing === 'evening') {
+      expectedTime = moment(currentTime).hour(18).minute(30);
+    }
+
+    if (expectedTime &&
+        !currentTime.isBetween(moment(expectedTime).subtract(5, 'minutes'),
+                               moment(expectedTime).add(5, 'minutes'))
+    ) {
       console.log("Wrong cron job for current local time");
       return;
     }
