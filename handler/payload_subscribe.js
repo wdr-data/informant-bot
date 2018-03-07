@@ -63,7 +63,8 @@ module.exports.subscribe = function (chat, payload) {
     if (payload.subscription == 'evening' || payload.subscription == 'all') {
         chat.addLabel('push-evening');
     }
-    chat.sendText(`👍🏼 Bis später!`);
+    chat.sendText(`Ich schick dir ab jetzt die Nachrichten, wie du sie bestellt hast. ` +
+      `Wenn du die letzte Ausgabe sehen willst, schreib einfach "Leg los"`);
 }
 
 module.exports.unsubscribe = function (chat, payload) {
