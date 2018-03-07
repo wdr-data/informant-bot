@@ -1,11 +1,17 @@
 const { buttonPostback } = require('../lib/facebook');
-const request = require('request');
+const request = require('request-promise-native');
+const urls = require('../lib/urls');
 
-const url = `${process.env.CMS_API_URL}pushes/?limit=1`;
 
 const current_news = chat => {
-  request(url, (error, res, body) => {
-    const data = JSON.parse(body);
+  request({
+    uri: urls.pushes,
+    json: true,
+    qs: {
+      limit: 1,
+      'timing!': 'breaking',
+    }
+  }).then(data => {
     console.log(data);
 
     const push = data.results[0];
@@ -21,7 +27,7 @@ const current_news = chat => {
         type: 'push',
       });
     chat.sendButtons(introHeadlines, [button]);
-  })
+  });
 };
 
 module.exports = current_news;
