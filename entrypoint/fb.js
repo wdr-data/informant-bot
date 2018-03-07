@@ -111,7 +111,7 @@ module.exports.message = (event, context, callback) => {
   });
 };
 
-module.exports.push = (event, context, callback = console.log) => {
+module.exports.push = (event, context, callback) => {
   let timing = null;
 
   if ('timing' in event) {
@@ -161,17 +161,20 @@ module.exports.push = (event, context, callback = console.log) => {
         type: 'push',
       });
     facebook.sendBroadcastButtons(introHeadlines, [button], 'push-' + timing).then(message => {
+      console.log("Successfully sent push: ", message);
       callback(null, {
         statusCode: 200,
         body: JSON.stringify({success: true, message: "Successfully sent push: " + message}),
       })
     }).catch(message => {
+      console.log("Sending push failed: ", JSON.stringify(message, null, 2));
       callback(null, {
         statusCode: 500,
         body: JSON.stringify({success: false, message: "Sending push failed: " + message}),
       })
     });
   }).catch(error => {
+    console.log("Querying push failed: ", JSON.stringify(error, null, 2));
     callback(null, {
       statusCode: 500,
       body: JSON.stringify({success: false, message: "Querying push failed: " + error}),
