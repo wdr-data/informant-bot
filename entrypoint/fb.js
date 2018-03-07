@@ -214,7 +214,7 @@ module.exports.attachment = (event, context, callback) => {
   console.log(payload);
   const url = payload.url;
 
-  getAttachmentId(url, null).then(id => {
+  getAttachmentId(url, facebook.guessAttachmentType(url)).then(id => {
     callback(null, {
       statusCode: 200,
       body: JSON.stringify({success: true, message: id}),
