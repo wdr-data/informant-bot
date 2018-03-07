@@ -1,4 +1,5 @@
 const facebook = require('../lib/facebook');
+const { getAttachmentId } = require('../lib/facebookAttachments');
 const dialogflow = require('dialogflow');
 const handler = require('../handler');
 const request = require('request-promise-native');
@@ -206,4 +207,22 @@ module.exports.push = (event, context, callback) => {
       body: JSON.stringify({success: false, message: "Querying push failed: " + error}),
     })
   })
+};
+
+module.exports.attachment = (event, context, callback) => {
+  const payload = JSON.parse(event.body);
+  console.log(payload);
+  const url = payload.url;
+
+  getAttachmentId(url, null).then(id => {
+    callback(null, {
+      statusCode: 200,
+      body: JSON.stringify({success: true, message: id}),
+    });
+  }).catch(error => {
+    callback(null, {
+      statusCode: 500,
+      body: JSON.stringify({success: false, message: error}),
+    });
+  });
 };

@@ -31,6 +31,13 @@ functions:
       - http:
           path: fb
           method: post
+  fbAttachment:
+    handler: entrypoint/fb.attachment
+    timeout: 30
+    events:
+      - http:
+          path: attachment
+          method: post
   cronPush:
     handler: entrypoint/fb.push
     timeout: 30
