@@ -10,6 +10,7 @@ const current_news = chat => {
     qs: {
       limit: 1,
       'timing!': 'breaking',
+      delivered: true,
     }
   }).then(data => {
     console.log(data);
