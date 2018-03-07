@@ -3,7 +3,7 @@ const dialogflow = require('dialogflow');
 const handler = require('../handler');
 const request = require('request-promise-native');
 const moment = require('moment-timezone');
-const { pushes } = require('../lib/urls');
+const urls = require('../lib/urls');
 
 
 module.exports.verify = (event, context, callback) => {
@@ -137,7 +137,7 @@ module.exports.push = (event, context, callback) => {
   const today = new Date();
   const isoDate = today.toISOString().split('T')[0];
 
-  request.get({uri: pushes, json: true, qs: {timing: timing, pub_date: isoDate, limit: 1}}).then(data => {
+  request.get({uri: urls.pushes, json: true, qs: {timing: timing, pub_date: isoDate, limit: 1}}).then(data => {
     console.log(data);
 
     if (data.results.length === 0) {
@@ -161,6 +161,17 @@ module.exports.push = (event, context, callback) => {
         type: 'push',
       });
     facebook.sendBroadcastButtons(introHeadlines, [button], 'push-' + timing).then(message => {
+      request.patch({
+        uri: urls.push(push.id),
+        json: true,
+        body: {delivered: true},
+        headers: {Authorization: 'Token ' + process.env.CMS_API_TOKEN}
+      }).then(response => {
+        console.log(`Updated push ${push.id} to delivered`, response);
+      }).catch(error => {
+        console.log(`Failed to update push ${push.id} to delivered`, error);
+      });
+
       console.log("Successfully sent push: ", message);
       callback(null, {
         statusCode: 200,

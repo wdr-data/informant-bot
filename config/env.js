@@ -10,6 +10,7 @@ const required_env = [
     'FB_VERIFYTOKEN',
     'DF_PROJECTID',
     'CMS_API_URL',
+    'CMS_API_TOKEN',
 ];
 
 const load_s3 = (filename, json = false) => {
