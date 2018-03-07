@@ -14,5 +14,6 @@ module.exports = {
         subscribe: require('./payload_subscribe').subscribe,
         unsubscribe: require('./payload_subscribe').unsubscribe,
         share: require('./payload_share.js'),
+        current_news: require('./action_current_news'),
     },
 };
