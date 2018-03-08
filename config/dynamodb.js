@@ -12,6 +12,20 @@ const tableProps = {
             KeyType: 'HASH',
         }],
     },
+    "subscriptions": {
+        AttributeDefinitions: [
+            {
+                AttributeName: 'psid',
+                AttributeType: 'S',
+            },
+        ],
+        KeySchema: [
+            {
+                AttributeName: 'psid',
+                KeyType: 'HASH',
+            },
+        ],
+    },
 };
 
 const loadConfig = () => {
