@@ -35,14 +35,16 @@ module.exports.verify = (event, context, callback) => {
 
 module.exports.message = (event, context, callback) => {
   const payload = JSON.parse(event.body);
-  console.log(payload);
+
   callback(null, {
     statusCode: 200,
     body: 'works',
   });
+
+  console.log(JSON.stringify(payload, null, 2));
+
   const msgEvent = payload.entry[0].messaging[0];
   const psid = msgEvent.sender.id;
-  console.log(psid);
 
   const chat = new facebook.Chat(msgEvent);
 
