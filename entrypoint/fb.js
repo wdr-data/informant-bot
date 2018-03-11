@@ -133,6 +133,9 @@ module.exports.push = (event, context, callback) => {
       expectedTime = moment(currentTime).hour(18).minute(30);
     }
 
+    console.log('Current time: ', currentTime);
+    console.log('Expected time:', expectedTime);
+
     if (expectedTime &&
         !currentTime.isBetween(moment(expectedTime).subtract(5, 'minutes'),
                                moment(expectedTime).add(5, 'minutes'))
