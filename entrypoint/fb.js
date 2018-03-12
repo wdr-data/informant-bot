@@ -2,9 +2,8 @@ const facebook = require('../lib/facebook');
 const { getAttachmentId } = require('../lib/facebookAttachments');
 const dialogflow = require('dialogflow');
 const handler = require('../handler');
-const request = require('request-promise-native');
-const urls = require('../lib/urls');
 const getTiming = require('../lib/timing');
+const { assemblePush, getLatestPush, markSent } = require('../lib/pushData');
 
 
 module.exports.verify = (event, context, callback) => {
@@ -126,63 +125,29 @@ module.exports.push = (event, context, callback) => {
     return;
   }
 
-  const today = new Date();
-  const isoDate = today.toISOString().split('T')[0];
-
-  request.get({uri: urls.pushes, json: true, qs: {timing: timing, pub_date: isoDate, limit: 1}}).then(data => {
-    console.log(data);
-
-    if (data.results.length === 0) {
-      callback(null, {
-        statusCode: 200,
-        body: JSON.stringify({success: false, message: "No Push found"}),
-      });
-      return;
-    }
-
-    const push = data.results[0];
-
-    const introHeadlines = push.intro.concat("\n").concat(push.reports.map(r => "➡ ".concat(r.headline)).join('\n'));
-    const firstReport = push.reports[0];
-    const button = facebook.buttonPostback(
-      'Leg los',
-      {
-        action: 'report_start',
-        push: push.id,
-        report: firstReport.id,
-        type: 'push',
-      });
-    facebook.sendBroadcastButtons(introHeadlines, [button], 'push-' + timing).then(message => {
-      request.patch({
-        uri: urls.push(push.id),
-        json: true,
-        body: {delivered: true},
-        headers: {Authorization: 'Token ' + process.env.CMS_API_TOKEN}
-      }).then(response => {
-        console.log(`Updated push ${push.id} to delivered`, response);
-      }).catch(error => {
-        console.log(`Failed to update push ${push.id} to delivered`, error);
-      });
-
-      console.log("Successfully sent push: ", message);
-      callback(null, {
-        statusCode: 200,
-        body: JSON.stringify({success: true, message: "Successfully sent push: " + message}),
-      })
-    }).catch(message => {
-      console.log("Sending push failed: ", JSON.stringify(message, null, 2));
+  getLatestPush(timing)
+    .then(push => {
+      const { introHeadlines, button } = assemblePush(push);
+      return Promise.all([
+          facebook.sendBroadcastButtons(introHeadlines, [button], 'push-' + timing),
+          Promise.resolve(push)
+      ]);
+    })
+    .then(([message, push]) =>  {
+        markSent(push.id).catch(() => {});
+        console.log("Successfully sent push: ", message);
+        callback(null, {
+            statusCode: 200,
+            body: JSON.stringify({success: true, message: "Successfully sent push: " + message}),
+        });
+    })
+    .catch(error => {
+      console.log("Sending push failed: ", JSON.stringify(error, null, 2));
       callback(null, {
         statusCode: 500,
-        body: JSON.stringify({success: false, message: "Sending push failed: " + message}),
-      })
+        body: JSON.stringify({success: false, message: error.message}),
+      });
     });
-  }).catch(error => {
-    console.log("Querying push failed: ", JSON.stringify(error, null, 2));
-    callback(null, {
-      statusCode: 500,
-      body: JSON.stringify({success: false, message: "Querying push failed: " + error}),
-    })
-  })
 };
 
 module.exports.attachment = (event, context, callback) => {
