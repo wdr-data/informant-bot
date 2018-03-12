@@ -1,10 +1,47 @@
 const {buttonPostback, listElement} = require('../lib/facebook');
+const subscriptions = require('../lib/subscriptions');
 
 const getHasLabel = function (chat) {
   return chat.getLabels().then(
     labels => labelName => labels.indexOf(labelName) !== -1
   )
-}
+};
+
+const disableSubscription = function (psid, timing) {
+  subscriptions.update(psid, timing, false).then(sub => {
+    console.log(`Disabled subscription ${timing} in dynamoDB for ${psid}`);
+
+    if (!sub.morning && !sub.evening) {
+      subscriptions.remove(psid).then(() => {
+        console.log(`Deleted User in dynamoDB with psid ${psid}`);
+      }).catch(error => {
+        console.log(`Deleting user from dynamoDB failed: ${error}`);
+      })
+    }
+  }).catch(error => {
+    console.log(`Updating user from dynamoDB failed: ${error}`);
+  });
+};
+
+const enableSubscription = function (psid, timing) {
+
+  const item = {
+    morning: (timing === 'morning'),
+    evening: (timing === 'evening'),
+  };
+
+  subscriptions.create(psid, item).then(() => {
+    console.log(`Created in dynamoDB ${psid} with ${timing}`);
+  }).catch(error => {
+    console.log('Creating user in dynamoDB failed: ' + error);
+
+    subscriptions.update(psid, timing, true).then(() => {
+      console.log(`Enabled subscription ${timing} in dynamoDB for ${psid}`);
+    }).catch(error => {
+      console.log('Updating user in dynamoDB failed: ' + error);
+    });
+  })
+};
 
 module.exports.subscriptions = function (chat) {
   chat.sendText("Im Moment kann ich Dir keine Nachrichten automatisch schicken. Deshalb: Gehe auf den Button 'Gib mir die Infos' oder schreibe mir einfach 'Infos' und ich liefer ab. Ich arbeite daran, dass ich so schnell wie möglich automatisch zu Dir komme. Danke für Deine Geduld.");
@@ -59,23 +96,28 @@ module.exports.subscribe = function (chat, payload) {
   chat.addLabel('push-breaking');
   if (payload.subscription == 'morning' || payload.subscription == 'all') {
     chat.addLabel('push-morning');
+    enableSubscription(chat.event.sender.id, 'morning');
   }
   if (payload.subscription == 'evening' || payload.subscription == 'all') {
     chat.addLabel('push-evening');
+    enableSubscription(chat.event.sender.id, 'evening');
   }
   chat.sendText(`Ich schick dir ab jetzt die Nachrichten, wie du sie bestellt hast. ` +
     `Wenn du die letzte Ausgabe sehen willst, schreib einfach "Leg los"`);
-}
+};
 
 module.exports.unsubscribe = function (chat, payload) {
   getHasLabel(chat).then(
     function (hasLabel) {
       if (payload.subscription == 'morning' || payload.subscription == 'all') {
         chat.removeLabel('push-morning');
+        disableSubscription(chat.event.sender.id, 'morning');
       }
       if (payload.subscription == 'evening' || payload.subscription == 'all') {
         chat.removeLabel('push-evening');
+        disableSubscription(chat.event.sender.id, 'evening');
       }
+
       if (
         payload.subscription == 'all' ||
         !hasLabel('push-' + (payload.subscription == 'morning' ? 'evening' : 'morning'))
