@@ -127,9 +127,9 @@ module.exports.push = (event, context, callback) => {
 
   getLatestPush(timing)
     .then(push => {
-      const { introHeadlines, button } = assemblePush(push);
+      const { intro, button } = assemblePush(push);
       return Promise.all([
-          facebook.sendBroadcastButtons(introHeadlines, [button], 'push-' + timing),
+          facebook.sendBroadcastButtons(intro, [button], 'push-' + timing),
           Promise.resolve(push)
       ]);
     })
