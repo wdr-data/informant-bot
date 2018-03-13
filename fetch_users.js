@@ -57,6 +57,43 @@ const storeUser = async function(psid, item = {}) {
     return new Promise((resolve, reject) => ddb.put({
         TableName: TABLE_NAME,
         Item: Object.assign(item, { psid }),
+        ConditionExpression: 'attribute_not_exists(psid)',
+    }, err => {
+        if(err) {
+            return reject(err);
+        }
+        resolve();
+    }));
+};
+
+const updateUser = async function(psid, item = none, status = 0) {
+    return new Promise((resolve, reject) => ddb.update({
+        TableName: TABLE_NAME,
+        Key: {
+            psid: psid
+        },
+        UpdateExpression: "set #item = :status",
+        ExpressionAttributeNames:{
+            "#item":item
+        },
+        ExpressionAttributeValues:{
+            ":status":status
+        },
+        ReturnValues:"ALL_NEW",
+    }, (err, res) => {
+        if(err) {
+            return reject(err);
+        }
+        return res;
+    }));
+};
+
+const deleteUser = async function(psid) {
+    return new Promise((resolve, reject) => ddb.delete({
+        TableName: TABLE_NAME,
+        Key: {
+            psid: psid
+        },
     }, err => {
         if(err) {
             return reject(err);
@@ -100,5 +137,7 @@ const persistUsers = async function() {
 module.exports = {
     findUsers,
     storeUser,
+    updateUser,
+    deleteUser,
     persistUsers,
 };
