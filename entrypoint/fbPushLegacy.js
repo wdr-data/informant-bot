@@ -1,11 +1,8 @@
 const getTiming = require('../lib/timing');
 const { assemblePush, getLatestPush, markSent } = require('../lib/pushData');
-const AWS = require('aws-sdk');
 const facebook = require('../lib/facebook');
+const ddb = require('../lib/dynamodb');
 
-const ddb = new AWS.DynamoDB.DocumentClient({
-    region: 'eu-central-1',
-});
 
 module.exports.fetch = function(event, context, callback) {
     // check if timing is right
