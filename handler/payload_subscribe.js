@@ -44,7 +44,7 @@ const enableSubscription = function (psid, timing) {
 };
 
 module.exports.subscriptions = function (chat) {
-  chat.sendText("Im Moment kann ich Dir keine Nachrichten automatisch schicken. Deshalb: Gehe auf den Button 'Gib mir die Infos' oder schreibe mir einfach 'Infos' und ich liefer ab. Ich arbeite daran, dass ich so schnell wie möglich automatisch zu Dir komme. Danke für Deine Geduld.");
+  chat.sendText("Meine Infos kannst du ein oder zweimal am Tag haben: Morgens, abends oder beides. Und ich melde mich, wenn etwas wirklich Wichtiges passiert.");
 
   getHasLabel(chat).then(
     function (hasLabel) {
