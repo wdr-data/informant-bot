@@ -130,6 +130,20 @@ Resources:
             Resource:
             - !Sub 'arn:aws:events:${AWS::Region}:${AWS::AccountId}:rule/${ServiceName}-*'
 
+          - Effect: Allow
+            Action:
+            - 'states:CreateStateMachine'
+            Resource:
+            - !Sub 'arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:*'
+
+          - Effect: Allow
+            Action:
+            - 'states:DescribeStateMachine'
+            - 'states:DeleteStateMachine'
+            - 'states:UpdateStateMachine'
+            Resource:
+            - !Sub 'arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:${ServiceName}-*'
+
   ServerlessDomainManagerDeployPolicy:
     Type: "AWS::IAM::ManagedPolicy"
     Properties:
