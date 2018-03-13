@@ -128,7 +128,7 @@ Resources:
             - 'events:Delete*'
             - 'events:Describe*'
             Resource:
-            - !Sub 'arn:aws:events::${AWS::AccountId}:rule/${ServiceName}-*'
+            - !Sub 'arn:aws:events:${AWS::Region}:${AWS::AccountId}:rule/${ServiceName}-*'
 
   ServerlessDomainManagerDeployPolicy:
     Type: "AWS::IAM::ManagedPolicy"
