@@ -5,6 +5,8 @@ const ddb = require('../lib/dynamodb');
 
 
 module.exports.fetch = function(event, context, callback) {
+    console.log(JSON.stringify(event, null, 2));
+
     // check if timing is right
     let timing;
     try {
