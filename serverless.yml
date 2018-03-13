@@ -57,7 +57,7 @@ stepFunctions:
       events:
         - http:
             path: push
-            method: get
+            method: post
         - schedule:
             name: ${self:service}-${self:provider.stage}-pushLegacy_morning_2
             rate: cron(30 6 ? * MON-FRI *)  # UTC+1 (No DST)
