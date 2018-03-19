@@ -15,6 +15,11 @@ const MENU_ACTIONS = [
     payload: JSON.stringify({action: "current_news"}),
   },
   {
+    title: "🔧 An-/Abmelden",
+    type: "postback",
+    payload: JSON.stringify({action: "subscriptions"}),
+  },
+  {
     title: "🕵 Über den Informanten",
     type: "nested",
     call_to_actions: [
@@ -39,17 +44,12 @@ const MENU_ACTIONS = [
         payload: JSON.stringify({action: "faq", slug: "impressum"}),
       },
       {
-        title: "🔧 An-/Abmelden",
+        title: "💌 Teilen",
         type: "postback",
-        payload: JSON.stringify({action: "subscriptions"}),
+        payload: JSON.stringify({action: "share"}),
       },
     ]
   }, 
-  {
-    title: "💌 Teilen",
-    type: "postback",
-    payload: JSON.stringify({action: "share"}),
-  },
 ];
 
 
