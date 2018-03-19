@@ -25,6 +25,7 @@
     "aws-sdk": "^2.206.0",
     "dialogflow": "^0.1.0",
     "moment-timezone": "^0.5.14",
+    "prom-client": "^11.0.0",
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5"
   },

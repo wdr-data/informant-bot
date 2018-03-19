@@ -50,6 +50,13 @@ functions:
   fbPushLegacyFinish:
     handler: entrypoint/fbPushLegacy.finish
 
+  metrics:
+    handler: entrypoint/metrics.prometheus
+    events:
+      - http:
+          path: metrics
+          method: get
+
 stepFunctions:
   stateMachines:
     pushLegacy:
