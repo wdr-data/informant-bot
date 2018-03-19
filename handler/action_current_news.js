@@ -9,7 +9,6 @@ const current_news = chat => {
     json: true,
     qs: {
       limit: 1,
-      'timing!': 'breaking',
       delivered: true,
     }
   }).then(data => {
