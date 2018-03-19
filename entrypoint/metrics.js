@@ -16,6 +16,9 @@ function collectSubscriberMetrics(timing) {
     if (timing === 'morning' || timing === 'evening') {
         params.FilterExpression = `${timing} = :p`;
         params.ExpressionAttributeValues = {":p": 1};
+    } else if(timing === 'both') {
+        params.FilterExpression = 'morning = :p AND evening = :p';
+        params.ExpressionAttributeValues = {":p": 1};
     } else {
         label = 'any';
     }
@@ -37,6 +40,7 @@ module.exports.prometheus = (event, context, callback) => {
         collectSubscriberMetrics(),
         collectSubscriberMetrics('morning'),
         collectSubscriberMetrics('evening'),
+        collectSubscriberMetrics('both'),
     ])
         .then(() => {
             callback(null, {
