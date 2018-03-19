@@ -57,7 +57,6 @@ const storeUser = async function(psid, item = {}) {
     return new Promise((resolve, reject) => ddb.put({
         TableName: TABLE_NAME,
         Item: Object.assign(item, { psid }),
-        ConditionExpression: 'attribute_not_exists(psid)',
     }, err => {
         if(err) {
             return reject(err);
