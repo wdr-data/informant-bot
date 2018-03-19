@@ -125,7 +125,7 @@ module.exports.push = (event, context, callback) => {
     return;
   }
 
-  getLatestPush(timing)
+  getLatestPush(timing, { delivered: 0 })
     .then(push => {
       const { intro, button } = assemblePush(push);
       return Promise.all([
