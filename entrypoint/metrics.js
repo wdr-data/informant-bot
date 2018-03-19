@@ -48,5 +48,8 @@ module.exports.prometheus = (event, context, callback) => {
                 headers: { "Content-Type": register.contentType },
                 body: register.metrics(),
             });
+        })
+        .catch(err => {
+            callback(err);
         });
 };
