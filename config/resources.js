@@ -6,6 +6,16 @@ function capitalizeWord(input) {
 }
 
 const memoryUsedFilter = '[report_name="REPORT", request_id_name="RequestId:", request_id_value, duration_name="Duration:", duration_value, duration_unit="ms", billed_duration_name_1="Billed", bill_duration_name_2="Duration:", billed_duration_value, billed_duration_unit="ms", memory_size_name_1="Memory", memory_size_name_2="Size:", memory_size_value, memory_size_unit="MB", max_memory_used_name_1="Max", max_memory_used_name_2="Memory", max_memory_used_name_3="Used:", max_memory_used_value, max_memory_used_unit="MB"]';
+const metricFilterConfigs = {
+    MemoryUsed: {
+        FilterPattern: memoryUsedFilter,
+        MetricTransformations: [{
+            MetricValue: "$max_memory_used_value",
+            MetricNamespace: "LambdaMemoryUsed",
+        }],
+    },
+
+};
 function metricFilters(stage) {
     return loadConfig()
         .then(config => {
@@ -17,20 +27,19 @@ function metricFilters(stage) {
             });
             return names.reduce((acc, name) => {
                 const fullName = `${config.service}-${stage}-${name}`;
-                acc[`${capitalizeWord(name)}MetricFilterMemoryUsed`] = {
-                    Type: "AWS::Logs::MetricFilter",
-                    DependsOn: [`${capitalizeWord(name)}LogGroup`],
-                    Properties: {
-                        LogGroupName: `/aws/lambda/${fullName}`,
-                        FilterPattern: memoryUsedFilter,
-                        MetricTransformations: [{
-                            MetricValue: "$max_memory_used_value",
-                            MetricNamespace: "LambdaMemoryUsed",
-                            MetricName: fullName,
-                        }],
-                    },
-                };
-                return acc;
+                return Object.assign(acc, Object.keys(metricFilterConfigs).reduce((allMetrics, type) => {
+                    allMetrics[`${capitalizeWord(name)}MetricFilter${type}`] = {
+                        Type: "AWS::Logs::MetricFilter",
+                        DependsOn: [`${capitalizeWord(name)}LogGroup`],
+                        Properties: Object.assign({}, metricFilterConfigs[type], {
+                            LogGroupName: `/aws/lambda/${fullName}`,
+                            MetricTransformations: metricFilterConfigs[type].MetricTransformations.map(
+                                transform => Object.assign({}, transform, { MetricName: name })
+                            ),
+                        }),
+                    };
+                    return allMetrics;
+                }, {}));
             }, {});
         })
 }
