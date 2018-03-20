@@ -21,6 +21,15 @@ function initParams (uri, options, callback) {
   return params;
 }
 
+function paramsHaveRequestBody (params) {
+  return (
+    params.body ||
+    params.requestBodyStream ||
+    (params.json && typeof params.json !== 'boolean') ||
+    params.multipart
+  )
+}
+
 function request (uri, options, callback) {
   return new Promise((resolve, reject) => {
     if (typeof uri === 'undefined') {
