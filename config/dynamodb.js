@@ -1,5 +1,4 @@
-const fs = require('fs');
-const yaml = require('js-yaml');
+const { loadConfig } = require('./util');
 
 const tableProps = {
     "attachments": {
@@ -26,17 +25,6 @@ const tableProps = {
             },
         ],
     },
-};
-
-const loadConfig = () => {
-    return new Promise((resolve, reject) => {
-        fs.readFile('./serverless.yml', (err, buf) => {
-            if (err) {
-                return reject(err);
-            }
-            resolve(yaml.safeLoad(buf.toString()));
-        });
-    });
 };
 
 const tableNames = stage => {
