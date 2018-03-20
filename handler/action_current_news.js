@@ -4,7 +4,7 @@ const urls = require('../lib/urls');
 
 
 const current_news = chat => {
-  request({
+  return request({
     uri: urls.pushes,
     json: true,
     qs: {
@@ -24,7 +24,7 @@ const current_news = chat => {
         report: firstReport.id,
         type: 'push',
       });
-    chat.sendButtons(introHeadlines, [button]);
+    return chat.sendButtons(introHeadlines, [button]);
   });
 };
 
