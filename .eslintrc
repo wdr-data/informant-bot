@@ -13,7 +13,7 @@
     "no-console": "off",
     "node/exports-style": ["error", "module.exports"],
     "node/no-unpublished-require": ["error", {
-      "allowModules": ["js-yaml"]
+      "allowModules": ["js-yaml", "extend", "object-hash"]
     }]
   }
 }
