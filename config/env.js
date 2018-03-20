@@ -38,10 +38,6 @@ const fetch_env = () => {
     if ('CI' in process.env){
         return load_s3('env.json', true)
             .then(env => {
-                const missing_env = required_env.filter(name => !(name in env));
-                if (missing_env.length > 0) {
-                    throw new Error(`Missing environment variables: ${missing_env.join(', ')}`);
-                }
                 env_cache = env;
                 return env;
             });
@@ -56,11 +52,6 @@ const fetch_env = () => {
     required_env.forEach(key => {
         if(key in process.env) {
             environment[key] = process.env[key];
-            return;
-        }
-
-        if(!(key in environment)) {
-            throw new Error(`Environment Variable "${key}" must be declared.`);
         }
     });
 
@@ -71,6 +62,10 @@ module.exports.env = () => {
     let env_cache;
     return fetch_env()
         .then(env => {
+            const missing_env = required_env.filter(name => !(name in env));
+            if (missing_env.length > 0) {
+                throw new Error(`Missing environment variables: ${missing_env.join(', ')}`);
+            }
             env_cache = env;
             return getStage();
         })
