@@ -97,7 +97,7 @@ module.exports.message = (event, context, callback) => {
                 console.log(`  Intent: ${result.intent.displayName}`);
                 console.log(`  Action: ${result.action}`);
                 if (result.action in handler.actions) {
-                    handler.actions[result.action](chat);
+                    handler.actions[result.action](chat, result.parameters['fields']);
                 } else {
                     chat.sendText(result.fulfillmentText);
                 }
