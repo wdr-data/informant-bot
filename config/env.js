@@ -21,4 +21,4 @@ module.exports.stage = getStage;
 
 module.exports.enableDomain = () => fetch_env().then(env => 'DEPLOY_ALIAS' in env || 'SLS_STAGE' in process.env);
 
-module.exports.resources = () => getStage().then(tableConfig);
+module.exports.resources = resources;
