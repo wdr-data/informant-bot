@@ -15,7 +15,7 @@ Du kannst mich im Facebook-Messenger nutzen: [m.me/1LIVE.Informant](https://m.me
 
 - Redaktion: 1LIVE Infos, Jessica Häusler, Susanne Schwarzbach, Jens Becker
 - Grafik: Mirko Schweikert
-- Umsetzung: Lisa Achenbach, Patricia Ennenbach, Jannes Höke, Christian Jörres, Marcus Weiner
+- Umsetzung: Lisa Achenbach, Patricia Ennenbach, Christine Gotthardt, Jannes Höke, Christian Jörres, Marcus Weiner
 
 [**Impressum**](https://www1.wdr.de/radio/1live/einslive-impressum-100.html)
 
