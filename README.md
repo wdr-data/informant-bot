@@ -17,7 +17,7 @@ Du kannst mich im Facebook-Messenger nutzen: [m.me/1LIVE.Informant](https://m.me
 - Grafik: Mirko Schweikert
 - Umsetzung: Lisa Achenbach, Patricia Ennenbach, Jannes Höke, Christian Jörres, Marcus Weiner
 
-[**Ipressum**](https://www1.wdr.de/radio/1live/einslive-impressum-100.html)
+[**Impressum**](https://www1.wdr.de/radio/1live/einslive-impressum-100.html)
 
 
 ## Nutzung
@@ -75,5 +75,5 @@ Für Grafiken wird kein Nutzungsrecht eingeräumt.
 Copyright Westdeutscher Rundfunk Köln
 
 
-#### Gewähleistungsausschluss
+#### Gewährleistungsausschluss
 Es besteht keinerlei Gewährleistung für das Programm, soweit dies gesetzlich zulässig ist. Sofern nicht anderweitig schriftlich bestätigt, stellen die Urheberrechtsinhaber und/oder Dritte das Programm so zur Verfügung, „wie es ist“, ohne irgendeine Gewährleistung. Das volle Risiko bezüglich Qualität und Leistungsfähigkeit des Programms liegt bei Ihnen.
