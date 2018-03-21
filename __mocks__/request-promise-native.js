@@ -77,7 +77,7 @@ function request (uri, options, callback) {
       if (err) {
         reject(`Reading mock request file for parameters ` +
                `${JSON.stringify(params, null, 2)} with hash ` +
-               `${paramsHash} failed: ${err}`)
+               `${paramsHash} failed: ${err}`);
         return;
       }
       if (params.json) {
