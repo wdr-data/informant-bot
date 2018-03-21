@@ -58,7 +58,7 @@ Zu den Datenschutzbestimmungen des "Westdeutschen Rundfunks": http://www1.wdr.de
 
 ## Daten-Quellen / Credits
 - Der Informant arbeitet in Kooperation mit Novi, dem Nachrichten-Bot von Funk: https://www.funk.net/
-- Der Informant nutzt api.ai (Google Assistant) um die Absichten der Nutzer (intents) zu klassifizieren. Übergeben wird die PSID (Page Specific ID) und der Nachrichtentext.
+- Der Informant nutzt Dialogflow (Google Assistant) um die Absichten der Nutzer (intents) zu klassifizieren. Übergeben wird die PSID (Page Specific ID) und der Nachrichtentext.
 
 ## Rechtliches und Lizenzen
 
