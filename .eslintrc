@@ -1,9 +1,10 @@
 {
-  "plugins": ["node"],
-  "extends": ["eslint:recommended", "plugin:node/recommended"],
+  "plugins": ["node", "jest"],
+  "extends": ["eslint:recommended", "plugin:node/recommended", "plugin:jest/recommended"],
   "env": {
     "node": true,
-    "es6": true
+    "es6": true,
+    "jest/globals": true,
   },
   "parserOptions": {
     "ecmaVersion": 6
@@ -12,7 +13,7 @@
     "no-console": "off",
     "node/exports-style": ["error", "module.exports"],
     "node/no-unpublished-require": ["error", {
-      "allowModules": ["js-yaml"]
+      "allowModules": ["js-yaml", "extend", "object-hash"]
     }]
   }
 }

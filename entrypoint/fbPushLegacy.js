@@ -40,7 +40,6 @@ module.exports.send = function(event, context, callback) {
     let lastUser;
     getUsers(event.timing, event.start)
         .then(users => {
-            console.log(users);
             if(users.length === 0) {
                 const exit = new Error("No more users");
                 exit.name = 'users-empty';

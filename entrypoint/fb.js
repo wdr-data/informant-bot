@@ -13,8 +13,6 @@ module.exports.verify = (event, context, callback) => {
   const challenge = params['hub.challenge'];
   const mode = params['hub.mode'];
 
-  console.log("ENV", process.env);
-
   if ((mode && token && challenge) &&
       (mode === 'subscribe') &&
       (token === process.env.FB_VERIFYTOKEN)
@@ -152,7 +150,6 @@ module.exports.push = (event, context, callback) => {
 
 module.exports.attachment = (event, context, callback) => {
   const payload = JSON.parse(event.body);
-  console.log(payload);
   const url = payload.url;
 
   getAttachmentId(url, facebook.guessAttachmentType(url)).then(id => {

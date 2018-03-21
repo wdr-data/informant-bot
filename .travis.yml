@@ -5,6 +5,8 @@ sudo: false
 node_js:
 - 6
 
+cache: yarn
+
 before_script:
   - ./config/prepare-ci.js
 

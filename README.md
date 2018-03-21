@@ -9,16 +9,15 @@ Ich habe die Infos, über die der Sektor spricht: Das, was du von der Welt wisse
 
 Meine Nachrichten kannst du ein oder zweimal am Tag haben: Morgens, abends oder beides. Und ich melde mich, wenn etwas wirklich Wichtiges passiert.
 
-Du kannst mich im Facebook-Messenger nutzen.
-[m.me/1LIVE.Informant]
+Du kannst mich im Facebook-Messenger nutzen: [m.me/1LIVE.Informant](https://m.me/1LIVE.Informant)
 
 ## Impressum / Team 🕵️
 
-Redaktion: 1LIVE Infos, Jessica Häusler, Susanne Schwarzbach, Jens Becker
-Grafik: Mirko Schweikert
-Umsetzung: Lisa Achenbach, Patricia Ennenbach, Jannes Höke, Christian Jörres, Marcus Weiner
+- Redaktion: 1LIVE Infos, Jessica Häusler, Susanne Schwarzbach, Jens Becker
+- Grafik: Mirko Schweikert
+- Umsetzung: Lisa Achenbach, Patricia Ennenbach, Christine Gotthardt, Jannes Höke, Christian Jörres, Marcus Weiner
 
-[**Ipressum**](https://www1.wdr.de/radio/1live/einslive-impressum-100.html)
+[**Impressum**](https://www1.wdr.de/radio/1live/einslive-impressum-100.html)
 
 
 ## Nutzung
@@ -59,7 +58,7 @@ Zu den Datenschutzbestimmungen des "Westdeutschen Rundfunks": http://www1.wdr.de
 
 ## Daten-Quellen / Credits
 - Der Informant arbeitet in Kooperation mit Novi, dem Nachrichten-Bot von Funk: https://www.funk.net/
-- Der Informant nutzt api.ai (Google Assistant) um die Absichten der Nutzer (intents) zu klassifizieren. Übergeben wird die PSID (Page Specific ID) und der Nachrichtentext.
+- Der Informant nutzt Dialogflow (Google Assistant) um die Absichten der Nutzer (intents) zu klassifizieren. Übergeben wird die PSID (Page Specific ID) und der Nachrichtentext.
 
 ## Rechtliches und Lizenzen
 
@@ -67,7 +66,7 @@ Zu den Datenschutzbestimmungen des "Westdeutschen Rundfunks": http://www1.wdr.de
 
 JavaScript (Source-Code oder aufbereitet) ist bei Beibehaltung des Lizenztextes unter der MIT License frei nutzbar und weiterverbreitbar.
 
-[Lizenztext](LICENSE)
+[Lizenztext](LICENSE.md)
 
 Für Grafiken wird kein Nutzungsrecht eingeräumt.
 
@@ -76,5 +75,5 @@ Für Grafiken wird kein Nutzungsrecht eingeräumt.
 Copyright Westdeutscher Rundfunk Köln
 
 
-#### Gewähleistungsausschluss
+#### Gewährleistungsausschluss
 Es besteht keinerlei Gewährleistung für das Programm, soweit dies gesetzlich zulässig ist. Sofern nicht anderweitig schriftlich bestätigt, stellen die Urheberrechtsinhaber und/oder Dritte das Programm so zur Verfügung, „wie es ist“, ohne irgendeine Gewährleistung. Das volle Risiko bezüglich Qualität und Leistungsfähigkeit des Programms liegt bei Ihnen.

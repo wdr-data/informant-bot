@@ -4,7 +4,7 @@ const urls = require('../lib/urls');
 
 
 const current_news = chat => {
-  request({
+  return request({
     uri: urls.pushes,
     json: true,
     qs: {
@@ -12,8 +12,6 @@ const current_news = chat => {
       delivered: true,
     }
   }).then(data => {
-    console.log(data);
-
     const push = data.results[0];
 
     const introHeadlines = push.intro.concat("\n").concat(push.reports.map(r => "➡ ".concat(r.headline)).join('\n'));
@@ -26,7 +24,7 @@ const current_news = chat => {
         report: firstReport.id,
         type: 'push',
       });
-    chat.sendButtons(introHeadlines, [button]);
+    return chat.sendButtons(introHeadlines, [button]);
   });
 };
 

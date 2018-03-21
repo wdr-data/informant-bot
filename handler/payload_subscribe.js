@@ -86,7 +86,6 @@ module.exports.subscriptions = function (chat) {
         )
       ));
 
-      console.log('elements: ', elements);
       chat.sendList(elements);
     }
   )

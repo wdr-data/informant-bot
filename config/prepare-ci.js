@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { load_s3 } = require('./env');
+const { load_s3 } = require('./util');
 
 const df_service_account = () => {
     const save_file = content => fs.writeFile(
