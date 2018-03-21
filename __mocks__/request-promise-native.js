@@ -92,7 +92,7 @@ function request (uri, options, callback) {
       } else {
         resolve(data);
       }
-    })
+    });
   });
 }
 
