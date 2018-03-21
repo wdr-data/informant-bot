@@ -9,14 +9,13 @@ Ich habe die Infos, über die der Sektor spricht: Das, was du von der Welt wisse
 
 Meine Nachrichten kannst du ein oder zweimal am Tag haben: Morgens, abends oder beides. Und ich melde mich, wenn etwas wirklich Wichtiges passiert.
 
-Du kannst mich im Facebook-Messenger nutzen.
-[m.me/1LIVE.Informant]
+Du kannst mich im Facebook-Messenger nutzen: [m.me/1LIVE.Informant](https://m.me/1LIVE.Informant)
 
 ## Impressum / Team 🕵️
 
-Redaktion: 1LIVE Infos, Jessica Häusler, Susanne Schwarzbach, Jens Becker
-Grafik: Mirko Schweikert
-Umsetzung: Lisa Achenbach, Patricia Ennenbach, Jannes Höke, Christian Jörres, Marcus Weiner
+- Redaktion: 1LIVE Infos, Jessica Häusler, Susanne Schwarzbach, Jens Becker
+- Grafik: Mirko Schweikert
+- Umsetzung: Lisa Achenbach, Patricia Ennenbach, Jannes Höke, Christian Jörres, Marcus Weiner
 
 [**Ipressum**](https://www1.wdr.de/radio/1live/einslive-impressum-100.html)
 
