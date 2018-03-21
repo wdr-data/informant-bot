@@ -71,6 +71,7 @@ Resources:
             - 'logs:DeleteLogStream'
             - 'logs:DescribeLogStreams'
             - 'logs:FilterLogEvents'
+            - 'logs:PutMetricFilter'
             Resource: !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/*:log-stream:*'
 
   ServelessDeployIAMPolicy:
