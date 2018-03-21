@@ -67,7 +67,7 @@ Zu den Datenschutzbestimmungen des "Westdeutschen Rundfunks": http://www1.wdr.de
 
 JavaScript (Source-Code oder aufbereitet) ist bei Beibehaltung des Lizenztextes unter der MIT License frei nutzbar und weiterverbreitbar.
 
-[Lizenztext](LICENSE)
+[Lizenztext](LICENSE.md)
 
 Für Grafiken wird kein Nutzungsrecht eingeräumt.
 
