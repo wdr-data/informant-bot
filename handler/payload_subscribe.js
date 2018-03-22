@@ -44,51 +44,52 @@ const enableSubscription = function (psid, timing) {
 };
 
 module.exports.subscriptions = function (chat) {
-  chat.sendText("Meine Infos kannst du ein oder zweimal am Tag haben: Morgens, abends oder beides. Und ich melde mich, wenn etwas wirklich Wichtiges passiert.");
+  return Promise.all([
+    chat.sendText("Meine Infos kannst du ein oder zweimal am Tag haben: Morgens, abends oder beides. Und ich melde mich, wenn etwas wirklich Wichtiges passiert."),
 
-  getHasLabel(chat).then(
-    function (hasLabel) {
-      const elements = [];
+    getHasLabel(chat).then(
+      function (hasLabel) {
+        const elements = [];
 
-      elements.push(listElement(
-        ((hasLabel('push-morning') && hasLabel('push-evening')) ? '✔' : '❌') + ' Beides',
-        'Deine Infos morgens und abends.',
-        buttonPostback(
-          !(hasLabel('push-morning') && hasLabel('push-evening')) ? 'Anmelden' : 'Abmelden',
-          {
-            action: !(hasLabel('push-morning') && hasLabel('push-evening')) ? 'subscribe' : 'unsubscribe',
-            subscription: 'all',
-          }
-        )
-      ));
+        elements.push(listElement(
+          ((hasLabel('push-morning') && hasLabel('push-evening')) ? '✔' : '❌') + ' Beides',
+          'Deine Infos morgens und abends.',
+          buttonPostback(
+            !(hasLabel('push-morning') && hasLabel('push-evening')) ? 'Anmelden' : 'Abmelden',
+            {
+              action: !(hasLabel('push-morning') && hasLabel('push-evening')) ? 'subscribe' : 'unsubscribe',
+              subscription: 'all',
+            }
+          )
+        ));
 
-      elements.push(listElement(
-        (hasLabel('push-morning') ? '✔' : '❌') + ' Deine Infos am Morgen',
-        'Um 7.30 Uhr gibt\'s Dein erstes Update.',
-        buttonPostback(
-          !hasLabel('push-morning') ? 'Anmelden' : 'Abmelden',
-          {
-            action: !hasLabel('push-morning') ? 'subscribe' : 'unsubscribe',
-            subscription: 'morning',
-          }
-        )
-      ));
+        elements.push(listElement(
+          (hasLabel('push-morning') ? '✔' : '❌') + ' Deine Infos am Morgen',
+          'Um 7.30 Uhr gibt\'s Dein erstes Update.',
+          buttonPostback(
+            !hasLabel('push-morning') ? 'Anmelden' : 'Abmelden',
+            {
+              action: !hasLabel('push-morning') ? 'subscribe' : 'unsubscribe',
+              subscription: 'morning',
+            }
+          )
+        ));
 
-      elements.push(listElement(
-        (hasLabel('push-evening') ? '✔' : '❌') + ' Deine Infos am Abend',
-        'Um 18.30 Uhr kriegst Du das, was am Tag wichtig war.',
-        buttonPostback(
-          !hasLabel('push-evening') ? 'Anmelden' : 'Abmelden',
-          {
-            action: !hasLabel('push-evening') ? 'subscribe' : 'unsubscribe',
-            subscription: 'evening',
-          }
-        )
-      ));
+        elements.push(listElement(
+          (hasLabel('push-evening') ? '✔' : '❌') + ' Deine Infos am Abend',
+          'Um 18.30 Uhr kriegst Du das, was am Tag wichtig war.',
+          buttonPostback(
+            !hasLabel('push-evening') ? 'Anmelden' : 'Abmelden',
+            {
+              action: !hasLabel('push-evening') ? 'subscribe' : 'unsubscribe',
+              subscription: 'evening',
+            }
+          )
+        ));
 
-      chat.sendList(elements);
-    }
-  )
+        return chat.sendList(elements);
+      }
+  )]);
 };
 
 module.exports.subscribe = function (chat, payload) {
