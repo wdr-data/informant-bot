@@ -5,7 +5,14 @@ sudo: false
 node_js:
 - 6
 
+install:
+  - npm install -g codecov
+
 cache: yarn
+
+script:
+  - yarn test
+  - codecov
 
 before_script:
   - ./config/prepare-ci.js
