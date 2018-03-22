@@ -97,12 +97,12 @@ module.exports.subscriptions = function(chat) {
 
 module.exports.subscribe = function(chat, payload) {
   const promises = [ chat.addLabel('push-breaking') ];
-  if (payload.subscription == 'morning' || payload.subscription == 'all') {
+  if (payload.subscription === 'morning' || payload.subscription === 'all') {
     promises.push(
       chat.addLabel('push-morning'),
       enableSubscription(chat.event.sender.id, 'morning'));
   }
-  if (payload.subscription == 'evening' || payload.subscription == 'all') {
+  if (payload.subscription === 'evening' || payload.subscription === 'all') {
     promises.push(
       chat.addLabel('push-evening'),
       enableSubscription(chat.event.sender.id, 'evening'));
@@ -116,19 +116,19 @@ module.exports.unsubscribe = function(chat, payload) {
   return getHasLabel(chat).then(
     function(hasLabel) {
       const promises = [];
-      if (payload.subscription == 'morning' || payload.subscription == 'all') {
+      if (payload.subscription === 'morning' || payload.subscription === 'all') {
         promises.push(
           chat.removeLabel('push-morning'),
           disableSubscription(chat.event.sender.id, 'morning'));
       }
-      if (payload.subscription == 'evening' || payload.subscription == 'all') {
+      if (payload.subscription === 'evening' || payload.subscription === 'all') {
         promises.push(
           chat.removeLabel('push-evening'),
           disableSubscription(chat.event.sender.id, 'evening'));
       }
       if (
-        payload.subscription == 'all' ||
-        !hasLabel('push-' + (payload.subscription == 'morning' ? 'evening' : 'morning'))
+        payload.subscription === 'all' ||
+        !hasLabel('push-' + (payload.subscription === 'morning' ? 'evening' : 'morning'))
       ) {
         promises.push(
           chat.removeLabel('push-breaking'));

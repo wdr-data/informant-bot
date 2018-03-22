@@ -124,6 +124,7 @@
     "prefer-spread": "error",
     "rest-spread-spacing": "error",
     "yield-star-spacing": "error",
+    "eqeqeq": "error",
     "node/exports-style": ["error", "module.exports"],
     "node/no-unpublished-require": [
       "error",
