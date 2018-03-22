@@ -26,8 +26,8 @@ const disableSubscription = function (psid, timing) {
 const enableSubscription = function (psid, timing) {
 
   const item = {
-    morning: (timing === 'morning'),
-    evening: (timing === 'evening'),
+    morning: timing === 'morning',
+    evening: timing === 'evening',
   };
 
   return subscriptions.create(psid, item).then(() => {
@@ -52,7 +52,7 @@ module.exports.subscriptions = function (chat) {
         const elements = [];
 
         elements.push(listElement(
-          ((hasLabel('push-morning') && hasLabel('push-evening')) ? '✔' : '❌') + ' Beides',
+          (hasLabel('push-morning') && hasLabel('push-evening') ? '✔' : '❌') + ' Beides',
           'Deine Infos morgens und abends.',
           buttonPostback(
             !(hasLabel('push-morning') && hasLabel('push-evening')) ? 'Anmelden' : 'Abmelden',

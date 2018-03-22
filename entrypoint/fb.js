@@ -13,9 +13,9 @@ module.exports.verify = (event, context, callback) => {
   const challenge = params['hub.challenge'];
   const mode = params['hub.mode'];
 
-  if ((mode && token && challenge) &&
-      (mode === 'subscribe') &&
-      (token === process.env.FB_VERIFYTOKEN)
+  if (mode && token && challenge &&
+      mode === 'subscribe' &&
+      token === process.env.FB_VERIFYTOKEN
      ) {
     callback(null, {
       statusCode: 200,
