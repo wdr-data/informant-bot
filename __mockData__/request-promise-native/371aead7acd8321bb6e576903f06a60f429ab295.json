@@ -1,0 +1,12 @@
+[
+    {
+        "id": 2,
+        "name": "foo",
+        "slug": "foo",
+        "text": "Foo",
+        "media": null,
+        "media_original": null,
+        "media_note": null,
+        "next_fragments": []
+    }
+]
