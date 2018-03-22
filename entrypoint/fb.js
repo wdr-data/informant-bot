@@ -54,7 +54,7 @@ module.exports.message = (event, context, callback) => {
     try {
       replyPayload = JSON.parse(msgEvent.message.quick_reply.payload);
     } catch (e) {
-      console.error("Parsing of quick reply payload failed:", msgEvent.message.quick_reply.payload);
+      console.error('Parsing of quick reply payload failed:', msgEvent.message.quick_reply.payload);
       replyPayload = null;
     }
   }
@@ -87,7 +87,7 @@ module.exports.message = (event, context, callback) => {
 
   sessionClient
   .detectIntent(request)
-  .then(responses => {
+  .then((responses) => {
     console.log('Detected intent');
     const result = responses[0].queryResult;
     console.log(`  Query: ${result.queryText}`);
@@ -102,10 +102,10 @@ module.exports.message = (event, context, callback) => {
       }
     } else {
       console.log(`  No intent matched.`);
-      chat.sendText(`Da bin ich jetzt überfragt. Kannst Du das anders formulieren?`)
+      chat.sendText(`Da bin ich jetzt überfragt. Kannst Du das anders formulieren?`);
     }
   })
-  .catch(err => {
+  .catch((err) => {
     console.error('ERROR:', err);
     chat.sendText('Da ist was schief gelaufen.');
   });
@@ -118,13 +118,13 @@ module.exports.push = (event, context, callback) => {
   } catch (e) {
     callback(null, {
       statusCode: 400,
-      body: JSON.stringify({success: false, message: e.message}),
+      body: JSON.stringify({ success: false, message: e.message }),
     });
     return;
   }
 
   getLatestPush(timing, { delivered: 0 })
-    .then(push => {
+    .then((push) => {
       const { intro, button } = assemblePush(push);
       return Promise.all([
           facebook.sendBroadcastButtons(intro, [ button ], 'push-' + timing),
@@ -133,17 +133,17 @@ module.exports.push = (event, context, callback) => {
     })
     .then(([ message, push ]) => {
         markSent(push.id).catch(() => {});
-        console.log("Successfully sent push: ", message);
+        console.log('Successfully sent push: ', message);
         callback(null, {
             statusCode: 200,
-            body: JSON.stringify({success: true, message: "Successfully sent push: " + message}),
+            body: JSON.stringify({ success: true, message: 'Successfully sent push: ' + message }),
         });
     })
-    .catch(error => {
-      console.log("Sending push failed: ", JSON.stringify(error, null, 2));
+    .catch((error) => {
+      console.log('Sending push failed: ', JSON.stringify(error, null, 2));
       callback(null, {
         statusCode: 500,
-        body: JSON.stringify({success: false, message: error.message}),
+        body: JSON.stringify({ success: false, message: error.message }),
       });
     });
 };
@@ -152,15 +152,15 @@ module.exports.attachment = (event, context, callback) => {
   const payload = JSON.parse(event.body);
   const url = payload.url;
 
-  getAttachmentId(url, facebook.guessAttachmentType(url)).then(id => {
+  getAttachmentId(url, facebook.guessAttachmentType(url)).then((id) => {
     callback(null, {
       statusCode: 200,
-      body: JSON.stringify({success: true, message: id}),
+      body: JSON.stringify({ success: true, message: id }),
     });
-  }).catch(error => {
+  }).catch((error) => {
     callback(null, {
       statusCode: 500,
-      body: JSON.stringify({success: false, message: error}),
+      body: JSON.stringify({ success: false, message: error }),
     });
   });
 };

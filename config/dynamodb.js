@@ -1,7 +1,7 @@
 const { loadConfig } = require('./util');
 
 const tableProps = {
-    "attachments": {
+    'attachments': {
         AttributeDefinitions: [
 {
             AttributeName: 'url',
@@ -15,7 +15,7 @@ const tableProps = {
         },
 ],
     },
-    "subscriptions": {
+    'subscriptions': {
         AttributeDefinitions: [
             {
                 AttributeName: 'psid',
@@ -31,15 +31,15 @@ const tableProps = {
     },
 };
 
-const tableNames = stage => {
-    return loadConfig().then(config => Object.keys(tableProps).reduce((acc, name) => {
+const tableNames = (stage) => {
+    return loadConfig().then((config) => Object.keys(tableProps).reduce((acc, name) => {
         acc[name] = `${config.service}-${stage}-${name}`;
         return acc;
-    }, {}))
+    }, {}));
 };
 
-const tableConfig = stage => {
-    return tableNames(stage).then(tables => Object.keys(tables).reduce((acc, name) => {
+const tableConfig = (stage) => {
+    return tableNames(stage).then((tables) => Object.keys(tables).reduce((acc, name) => {
         acc[`DynamodbTable${name}`] = {
             Type: 'AWS::DynamoDB::Table',
             DeletionPolicy: 'Retain',
@@ -55,8 +55,8 @@ const tableConfig = stage => {
     }, {}));
 };
 
-const tableEnv = stage => {
-    return tableNames(stage).then(tables => Object.keys(tables).reduce((acc, name) => {
+const tableEnv = (stage) => {
+    return tableNames(stage).then((tables) => Object.keys(tables).reduce((acc, name) => {
         acc[`DYNAMODB_${name.toUpperCase()}`] = tables[name];
         return acc;
     }, {}));

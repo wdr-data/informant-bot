@@ -17,31 +17,31 @@ module.exports.fetch = function(event, context, callback) {
     }
 
     getLatestPush(timing, { delivered: 0 })
-        .then(push => {
-            console.log("Starting to send push with id:", push.id);
+        .then((push) => {
+            console.log('Starting to send push with id:', push.id);
             callback(null, {
-                state: "nextChunk",
+                state: 'nextChunk',
                 timing,
                 push,
             });
         })
-        .catch(error => {
-            console.log("Sending push failed: ", JSON.stringify(error, null, 2));
+        .catch((error) => {
+            console.log('Sending push failed: ', JSON.stringify(error, null, 2));
             callback(error);
         });
 };
 
 module.exports.send = function(event, context, callback) {
-    console.log("attempting to push chunk for push", event.push.id);
+    console.log('attempting to push chunk for push', event.push.id);
 
     const { intro, button } = assemblePush(event.push);
 
     let count = 0;
     let lastUser;
     getUsers(event.timing, event.start)
-        .then(users => {
+        .then((users) => {
             if (users.length === 0) {
-                const exit = new Error("No more users");
+                const exit = new Error('No more users');
                 exit.name = 'users-empty';
                 throw exit;
             }
@@ -49,27 +49,27 @@ module.exports.send = function(event, context, callback) {
             lastUser = users[users.length-1];
             return users;
         })
-        .then(users => Promise.all(users.map(user => {
-            const chat = new facebook.Chat({sender: {id: user.psid}});
+        .then((users) => Promise.all(users.map((user) => {
+            const chat = new facebook.Chat({ sender: { id: user.psid } });
             return chat.sendButtons(intro, [ button ]).catch(console.error);
         })))
         .then(() => {
             console.log(`Push sent to ${count} users`);
             callback(null, {
-                state: "nextChunk",
+                state: 'nextChunk',
                 timing: event.timing,
                 push: event.push,
                 start: lastUser.psid,
             });
         })
-        .catch(err => {
+        .catch((err) => {
             if (err.name === 'users-empty') {
                 return callback(null, {
-                    state: "finished",
+                    state: 'finished',
                     id: event.push.id,
                 });
             }
-            console.error("Sending failed:", err);
+            console.error('Sending failed:', err);
             throw err;
         });
 };
@@ -81,10 +81,10 @@ function getUsers(timing, start = null, limit = 100) {
     };
     if (timing === 'morning' || timing === 'evening') {
         params.FilterExpression = `${timing} = :p`;
-        params.ExpressionAttributeValues = {":p": 1};
+        params.ExpressionAttributeValues = { ':p': 1 };
     }
     if (start) {
-        params.ExclusiveStartKey = {"psid": start};
+        params.ExclusiveStartKey = { 'psid': start };
     }
     return new Promise((resolve, reject) => {
         ddb.scan(params, (err, data) => {
@@ -92,14 +92,14 @@ function getUsers(timing, start = null, limit = 100) {
                 return reject(err);
             }
             resolve(data.Items);
-        })
+        });
     });
 }
 module.exports.getUsers = getUsers;
 
 module.exports.finish = function(event, context, callback) {
-    console.log("Sending of push finished:", event);
+    console.log('Sending of push finished:', event);
     markSent(event.id)
         .then(() => callback(null, {}))
-        .catch(err => callback(err, {}));
+        .catch((err) => callback(err, {}));
 };

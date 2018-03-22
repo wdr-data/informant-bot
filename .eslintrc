@@ -75,6 +75,55 @@
       }
     ],
     "new-cap": "error",
+    "no-array-constructor": "error",
+    "no-mixed-spaces-and-tabs": "error",
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 2
+      }
+    ],
+    "no-new-object": "error",
+    "no-tabs": "error",
+    "no-trailing-spaces": "error",
+    "object-curly-spacing": ["error", "always"],
+    "padded-blocks": [
+      "error",
+      "never"
+    ],
+    "quotes": [
+      "error",
+      "single",
+      {
+        "avoidEscape": true,
+        "allowTemplateLiterals": true
+      }
+    ],
+    "semi": "error",
+    "semi-spacing": "error",
+    "space-before-blocks": "error",
+    "space-before-function-paren": [
+      "error",
+      {
+        "asyncArrow": "always",
+        "anonymous": "never",
+        "named": "never"
+      }
+    ],
+    "spaced-comment": "error",
+    "switch-colon-spacing": "error",
+    "arrow-parens": [
+      "error",
+      "always"
+    ],
+    "constructor-super": "error",
+    "generator-star-spacing": "error",
+    "no-this-before-super": "error",
+    "no-var": "error",
+    "prefer-rest-params": "error",
+    "prefer-spread": "error",
+    "rest-spread-spacing": "error",
+    "yield-star-spacing": "error",
     "node/exports-style": ["error", "module.exports"],
     "node/no-unpublished-require": [
       "error",

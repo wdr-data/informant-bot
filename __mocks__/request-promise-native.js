@@ -38,16 +38,16 @@ beforeEach(() => {
 });
 
 // organize params for patch, post, put, head, del
-function initParams (uri, options, callback) {
+function initParams(uri, options, callback) {
   if (typeof options === 'function') {
     callback = options;
   }
 
   const params = {};
   if (typeof options === 'object') {
-    extend(params, options, {uri});
+    extend(params, options, { uri });
   } else if (typeof uri === 'string') {
-    extend(params, {uri});
+    extend(params, { uri });
   } else {
     extend(params, uri);
   }
@@ -56,16 +56,16 @@ function initParams (uri, options, callback) {
   return params;
 }
 
-function paramsHaveRequestBody (params) {
+function paramsHaveRequestBody(params) {
   return (
     params.body ||
     params.requestBodyStream ||
     params.json && typeof params.json !== 'boolean' ||
     params.multipart
-  )
+  );
 }
 
-function request (uri, options, callback) {
+function request(uri, options, callback) {
   return new Promise((resolve, reject) => {
     if (typeof uri === 'undefined') {
       reject('undefined is not a valid uri or options object.');
@@ -96,13 +96,13 @@ function request (uri, options, callback) {
   });
 }
 
-function verbFunc (verb) {
+function verbFunc(verb) {
   const method = verb.toUpperCase();
-  return function (uri, options, callback) {
+  return function(uri, options, callback) {
     const params = initParams(uri, options, callback);
     params.method = method;
     return request(params, params.callback);
-  }
+  };
 }
 
 // define like this to please codeintel/intellisense IDEs

@@ -1,6 +1,6 @@
 const { buttonShare, buttonUrl, genericElement } = require('../lib/facebook');
 
-module.exports = function (chat) {
+module.exports = function(chat) {
   const text = 'Teile den Informanten mit deinen Freunden!';
   const title = 'Jetzt den 1LIVE Informanten testen 😎';
   const subtitle = 'Erhalte 1LIVE News im Facebook Messenger';

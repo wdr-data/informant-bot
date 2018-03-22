@@ -1,14 +1,14 @@
-const { Expect } = require("../../lib/testing");
-const facebook = require("../../lib/facebook");
-const payloadSubscribe = require("../payloadSubscribe");
+const { Expect } = require('../../lib/testing');
+const facebook = require('../../lib/facebook');
+const payloadSubscribe = require('../payloadSubscribe');
 
 const tableName = process.env.DYNAMODB_SUBSCRIPTIONS;
 
-describe("payloadSubscribe.subscribe", () => {
+describe('payloadSubscribe.subscribe', () => {
   // dynamodb: c3a20f370fae4beafdde6af472ff8bf63da9ef9b
-  it("adds appropriate labels and replies with the correct text", () => {
-    const chat = new facebook.Chat({sender: {id: "1"}});
-    return payloadSubscribe.subscribe(chat, {subscription: "morning"}).then(() => {
+  it('adds appropriate labels and replies with the correct text', () => {
+    const chat = new facebook.Chat({ sender: { id: '1' } });
+    return payloadSubscribe.subscribe(chat, { subscription: 'morning' }).then(() => {
       new Expect(chat)
       .labelAdded('push-breaking')
       .labelAdded('push-morning')
@@ -17,13 +17,13 @@ describe("payloadSubscribe.subscribe", () => {
     });
   });
 
-  it("adds a subscription to dynamodb", () => {
-    const chat = new facebook.Chat({sender: {id: "1"}});
-    return payloadSubscribe.subscribe(chat, {subscription: "morning"}).then(() => {
+  it('adds a subscription to dynamodb', () => {
+    const chat = new facebook.Chat({ sender: { id: '1' } });
+    return payloadSubscribe.subscribe(chat, { subscription: 'morning' }).then(() => {
       new Expect().dynamoPut({
         TableName: tableName,
         Item: {
-          psid: "1",
+          psid: '1',
           morning: 1,
           evening: 0,
         },
@@ -33,12 +33,12 @@ describe("payloadSubscribe.subscribe", () => {
   });
 });
 
-describe("payloadSubscribe.unsubscribe", () => {
+describe('payloadSubscribe.unsubscribe', () => {
   // dynamodb.update: 67136336f73537cfd8a1fede6db932bd94d20423
   // dynamodb.delete: 8779f7a74ed5e22f4aa569488b6779eb2bd1618f
-  it("removes appropriate labels and replies with the correct text", () => {
-    const chat = new facebook.Chat({sender: {id: "1"}}, [ 'push-morning' ]);
-    return payloadSubscribe.unsubscribe(chat, {subscription: "morning"}).then(() => {
+  it('removes appropriate labels and replies with the correct text', () => {
+    const chat = new facebook.Chat({ sender: { id: '1' } }, [ 'push-morning' ]);
+    return payloadSubscribe.unsubscribe(chat, { subscription: 'morning' }).then(() => {
       new Expect(chat)
       .labels()
       .labelRemoved('push-morning')
@@ -47,35 +47,35 @@ describe("payloadSubscribe.unsubscribe", () => {
     });
   });
 
-  it("removes the subscription from dynamodb", () => {
-    const chat = new facebook.Chat({sender: {id: "1"}});
-    return payloadSubscribe.unsubscribe(chat, {subscription: "morning"}).then(() => {
+  it('removes the subscription from dynamodb', () => {
+    const chat = new facebook.Chat({ sender: { id: '1' } });
+    return payloadSubscribe.unsubscribe(chat, { subscription: 'morning' }).then(() => {
       new Expect().dynamoUpdate({
         TableName: tableName,
         Key: {
-          psid: "1",
+          psid: '1',
         },
-        UpdateExpression: "SET #timing = :status",
+        UpdateExpression: 'SET #timing = :status',
         ExpressionAttributeNames: {
-          "#timing": "morning",
+          '#timing': 'morning',
         },
         ExpressionAttributeValues: {
-          ":status": 0,
+          ':status': 0,
         },
-        ReturnValues: "ALL_NEW",
+        ReturnValues: 'ALL_NEW',
       }).dynamoDelete({
         TableName: tableName,
         Key: {
-          psid: "1",
+          psid: '1',
         },
       });
     });
   });
 });
 
-describe("payload_subscribe.subscriptions", () => {
-  it("returns list with current subscriptions to user", () => {
-    const chat = new facebook.Chat({sender: {id: "1"}}, [ 'push-morning' ]);
+describe('payload_subscribe.subscriptions', () => {
+  it('returns list with current subscriptions to user', () => {
+    const chat = new facebook.Chat({ sender: { id: '1' } }, [ 'push-morning' ]);
     return payloadSubscribe.subscriptions(chat).then(() => {
       new Expect(chat)
       .text('Meine Infos kannst du ein oder zweimal am Tag haben: ' +
@@ -116,8 +116,7 @@ describe("payload_subscribe.subscriptions", () => {
           )
         ),
 ]
-      )
-    })
-  })
-
-})
+      );
+    });
+  });
+});

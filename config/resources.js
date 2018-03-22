@@ -11,8 +11,8 @@ const metricFilterConfigs = {
         FilterPattern: memoryUsedFilter,
         MetricTransformations: [
 {
-            MetricValue: "$max_memory_used_value",
-            MetricNamespace: "LambdaMemoryUsed",
+            MetricValue: '$max_memory_used_value',
+            MetricNamespace: 'LambdaMemoryUsed',
         },
 ],
     },
@@ -20,8 +20,8 @@ const metricFilterConfigs = {
 };
 function metricFilters(stage) {
     return loadConfig()
-        .then(config => {
-            const names = Object.keys(config.functions).map(key => {
+        .then((config) => {
+            const names = Object.keys(config.functions).map((key) => {
                 if ('name' in config.functions[key]) {
                     return config.functions[key].name;
                 }
@@ -32,30 +32,30 @@ function metricFilters(stage) {
                 return Object.assign(acc, Object.keys(metricFilterConfigs)
                     .reduce((allMetrics, type) => {
                         allMetrics[`${capitalizeWord(name)}MetricFilter${type}`] = {
-                            Type: "AWS::Logs::MetricFilter",
+                            Type: 'AWS::Logs::MetricFilter',
                             DependsOn: [ `${capitalizeWord(name)}LogGroup` ],
                             Properties: Object.assign({}, metricFilterConfigs[type], {
                                 LogGroupName: `/aws/lambda/${fullName}`,
-                                MetricTransformations: 
+                                MetricTransformations:
                                     metricFilterConfigs[type].MetricTransformations.map(
-                                        transform => Object.assign(
+                                        (transform) => Object.assign(
                                             {},
-                                            transform, 
+                                            transform,
                                             { MetricName: name }
                                         )
                                     ),
                             }),
                         };
                         return allMetrics;
-                    }, 
+                    },
                 {}));
             }, {});
-        })
+        });
 }
 
 module.exports = () => {
-    return getStage().then(stage => Promise.all([
+    return getStage().then((stage) => Promise.all([
         tableConfig(stage),
         metricFilters(stage),
-    ])).then(parts => parts.reduce((acc, part) => Object.assign(acc, part), {}));
+    ])).then((parts) => parts.reduce((acc, part) => Object.assign(acc, part), {}));
 };

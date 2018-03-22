@@ -32,7 +32,7 @@ const loadS3 = (filename, json = false) => {
         Key: s3path,
     });
     return request({ uri, json })
-        .catch(err => {
+        .catch((err) => {
             throw new Error(`Fetching env from S3 (${s3path}) failed with: ` +
                 `${err.name === 'StatusCodeError' ? err.statusCode : err.message}`);
         });
@@ -44,21 +44,21 @@ const fetchEnv = () => {
         return Promise.resolve(envCache);
     }
 
-    if ('CI' in process.env){
+    if ('CI' in process.env) {
         return loadS3('env.json', true)
-            .then(env => {
+            .then((env) => {
                 envCache = env;
                 return env;
             });
     }
 
-    const dotenvPath = path.resolve(__dirname, "../.env.yml");
+    const dotenvPath = path.resolve(__dirname, '../.env.yml');
     const environment = {};
     if (fs.existsSync(dotenvPath)) {
         Object.assign(environment, yaml.safeLoad(fs.readFileSync(dotenvPath, 'utf8')));
     }
 
-    requiredEnv.forEach(key => {
+    requiredEnv.forEach((key) => {
         if (key in process.env) {
             environment[key] = process.env[key];
         }
@@ -69,7 +69,7 @@ const fetchEnv = () => {
 };
 
 const getStage = () => {
-    return fetchEnv().then(env => process.env.SLS_STAGE || env['DEPLOY_ALIAS'] || 'dev');
+    return fetchEnv().then((env) => process.env.SLS_STAGE || env['DEPLOY_ALIAS'] || 'dev');
 };
 
 module.exports = {

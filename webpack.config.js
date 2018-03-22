@@ -13,12 +13,12 @@ module.exports = {
         'aws-sdk',
     ],
     performance: {
-        hints: "error",
+        hints: 'error',
         maxEntrypointSize: 50000000,
         maxAssetSize: 50000000,
     },
     // Run babel on all .js files and skip those in node_modules
     module: {
-        rules: [ { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" } ],
+        rules: [ { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' } ],
     },
 };

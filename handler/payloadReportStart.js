@@ -7,7 +7,7 @@ const reportStart = (chat, payload) => {
         const report = JSON.parse(body);
 
         fragmentSender(chat, report.next_fragments, payload, report.text, report.media);
-    })
+    });
 };
 
 module.exports = reportStart;

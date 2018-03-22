@@ -5,8 +5,7 @@ const fragmentSender = require('../lib/fragmentSender');
 const faqStart = (chat, payload) => {
     const url = `${urls.faqBySlug(payload.slug)}`;
 
-    return request({uri: url, json: true}).then( faq => {
-
+    return request({ uri: url, json: true }).then( (faq) => {
         if (faq[0] === undefined) {
             chat.sendText(`Dazu habe ich noch keine Info...🤔`);
             return;

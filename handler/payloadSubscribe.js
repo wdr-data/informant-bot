@@ -1,30 +1,29 @@
-const {buttonPostback, listElement} = require('../lib/facebook');
+const { buttonPostback, listElement } = require('../lib/facebook');
 const subscriptions = require('../lib/subscriptions');
 
-const getHasLabel = function (chat) {
+const getHasLabel = function(chat) {
   return chat.getLabels().then(
-    labels => labelName => labels.indexOf(labelName) !== -1
-  )
+    (labels) => (labelName) => labels.indexOf(labelName) !== -1
+  );
 };
 
-const disableSubscription = function (psid, timing) {
-  return subscriptions.update(psid, timing, false).then(sub => {
+const disableSubscription = function(psid, timing) {
+  return subscriptions.update(psid, timing, false).then((sub) => {
     console.log(`Disabled subscription ${timing} in dynamoDB for ${psid}`);
 
     if (!sub.morning && !sub.evening) {
       return subscriptions.remove(psid).then(() => {
         console.log(`Deleted User in dynamoDB with psid ${psid}`);
-      }).catch(error => {
+      }).catch((error) => {
         console.log(`Deleting user from dynamoDB failed: ${error}`);
-      })
+      });
     }
-  }).catch(error => {
+  }).catch((error) => {
     console.log(`Updating user from dynamoDB failed: ${error}`);
   });
 };
 
-const enableSubscription = function (psid, timing) {
-
+const enableSubscription = function(psid, timing) {
   const item = {
     morning: timing === 'morning',
     evening: timing === 'evening',
@@ -32,24 +31,24 @@ const enableSubscription = function (psid, timing) {
 
   return subscriptions.create(psid, item).then(() => {
     console.log(`Created in dynamoDB ${psid} with ${timing}`);
-  }).catch(error => {
+  }).catch((error) => {
     console.log('Creating user in dynamoDB failed: ' + error);
 
     return subscriptions.update(psid, timing, true).then(() => {
       console.log(`Enabled subscription ${timing} in dynamoDB for ${psid}`);
-    }).catch(error => {
+    }).catch((error) => {
       console.log('Updating user in dynamoDB failed: ' + error);
     });
-  })
+  });
 };
 
-module.exports.subscriptions = function (chat) {
+module.exports.subscriptions = function(chat) {
   return Promise.all([
-    chat.sendText("Meine Infos kannst du ein oder zweimal am Tag haben: " +
-      "Morgens, abends oder beides. Und ich melde mich, wenn etwas wirklich Wichtiges passiert."),
+    chat.sendText('Meine Infos kannst du ein oder zweimal am Tag haben: ' +
+      'Morgens, abends oder beides. Und ich melde mich, wenn etwas wirklich Wichtiges passiert.'),
 
     getHasLabel(chat).then(
-      function (hasLabel) {
+      function(hasLabel) {
         const elements = [];
 
         elements.push(listElement(
@@ -58,8 +57,8 @@ module.exports.subscriptions = function (chat) {
           buttonPostback(
             !(hasLabel('push-morning') && hasLabel('push-evening')) ? 'Anmelden' : 'Abmelden',
             {
-              action: !(hasLabel('push-morning') && hasLabel('push-evening')) 
-                ? 'subscribe' 
+              action: !(hasLabel('push-morning') && hasLabel('push-evening'))
+                ? 'subscribe'
                 : 'unsubscribe',
               subscription: 'all',
             }
@@ -96,7 +95,7 @@ module.exports.subscriptions = function (chat) {
 ]);
 };
 
-module.exports.subscribe = function (chat, payload) {
+module.exports.subscribe = function(chat, payload) {
   const promises = [ chat.addLabel('push-breaking') ];
   if (payload.subscription == 'morning' || payload.subscription == 'all') {
     promises.push(
@@ -113,9 +112,9 @@ module.exports.subscribe = function (chat, payload) {
       `Wenn du die letzte Ausgabe sehen willst, schreib einfach "Leg los"`)));
 };
 
-module.exports.unsubscribe = function (chat, payload) {
+module.exports.unsubscribe = function(chat, payload) {
   return getHasLabel(chat).then(
-    function (hasLabel) {
+    function(hasLabel) {
       const promises = [];
       if (payload.subscription == 'morning' || payload.subscription == 'all') {
         promises.push(
@@ -137,5 +136,5 @@ module.exports.unsubscribe = function (chat, payload) {
       return Promise.all(promises.concat(
         chat.sendText(`Schade. Deine Entscheidung. Ich bin hier, wenn Du mich brauchst.`)));
     }
-  )
-}
+  );
+};
