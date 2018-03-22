@@ -7,7 +7,7 @@
     "jest/globals": true
   },
   "parserOptions": {
-    "ecmaVersion": 7,
+    "ecmaVersion": 2017,
     "sourceType": "module"
   },
   "rules": {
@@ -66,7 +66,6 @@
     "indent": ["error", 4],
     "key-spacing": "error",
     "keyword-spacing": "error",
-    "linebreak-style": "error",
     "max-len": [
       "error",
       {
@@ -133,6 +132,7 @@
         "allowModules": ["js-yaml", "extend", "object-hash"]
       }
     ],
-    "node/no-unsupported-features": 0
+    "node/no-unsupported-features": 0,
+    "node/shebang": 0
   }
 }
