@@ -8,3 +8,9 @@ jspm_packages
 # Environment
 .env.yml
 .df_id.json
+
+# Test coverage
+coverage
+
+# Logs
+yarn-error.log

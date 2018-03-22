@@ -32,6 +32,11 @@ const extend = require('extend');
 const hash = require('object-hash');
 const fs = require('fs');
 
+const calls = [];
+beforeEach(() => {
+  calls.length = 0;
+});
+
 // organize params for patch, post, put, head, del
 function initParams (uri, options, callback) {
   if (typeof options === 'function') {
@@ -73,7 +78,9 @@ function request (uri, options, callback) {
     }
     const paramsHash = hash(params);
 
-    fs.readFile(`./__mockData__/${paramsHash}.json`, 'utf8', (err, data) => {
+    calls.push(params);
+
+    fs.readFile(`./__mockData__/request-promise-native/${paramsHash}.json`, 'utf8', (err, data) => {
       if (err) {
         reject(`Reading mock request file for parameters ` +
                `${JSON.stringify(params, null, 2)} with hash ` +
@@ -84,8 +91,8 @@ function request (uri, options, callback) {
         resolve(JSON.parse(data));
       } else {
         resolve(data);
-      }      
-    })
+      }
+    });
   });
 }
 
@@ -107,5 +114,6 @@ request.put = verbFunc('put');
 request.patch = verbFunc('patch');
 request.del = verbFunc('delete');
 request['delete'] = verbFunc('delete');
+request.calls = calls;
 
 module.exports = request;
