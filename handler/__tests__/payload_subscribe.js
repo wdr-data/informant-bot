@@ -20,7 +20,7 @@ describe("payload_subscribe.subscribe", () => {
   it("adds a subscription to dynamodb", () => {
     const chat = new facebook.Chat({sender: {id: "1"}});
     return payloadSubscribe.subscribe(chat, {subscription: "morning"}).then(() => {
-      new Expect(chat).dynamoPut({
+      new Expect().dynamoPut({
         TableName: tableName,
         Item: {
           psid: "1",
@@ -50,7 +50,7 @@ describe("payload_subscribe.unsubscribe", () => {
   it("removes the subscription from dynamodb", () => {
     const chat = new facebook.Chat({sender: {id: "1"}});
     return payloadSubscribe.unsubscribe(chat, {subscription: "morning"}).then(() => {
-      new Expect(chat).dynamoUpdate({
+      new Expect().dynamoUpdate({
         TableName: tableName,
         Key: {
           psid: "1",
