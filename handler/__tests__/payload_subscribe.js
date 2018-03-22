@@ -72,3 +72,50 @@ describe("payload_subscribe.unsubscribe", () => {
     });
   });
 });
+
+describe("payload_subscribe.subscriptions", () => {
+  it("returns list with current subscriptions to user", () => {
+    const chat = new facebook.Chat({sender: {id: "1"}}, ['push-morning']);
+    return payloadSubscribe.subscriptions(chat).then(() => {
+      new Expect(chat)
+      .text('Meine Infos kannst du ein oder zweimal am Tag haben: Morgens, abends oder beides. Und ich melde mich, wenn etwas wirklich Wichtiges passiert.')
+      .labels()
+      .list([
+        facebook.listElement(
+          '❌ Beides',
+          'Deine Infos morgens und abends.',
+          facebook.buttonPostback(
+            'Anmelden',
+            {
+              action: 'subscribe',
+              subscription: 'all',
+            }
+          )
+        ),
+        facebook.listElement(
+          '✔ Deine Infos am Morgen',
+          'Um 7.30 Uhr gibt\'s Dein erstes Update.',
+          facebook.buttonPostback(
+            'Abmelden',
+            {
+              action: 'unsubscribe',
+              subscription: 'morning',
+            }
+          )
+        ),
+        facebook.listElement(
+          '❌ Deine Infos am Abend',
+          'Um 18.30 Uhr kriegst Du das, was am Tag wichtig war.',
+          facebook.buttonPostback(
+            'Anmelden',
+            {
+              action: 'subscribe',
+              subscription: 'evening',
+            }
+          )
+        )]
+      )
+    })
+  })
+
+})
