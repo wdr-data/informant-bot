@@ -1,45 +1,43 @@
 const { buttonPostback, listElement } = require('../lib/facebook');
 const subscriptions = require('../lib/subscriptions');
 
-const getHasLabel = function(chat) {
-  return chat.getLabels().then(
-    (labels) => (labelName) => labels.indexOf(labelName) !== -1
-  );
+const getHasLabel = async function(chat) {
+  const labels = await chat.getLabels();
+  return function(labelName) {
+    return labels.indexOf(labelName) !== -1;
+  };
 };
 
-const disableSubscription = function(psid, timing) {
-  return subscriptions.update(psid, timing, false).then((sub) => {
+const disableSubscription = async function(psid, timing) {
+  try {
+    const sub = await subscriptions.update(psid, timing, false);
     console.log(`Disabled subscription ${timing} in dynamoDB for ${psid}`);
-
     if (!sub.morning && !sub.evening) {
-      return subscriptions.remove(psid).then(() => {
-        console.log(`Deleted User in dynamoDB with psid ${psid}`);
-      }).catch((error) => {
-        console.log(`Deleting user from dynamoDB failed: ${error}`);
-      });
+      await subscriptions.remove(psid);
+      console.log(`Deleted User in dynamoDB with psid ${psid}`);
     }
-  }).catch((error) => {
+  } catch (error) {
     console.log(`Updating user from dynamoDB failed: ${error}`);
-  });
+  }
 };
 
-const enableSubscription = function(psid, timing) {
+const enableSubscription = async function(psid, timing) {
   const item = {
     morning: timing === 'morning',
     evening: timing === 'evening',
   };
-
-  return subscriptions.create(psid, item).then(() => {
+  try {
+    await subscriptions.create(psid, item);
     console.log(`Created in dynamoDB ${psid} with ${timing}`);
-  }).catch((error) => {
-    console.log('Creating user in dynamoDB failed: ' + error);
-
-    return subscriptions.update(psid, timing, true).then(() => {
+  } catch (error) {
+    console.log('Creating user in dynamoDB failed: ', error);
+    try {
+      await subscriptions.update(psid, timing, true);
       console.log(`Enabled subscription ${timing} in dynamoDB for ${psid}`);
-    }).catch((error) => {
-      console.log('Updating user in dynamoDB failed: ' + error);
-    });
-  });
+    } catch (error) {
+      console.log('Updating user in dynamoDB failed: ', error);
+    }
+  }
 };
 
 module.exports.subscriptions = function(chat) {
