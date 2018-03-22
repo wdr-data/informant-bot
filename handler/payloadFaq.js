@@ -2,12 +2,12 @@ const request = require('request-promise-native');
 const urls = require('../lib/urls');
 const fragmentSender = require('../lib/fragmentSender');
 
-const faq_start = (chat, payload) => {
+const faqStart = (chat, payload) => {
     const url = `${urls.faqBySlug(payload.slug)}`;
 
     return request({uri: url, json: true}).then( faq => {
 
-        if (typeof faq[0] == 'undefined') {
+        if (faq[0] === undefined) {
             chat.sendText(`Dazu habe ich noch keine Info...🤔`);
             return;
         }
@@ -17,4 +17,4 @@ const faq_start = (chat, payload) => {
     });
 };
 
-module.exports = faq_start;
+module.exports = faqStart;

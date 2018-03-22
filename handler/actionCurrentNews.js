@@ -3,7 +3,7 @@ const request = require('request-promise-native');
 const urls = require('../lib/urls');
 
 
-const current_news = chat => {
+const currentNews = chat => {
   return request({
     uri: urls.pushes,
     json: true,
@@ -29,4 +29,4 @@ const current_news = chat => {
   });
 };
 
-module.exports = current_news;
+module.exports = currentNews;

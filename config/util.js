@@ -4,7 +4,7 @@ const path = require('path');
 const request = require('request-promise-native');
 const S3 = require('aws-sdk/clients/s3');
 
-const required_env = [
+const requiredEnv = [
     'FB_PAGETOKEN',
     'FB_VERIFYTOKEN',
     'DF_PROJECTID',
@@ -23,7 +23,7 @@ const loadConfig = () => {
     });
 };
 
-const load_s3 = (filename, json = false) => {
+const loadS3 = (filename, json = false) => {
     const branch = process.env.TRAVIS_BRANCH || process.env.BRANCH;
     const s3client = new S3({ region: 'eu-central-1' });
     const s3path = `${branch}/${filename}`;
@@ -38,44 +38,44 @@ const load_s3 = (filename, json = false) => {
         });
 };
 
-let env_cache = null;
-const fetch_env = () => {
-    if (env_cache) {
-        return Promise.resolve(env_cache);
+let envCache = null;
+const fetchEnv = () => {
+    if (envCache) {
+        return Promise.resolve(envCache);
     }
 
     if ('CI' in process.env){
-        return load_s3('env.json', true)
+        return loadS3('env.json', true)
             .then(env => {
-                env_cache = env;
+                envCache = env;
                 return env;
             });
     }
 
-    const dotenv_path = path.resolve(__dirname, "../.env.yml");
+    const dotenvPath = path.resolve(__dirname, "../.env.yml");
     const environment = {};
-    if (fs.existsSync(dotenv_path)) {
-        Object.assign(environment, yaml.safeLoad(fs.readFileSync(dotenv_path, 'utf8')));
+    if (fs.existsSync(dotenvPath)) {
+        Object.assign(environment, yaml.safeLoad(fs.readFileSync(dotenvPath, 'utf8')));
     }
 
-    required_env.forEach(key => {
+    requiredEnv.forEach(key => {
         if (key in process.env) {
             environment[key] = process.env[key];
         }
     });
 
-    env_cache = environment;
+    envCache = environment;
     return Promise.resolve(environment);
 };
 
 const getStage = () => {
-    return fetch_env().then(env => process.env.SLS_STAGE || env['DEPLOY_ALIAS'] || 'dev');
+    return fetchEnv().then(env => process.env.SLS_STAGE || env['DEPLOY_ALIAS'] || 'dev');
 };
 
 module.exports = {
-    fetch_env,
+    fetchEnv: fetchEnv,
     loadConfig,
-    load_s3,
+    loadS3: loadS3,
     getStage,
-    required_env,
+    requiredEnv: requiredEnv,
 };

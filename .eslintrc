@@ -14,7 +14,7 @@
     "no-console": "off",
     "no-extra-parens": "error",
     "valid-jsdoc": [
-      2,
+      "error",
       {
         "requireParamDescription": false,
         "requireReturnDescription": false,
@@ -56,7 +56,7 @@
       "always"
     ],
     "brace-style": "error",
-    "camelcase": 0,
+    "camelcase": "error",
     "comma-dangle": ["error", "always-multiline"],
     "comma-spacing": "error",
     "comma-style": "error",
@@ -67,7 +67,7 @@
     "keyword-spacing": "error",
     "linebreak-style": "error",
     "max-len": [
-      "error", 
+      "error",
       {
         "code": 100,
         "ignoreUrls": true,

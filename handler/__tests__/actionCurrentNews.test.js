@@ -1,13 +1,13 @@
 const { Expect } = require("../../lib/testing");
 const facebook = require("../../lib/facebook");
 
-const current_news = require("../action_current_news");
+const currentNews = require("../actionCurrentNews");
 
-describe("action_current_news", () => {
+describe("actionCurrentNews", () => {
   it("sends a specific message with a button", () => {
     // e4d4c2941dd54f549393e9c3384e2d10900d36c7
     const chat = new facebook.Chat();
-    return current_news(chat).then(() => {
+    return currentNews(chat).then(() => {
       new Expect(chat).buttons(
         "Hey, alles klar bei dir? Dein Informant ist wieder hier - und das habe ich für dich:\n" +
         "➡ Luft in einigen NRW-Städten ist besser geworden\n" +

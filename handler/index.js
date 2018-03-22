@@ -1,19 +1,19 @@
 
 module.exports = {
     actions: {
-        current_time: require('./action_current_time'),
-        current_news: require('./action_current_news'),
-        subscriptions: require('./payload_subscribe').subscriptions,
+        'current_time': require('./actionCurrentTime'),
+        'current_news': require('./actionCurrentNews'),
+        'subscriptions': require('./payloadSubscribe').subscriptions,
     },
     payloads: {
-        report_start: require('./payload_report_start'),
-        fragment_next: require('./payload_fragment_next'),
-        faq: require('./payload_faq'),
-        pushOutro: require('./payloadPushOutro'),
-        subscriptions: require('./payload_subscribe').subscriptions,
-        subscribe: require('./payload_subscribe').subscribe,
-        unsubscribe: require('./payload_subscribe').unsubscribe,
-        share: require('./payload_share.js'),
-        current_news: require('./action_current_news'),
+        'report_start': require('./payloadReportStart'),
+        'fragment_next': require('./payloadFragmentNext'),
+        'faq': require('./payloadFaq'),
+        'push_outro': require('./payloadPushOutro'),
+        'subscriptions': require('./payloadSubscribe').subscriptions,
+        'subscribe': require('./payloadSubscribe').subscribe,
+        'unsubscribe': require('./payloadSubscribe').unsubscribe,
+        'share': require('./payloadShare.js'),
+        'current_news': require('./actionCurrentNews'),
     },
 };

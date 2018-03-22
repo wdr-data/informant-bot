@@ -2,11 +2,11 @@ const request = require('request');
 const urls = require('../lib/urls');
 const fragmentSender = require('../lib/fragmentSender');
 
-const fragment_next = (chat, payload) => {
+const fragmentNext = (chat, payload) => {
     let url = null;
-    if (payload.type == 'push') {
+    if (payload.type === 'push') {
         url = `${urls.reportFragment(payload.fragment)}?withNext=yes`;
-    } else if (payload.type == 'faq') {
+    } else if (payload.type === 'faq') {
         url = `${urls.faqFragment(payload.fragment)}?withNext=yes`;
     }
 
@@ -22,4 +22,4 @@ const fragment_next = (chat, payload) => {
     }
 };
 
-module.exports = fragment_next;
+module.exports = fragmentNext;

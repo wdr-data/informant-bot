@@ -1,10 +1,10 @@
 const { Expect } = require("../../lib/testing");
 const facebook = require("../../lib/facebook");
-const payloadSubscribe = require("../payload_subscribe");
+const payloadSubscribe = require("../payloadSubscribe");
 
 const tableName = process.env.DYNAMODB_SUBSCRIPTIONS;
 
-describe("payload_subscribe.subscribe", () => {
+describe("payloadSubscribe.subscribe", () => {
   // dynamodb: c3a20f370fae4beafdde6af472ff8bf63da9ef9b
   it("adds appropriate labels and replies with the correct text", () => {
     const chat = new facebook.Chat({sender: {id: "1"}});
@@ -33,7 +33,7 @@ describe("payload_subscribe.subscribe", () => {
   });
 });
 
-describe("payload_subscribe.unsubscribe", () => {
+describe("payloadSubscribe.unsubscribe", () => {
   // dynamodb.update: 67136336f73537cfd8a1fede6db932bd94d20423
   // dynamodb.delete: 8779f7a74ed5e22f4aa569488b6779eb2bd1618f
   it("removes appropriate labels and replies with the correct text", () => {
