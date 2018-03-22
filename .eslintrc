@@ -13,10 +13,75 @@
   "rules": {
     "no-console": "off",
     "no-extra-parens": "error",
+    "valid-jsdoc": [
+      2,
+      {
+        "requireParamDescription": false,
+        "requireReturnDescription": false,
+        "requireReturn": false,
+        "prefer": {
+          "returns": "return"
+        }
+      }
+    ],
+    "curly": "error",
+    "guard-for-in": "error",
+    "no-caller": "error",
+    "no-extend-native": "error",
+    "no-extra-bind": "error",
+    "no-invalid-this": "error",
+    "no-multi-spaces": "error",
+    "no-multi-str": "error",
+    "no-new-wrappers": "error",
+    "no-throw-literal": "error",
+    "no-with": "error",
+    "no-unused-vars": [
+      "error",
+      {
+        "args": "none"
+      }
+    ],
+    "array-bracket-newline": [
+      "error",
+      {
+        "multiline": true
+      }
+    ],
+    "array-bracket-spacing": [
+      "error",
+      "always"
+    ],
+    "block-spacing": [
+      "error",
+      "always"
+    ],
+    "brace-style": "error",
+    "camelcase": 0,
+    "comma-dangle": ["error", "always-multiline"],
+    "comma-spacing": "error",
+    "comma-style": "error",
+    "computed-property-spacing": "error",
+    "eol-last": "error",
+    "func-call-spacing": "error",
+    "key-spacing": "error",
+    "keyword-spacing": "error",
+    "linebreak-style": "error",
+    "max-len": [
+      "error", 
+      {
+        "code": 100,
+        "ignoreUrls": true,
+        "ignoreRegExpLiterals": true
+      }
+    ],
+    "new-cap": "error",
     "node/exports-style": ["error", "module.exports"],
-    "node/no-unpublished-require": ["error", {
-      "allowModules": ["js-yaml", "extend", "object-hash"]
-    }],
+    "node/no-unpublished-require": [
+      "error",
+      {
+        "allowModules": ["js-yaml", "extend", "object-hash"]
+      }
+    ],
     "node/no-unsupported-features": 0
   }
 }

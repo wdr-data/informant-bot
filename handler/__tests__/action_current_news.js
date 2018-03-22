@@ -22,7 +22,8 @@ describe("action_current_news", () => {
               push: 4,
               report: 2,
               type: 'push',
-            })]);
+            }),
+]);
     });
   });
 });

@@ -1,5 +1,5 @@
 /* eslint-disable node/no-unpublished-require */
-const slsw          = require('serverless-webpack');
+const slsw = require('serverless-webpack');
 
 module.exports = {
     entry: slsw.lib.entries,
@@ -7,7 +7,7 @@ module.exports = {
     target: 'node',
     // Generate sourcemaps for proper error messages
     devtool: 'source-map',
-    externals:[
+    externals: [
         'memcpy',
         'grpc',
         'aws-sdk',
@@ -19,8 +19,6 @@ module.exports = {
     },
     // Run babel on all .js files and skip those in node_modules
     module: {
-        rules: [
-            { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
-        ],
+        rules: [ { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" } ],
     },
 };

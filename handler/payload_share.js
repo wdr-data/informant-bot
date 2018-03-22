@@ -8,6 +8,12 @@ module.exports = function (chat) {
   const callToAction = 'Jetzt Kontakt aufnehmen';
   const informantUrl = 'https://www.m.me/1LIVE.Informant';
 
-  const sharedContent = [genericElement(title, subtitle, null, [buttonUrl(callToAction, informantUrl)])];
-  chat.sendButtons(text, [buttonShare(sharedContent)]);
+  const sharedContent = [
+    genericElement(
+      title,
+      subtitle,
+      null,
+      [ buttonUrl(callToAction, informantUrl) ]),
+    ];
+  chat.sendButtons(text, [ buttonShare(sharedContent) ]);
 };

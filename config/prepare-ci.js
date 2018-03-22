@@ -16,7 +16,7 @@ const df_service_account = () => {
         return load_s3('df_id.json').then(save_file);
     }
 
-    if(!('DF_SERVICE_ACCOUNT' in process.env)) {
+    if (!('DF_SERVICE_ACCOUNT' in process.env)) {
         throw new Error("DF Service Account JSON is missing!");
     }
     save_file(process.env.DF_SERVICE_ACCOUNT);

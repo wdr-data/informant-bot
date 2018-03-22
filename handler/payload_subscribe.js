@@ -45,7 +45,8 @@ const enableSubscription = function (psid, timing) {
 
 module.exports.subscriptions = function (chat) {
   return Promise.all([
-    chat.sendText("Meine Infos kannst du ein oder zweimal am Tag haben: Morgens, abends oder beides. Und ich melde mich, wenn etwas wirklich Wichtiges passiert."),
+    chat.sendText("Meine Infos kannst du ein oder zweimal am Tag haben: " +
+      "Morgens, abends oder beides. Und ich melde mich, wenn etwas wirklich Wichtiges passiert."),
 
     getHasLabel(chat).then(
       function (hasLabel) {
@@ -57,7 +58,9 @@ module.exports.subscriptions = function (chat) {
           buttonPostback(
             !(hasLabel('push-morning') && hasLabel('push-evening')) ? 'Anmelden' : 'Abmelden',
             {
-              action: !(hasLabel('push-morning') && hasLabel('push-evening')) ? 'subscribe' : 'unsubscribe',
+              action: !(hasLabel('push-morning') && hasLabel('push-evening')) 
+                ? 'subscribe' 
+                : 'unsubscribe',
               subscription: 'all',
             }
           )
@@ -89,11 +92,12 @@ module.exports.subscriptions = function (chat) {
 
         return chat.sendList(elements);
       }
-  )]);
+  ),
+]);
 };
 
 module.exports.subscribe = function (chat, payload) {
-  const promises = [chat.addLabel('push-breaking')];
+  const promises = [ chat.addLabel('push-breaking') ];
   if (payload.subscription == 'morning' || payload.subscription == 'all') {
     promises.push(
       chat.addLabel('push-morning'),

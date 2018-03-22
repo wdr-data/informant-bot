@@ -26,7 +26,7 @@ module.exports.verify = (event, context, callback) => {
 
   callback(null, {
     statusCode: 400,
-    body: 'Parameter missing'
+    body: 'Parameter missing',
   });
 };
 
@@ -53,7 +53,7 @@ module.exports.message = (event, context, callback) => {
   if ('message' in msgEvent && 'quick_reply' in msgEvent.message) {
     try {
       replyPayload = JSON.parse(msgEvent.message.quick_reply.payload);
-    } catch(e) {
+    } catch (e) {
       console.error("Parsing of quick reply payload failed:", msgEvent.message.quick_reply.payload);
       replyPayload = null;
     }
@@ -71,7 +71,7 @@ module.exports.message = (event, context, callback) => {
   const text = msgEvent.message.text;
 
   const sessionClient = new dialogflow.SessionsClient({
-    keyFilename: '.df_id.json'
+    keyFilename: '.df_id.json',
   });
   const sessionPath = sessionClient.sessionPath(process.env.DF_PROJECTID, psid);
 
@@ -115,7 +115,7 @@ module.exports.push = (event, context, callback) => {
   let timing;
   try {
     timing = getTiming(event);
-  } catch(e) {
+  } catch (e) {
     callback(null, {
       statusCode: 400,
       body: JSON.stringify({success: false, message: e.message}),
@@ -127,11 +127,11 @@ module.exports.push = (event, context, callback) => {
     .then(push => {
       const { intro, button } = assemblePush(push);
       return Promise.all([
-          facebook.sendBroadcastButtons(intro, [button], 'push-' + timing),
-          Promise.resolve(push)
+          facebook.sendBroadcastButtons(intro, [ button ], 'push-' + timing),
+          Promise.resolve(push),
       ]);
     })
-    .then(([message, push]) =>  {
+    .then(([ message, push ]) => {
         markSent(push.id).catch(() => {});
         console.log("Successfully sent push: ", message);
         callback(null, {

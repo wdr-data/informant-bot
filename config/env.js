@@ -19,6 +19,7 @@ module.exports.env = () => {
 
 module.exports.stage = getStage;
 
-module.exports.enableDomain = () => fetch_env().then(env => 'DEPLOY_ALIAS' in env || 'SLS_STAGE' in process.env);
+module.exports.enableDomain = () => fetch_env()
+    .then(env => 'DEPLOY_ALIAS' in env || 'SLS_STAGE' in process.env);
 
 module.exports.resources = resources;

@@ -25,7 +25,7 @@ describe("payload_subscribe.subscribe", () => {
         Item: {
           psid: "1",
           morning: 1,
-          evening: 0
+          evening: 0,
         },
         ConditionExpression: 'attribute_not_exists(psid)',
       });
@@ -37,7 +37,7 @@ describe("payload_subscribe.unsubscribe", () => {
   // dynamodb.update: 67136336f73537cfd8a1fede6db932bd94d20423
   // dynamodb.delete: 8779f7a74ed5e22f4aa569488b6779eb2bd1618f
   it("removes appropriate labels and replies with the correct text", () => {
-    const chat = new facebook.Chat({sender: {id: "1"}}, ['push-morning']);
+    const chat = new facebook.Chat({sender: {id: "1"}}, [ 'push-morning' ]);
     return payloadSubscribe.unsubscribe(chat, {subscription: "morning"}).then(() => {
       new Expect(chat)
       .labels()
@@ -56,10 +56,10 @@ describe("payload_subscribe.unsubscribe", () => {
           psid: "1",
         },
         UpdateExpression: "SET #timing = :status",
-        ExpressionAttributeNames:{
+        ExpressionAttributeNames: {
           "#timing": "morning",
         },
-        ExpressionAttributeValues:{
+        ExpressionAttributeValues: {
           ":status": 0,
         },
         ReturnValues: "ALL_NEW",
@@ -75,10 +75,11 @@ describe("payload_subscribe.unsubscribe", () => {
 
 describe("payload_subscribe.subscriptions", () => {
   it("returns list with current subscriptions to user", () => {
-    const chat = new facebook.Chat({sender: {id: "1"}}, ['push-morning']);
+    const chat = new facebook.Chat({sender: {id: "1"}}, [ 'push-morning' ]);
     return payloadSubscribe.subscriptions(chat).then(() => {
       new Expect(chat)
-      .text('Meine Infos kannst du ein oder zweimal am Tag haben: Morgens, abends oder beides. Und ich melde mich, wenn etwas wirklich Wichtiges passiert.')
+      .text('Meine Infos kannst du ein oder zweimal am Tag haben: ' +
+        'Morgens, abends oder beides. Und ich melde mich, wenn etwas wirklich Wichtiges passiert.')
       .labels()
       .list([
         facebook.listElement(
@@ -113,7 +114,8 @@ describe("payload_subscribe.subscriptions", () => {
               subscription: 'evening',
             }
           )
-        )]
+        ),
+]
       )
     })
   })

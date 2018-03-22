@@ -2,14 +2,18 @@ const { loadConfig } = require('./util');
 
 const tableProps = {
     "attachments": {
-        AttributeDefinitions: [{
+        AttributeDefinitions: [
+{
             AttributeName: 'url',
             AttributeType: 'S',
-        }],
-        KeySchema: [{
+        },
+],
+        KeySchema: [
+{
             AttributeName: 'url',
             KeyType: 'HASH',
-        }],
+        },
+],
     },
     "subscriptions": {
         AttributeDefinitions: [

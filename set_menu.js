@@ -48,7 +48,7 @@ const MENU_ACTIONS = [
         type: "postback",
         payload: JSON.stringify({action: "share"}),
       },
-    ]
+    ],
   }, 
 ];
 
@@ -60,19 +60,19 @@ const PERSISTENT_MENU_DATA = {
         locale: "default",
         call_to_actions: MENU_ACTIONS,
       },
-    ]
+    ],
 };
 
 const GET_STARTED_DATA = {
   get_started:
   {
-    payload: JSON.stringify(GET_STARTED_PAYLOAD)    
-  }
+    payload: JSON.stringify(GET_STARTED_PAYLOAD),    
+  },
 };
 
 
 if (FB_PAGETOKEN === undefined) {
-  throw "Please set 'FB_PAGETOKEN' environment variable.";
+  throw new Error("Please set 'FB_PAGETOKEN' environment variable.");
 }
 
 

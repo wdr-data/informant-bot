@@ -4,7 +4,7 @@ const { Gauge, register } = require('prom-client');
 const subs = new Gauge({
     name: 'subscriptions',
     help: 'Subscriptions to the news pushes',
-    labelNames: ['type'],
+    labelNames: [ 'type' ],
 });
 
 function collectSubscriberMetrics(timing) {
@@ -16,7 +16,7 @@ function collectSubscriberMetrics(timing) {
     if (timing === 'morning' || timing === 'evening') {
         params.FilterExpression = `${timing} = :p`;
         params.ExpressionAttributeValues = {":p": 1};
-    } else if(timing === 'both') {
+    } else if (timing === 'both') {
         params.FilterExpression = 'morning = :p AND evening = :p';
         params.ExpressionAttributeValues = {":p": 1};
     } else {

@@ -11,7 +11,7 @@ module.exports.fetch = function(event, context, callback) {
     let timing;
     try {
         timing = getTiming(event);
-    } catch(e) {
+    } catch (e) {
         callback(e);
         return;
     }
@@ -40,7 +40,7 @@ module.exports.send = function(event, context, callback) {
     let lastUser;
     getUsers(event.timing, event.start)
         .then(users => {
-            if(users.length === 0) {
+            if (users.length === 0) {
                 const exit = new Error("No more users");
                 exit.name = 'users-empty';
                 throw exit;
@@ -51,7 +51,7 @@ module.exports.send = function(event, context, callback) {
         })
         .then(users => Promise.all(users.map(user => {
             const chat = new facebook.Chat({sender: {id: user.psid}});
-            return chat.sendButtons(intro, [button]).catch(console.error);
+            return chat.sendButtons(intro, [ button ]).catch(console.error);
         })))
         .then(() => {
             console.log(`Push sent to ${count} users`);
@@ -83,7 +83,7 @@ function getUsers(timing, start = null, limit = 100) {
         params.FilterExpression = `${timing} = :p`;
         params.ExpressionAttributeValues = {":p": 1};
     }
-    if(start) {
+    if (start) {
         params.ExclusiveStartKey = {"psid": start};
     }
     return new Promise((resolve, reject) => {

@@ -1,5 +1,5 @@
 const yaml = require('js-yaml');
-const fs   = require('fs');
+const fs = require('fs');
 const path = require('path');
 const request = require('request-promise-native');
 const S3 = require('aws-sdk/clients/s3');
@@ -54,12 +54,12 @@ const fetch_env = () => {
 
     const dotenv_path = path.resolve(__dirname, "../.env.yml");
     const environment = {};
-    if(fs.existsSync(dotenv_path)) {
+    if (fs.existsSync(dotenv_path)) {
         Object.assign(environment, yaml.safeLoad(fs.readFileSync(dotenv_path, 'utf8')));
     }
 
     required_env.forEach(key => {
-        if(key in process.env) {
+        if (key in process.env) {
             environment[key] = process.env[key];
         }
     });
