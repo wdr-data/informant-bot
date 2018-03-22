@@ -10,11 +10,11 @@ const metricFilterConfigs = {
     MemoryUsed: {
         FilterPattern: memoryUsedFilter,
         MetricTransformations: [
-{
-            MetricValue: '$max_memory_used_value',
-            MetricNamespace: 'LambdaMemoryUsed',
-        },
-],
+            {
+                MetricValue: '$max_memory_used_value',
+                MetricNamespace: 'LambdaMemoryUsed',
+            },
+        ],
     },
 
 };
@@ -48,7 +48,7 @@ function metricFilters(stage) {
                         };
                         return allMetrics;
                     },
-                {}));
+                    {}));
             }, {});
         });
 }

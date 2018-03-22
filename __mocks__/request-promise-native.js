@@ -34,75 +34,76 @@ const fs = require('fs');
 
 const calls = [];
 beforeEach(() => {
-  calls.length = 0;
+    calls.length = 0;
 });
 
 // organize params for patch, post, put, head, del
 function initParams(uri, options, callback) {
-  if (typeof options === 'function') {
-    callback = options;
-  }
+    if (typeof options === 'function') {
+        callback = options;
+    }
 
-  const params = {};
-  if (typeof options === 'object') {
-    extend(params, options, { uri });
-  } else if (typeof uri === 'string') {
-    extend(params, { uri });
-  } else {
-    extend(params, uri);
-  }
+    const params = {};
+    if (typeof options === 'object') {
+        extend(params, options, { uri });
+    } else if (typeof uri === 'string') {
+        extend(params, { uri });
+    } else {
+        extend(params, uri);
+    }
 
-  params.callback = callback || params.callback;
-  return params;
+    params.callback = callback || params.callback;
+    return params;
 }
 
 function paramsHaveRequestBody(params) {
-  return (
-    params.body ||
+    return (
+        params.body ||
     params.requestBodyStream ||
     params.json && typeof params.json !== 'boolean' ||
     params.multipart
-  );
+    );
 }
 
 function request(uri, options, callback) {
-  return new Promise((resolve, reject) => {
-    if (typeof uri === 'undefined') {
-      reject('undefined is not a valid uri or options object.');
-    }
+    return new Promise((resolve, reject) => {
+        if (typeof uri === 'undefined') {
+            reject('undefined is not a valid uri or options object.');
+        }
 
-    const params = initParams(uri, options, callback);
+        const params = initParams(uri, options, callback);
 
-    if (params.method === 'HEAD' && paramsHaveRequestBody(params)) {
-      reject('HTTP HEAD requests MUST NOT include a request body.');
-    }
-    const paramsHash = hash(params);
+        if (params.method === 'HEAD' && paramsHaveRequestBody(params)) {
+            reject('HTTP HEAD requests MUST NOT include a request body.');
+        }
+        const paramsHash = hash(params);
 
-    calls.push(params);
+        calls.push(params);
 
-    fs.readFile(`./__mockData__/request-promise-native/${paramsHash}.json`, 'utf8', (err, data) => {
-      if (err) {
-        reject(`Reading mock request file for parameters ` +
+        fs.readFile(`./__mockData__/request-promise-native/${paramsHash}.json`,
+            'utf8', (err, data) => {
+                if (err) {
+                    reject(`Reading mock request file for parameters ` +
                `${JSON.stringify(params, null, 2)} with hash ` +
                `${paramsHash} failed: ${err}`);
-        return;
-      }
-      if (params.json) {
-        resolve(JSON.parse(data));
-      } else {
-        resolve(data);
-      }
+                    return;
+                }
+                if (params.json) {
+                    resolve(JSON.parse(data));
+                } else {
+                    resolve(data);
+                }
+            });
     });
-  });
 }
 
 function verbFunc(verb) {
-  const method = verb.toUpperCase();
-  return function(uri, options, callback) {
-    const params = initParams(uri, options, callback);
-    params.method = method;
-    return request(params, params.callback);
-  };
+    const method = verb.toUpperCase();
+    return function(uri, options, callback) {
+        const params = initParams(uri, options, callback);
+        params.method = method;
+        return request(params, params.callback);
+    };
 }
 
 // define like this to please codeintel/intellisense IDEs
