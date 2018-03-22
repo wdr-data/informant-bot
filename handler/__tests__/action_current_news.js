@@ -8,7 +8,7 @@ describe("action_current_news", () => {
     // e4d4c2941dd54f549393e9c3384e2d10900d36c7
     const chat = new facebook.Chat();
     return current_news(chat).then(() => {
-      new Expect(chat).request().buttons(
+      new Expect(chat).buttons(
         "Hey, alles klar bei dir? Dein Informant ist wieder hier - und das habe ich für dich:\n" +
         "➡ Luft in einigen NRW-Städten ist besser geworden\n" +
         "➡ Unfall löst Diskussion über selbstfahrende Autos aus\n" +
