@@ -180,6 +180,8 @@ custom:
   scripts:
     hooks:
       'package:initialize': npm run lint
+  webpack:
+    includeModules: true
 
 plugins:
   - serverless-offline
@@ -187,6 +189,7 @@ plugins:
   - serverless-plugin-scripts
   - serverless-step-functions
   - serverless-pseudo-parameters
+  - serverless-webpack
 
 resources:
   Resources: ${file(config/env.js):resources}
