@@ -1,8 +1,8 @@
-const request = require('request-promise-native');
-const urls = require('../lib/urls');
-const fragmentSender = require('../lib/fragmentSender');
+import request from 'request-promise-native';
+import urls from '../lib/urls';
+import fragmentSender from '../lib/fragmentSender';
 
-const faqStart = (chat, payload) => {
+export function payloadFaq(chat, payload) {
     const url = `${urls.faqBySlug(payload.slug)}`;
 
     return request({ uri: url, json: true }).then( (faq) => {
@@ -14,6 +14,6 @@ const faqStart = (chat, payload) => {
         payload.type = payload.action;
         return fragmentSender(chat, faq[0].next_fragments, payload, faq[0].text, faq[0].media);
     });
-};
+}
 
-module.exports = faqStart;
+export default payloadFaq;

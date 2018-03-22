@@ -8,7 +8,7 @@ module.exports = {
     payloads: {
         'report_start': require('./payloadReportStart'),
         'fragment_next': require('./payloadFragmentNext'),
-        'faq': require('./payloadFaq'),
+        'faq': require('./payloadFaq').default,
         'push_outro': require('./payloadPushOutro'),
         'subscriptions': require('./payloadSubscribe').subscriptions,
         'subscribe': require('./payloadSubscribe').subscribe,
