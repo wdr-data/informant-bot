@@ -2,11 +2,13 @@ const fs = require('mz/fs');
 const pako = require('pako');
 const AWS = require('aws-sdk');
 const fb = require('./lib/facebook');
+const { getUsers } = require('./entrypoint/fbPushLegacy');
 
 const ddb = new AWS.DynamoDB.DocumentClient({
     region: 'eu-central-1',
 });
-const TABLE_NAME = 'tim-bot-prod-subscriptions';
+const TABLE_NAME = 'tim-bot-marcus-subscriptions';
+process.env.DYNAMODB_SUBSCRIPTIONS = TABLE_NAME;
 
 const baseDir = "/Users/marcus/tmp/tim-bot-logs/e41f8376-f9ed-4797-b3e1-40eb785fc5a5";
 
@@ -53,6 +55,29 @@ const findUsers = async function() {
     stream.end();
 };
 
+const fixUserSubscriptions = async function() {
+    let lastUser = null;
+    while(true) {
+        const users = await getUsers('none', lastUser);
+        if (users.length === 0) {
+            break;
+        }
+        lastUser = users[users.length-1].psid;
+        for (const user of users) {
+            const chat = new fb.Chat({ sender: { id: user.psid } });
+            try {
+                await chat.getLabels();
+            } catch(e) {
+                if(e.statusCode === 400) {
+                    console.log("Deleting user", user);
+                    await deleteUser(user.psid);
+                }
+            }
+        }
+    }
+    console.log("Done");
+};
+
 const storeUser = async function(psid, item = {}) {
     return new Promise((resolve, reject) => ddb.put({
         TableName: TABLE_NAME,
@@ -87,11 +112,11 @@ const updateUser = async function(psid, item = none, status = 0) {
     }));
 };
 
-const deleteUser = async function(psid) {
+const deleteUser = function(psid) {
     return new Promise((resolve, reject) => ddb.delete({
         TableName: TABLE_NAME,
         Key: {
-            psid: psid
+            psid
         },
     }, err => {
         if(err) {
@@ -102,7 +127,7 @@ const deleteUser = async function(psid) {
 };
 
 const persistUsers = async function() {
-    const psids = (await fs.readFile('psid.list', 'utf-8')).split("\n").slice(99);
+    const psids = (await fs.readFile('psid.list', 'utf-8')).split("\n");
     let i = 0;
     for(psid of psids) {
         i++;
@@ -112,7 +137,7 @@ const persistUsers = async function() {
         try {
             labels = await chat.getLabels();
         } catch(e) {
-            console.error(e);
+            console.error(e.message);
             continue;
         }
 
@@ -135,6 +160,7 @@ const persistUsers = async function() {
 
 module.exports = {
     findUsers,
+    fixUserSubscriptions,
     storeUser,
     updateUser,
     deleteUser,
