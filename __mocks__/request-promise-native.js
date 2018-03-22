@@ -80,7 +80,7 @@ function request (uri, options, callback) {
 
     calls.push(params);
 
-    fs.readFile(`./__mockDataRequest__/${paramsHash}.json`, 'utf8', (err, data) => {
+    fs.readFile(`./__mockData__/request-promise-native/${paramsHash}.json`, 'utf8', (err, data) => {
       if (err) {
         reject(`Reading mock request file for parameters ` +
                `${JSON.stringify(params, null, 2)} with hash ` +
