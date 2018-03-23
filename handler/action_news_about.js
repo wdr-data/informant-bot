@@ -4,40 +4,43 @@ const fragmentSender = require('../lib/fragmentSender');
 const { buttonPostback, listElement } = require('../lib/facebook');
 
 const news_about = (chat, payload) => {
-    console.log(`Dialogflow Payload:`, payload);
-    search_id(payload).then(id => {
-        console.log(id);
-        request({
-            uri: urls.reports,
-            json: true,
-            qs: id,
-         }).then(report => {
+    return search_id(payload)
+        .then(id => {
+            return request({
+                uri: urls.reports,
+                json: true,
+                qs: id,
+            })
+        .then(report => {
             if (report.length === 0) {
-                chat.sendText(`Dazu habe ich leider keine Info...🤔`)
+                return chat.sendText(`Dazu habe ich leider keine Info...🤔`)
             }
-            else if (report.length === 1) {
-                payload.type = 'report';
-                chat.sendText(report[0].headline);
-                fragmentSender(chat, report[0].next_fragments, payload, report[0].text, report[0].media);
-            } else {
-                const elements = [];
-                report.forEach(r => {
-                    elements.push(listElement(r.headline, r.text, buttonPostback(
-                        'Lesen 📰', 
-                        {
-                            action: 'report_start',
-                            report: r.id,
-                            type: 'report',
-                        })
-                    ));
+
+            if (report.length === 1) {
+                const data = {
+                    type: 'report',
+                    report: report.id,
+                }
+                return chat.sendText(report[0].headline).then(() => {
+                    fragmentSender(chat, report[0].next_fragments, data, report[0].text, report[0].media);
                 })
-                chat.sendList(elements);
             }
-         }).catch(error => {
-             console.log(error);
-         });
-    }).catch(() => {
-        chat.sendText(`Dazu habe ich leider keine Info...🤔`)
+
+            const elements = [];
+            report.forEach(r => {
+                elements.push(listElement(r.headline, r.text, buttonPostback(
+                    'Lesen 📰',
+                    {
+                        action: 'report_start',
+                        report: r.id,
+                        type: 'report',
+                    })
+                ));
+            });
+            return chat.sendList(elements.slice(0,4));
+        }).catch(() => {
+            return chat.sendText(`Dazu habe ich leider keine Info...🤔`)
+        });
     });
 }
 
@@ -67,9 +70,7 @@ const search_id = payload => {
             return {
                 [map[key]]: data[0].id,
             };
-        }).catch(error => {
-            console.log(error);
-        });
+        })
     }), Promise.reject());
 }
 
