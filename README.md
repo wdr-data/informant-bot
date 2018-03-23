@@ -1,5 +1,7 @@
 # Der 1LIVE Informant - Infos, über die der Sektor spricht
 
+[![Build Status](https://travis-ci.org/wdr-data/informant-bot.svg?branch=master)](https://travis-ci.org/wdr-data/informant-bot)
+
 ## Über den 1LIVE Informanten 🕶️
 
 Hallo,
