@@ -185,6 +185,8 @@ custom:
     packagerOptions:
       scripts:
         - npm rebuild grpc --target=6.1.0 --target_arch=x64 --target_platform=linux --target_libc=glibc
+  sentry:
+    dsn: ${file(config/env.js):env.SENTRY_DSN}
 
 plugins:
   - serverless-offline
@@ -193,6 +195,7 @@ plugins:
   - serverless-step-functions
   - serverless-pseudo-parameters
   - serverless-webpack
+  - serverless-sentry
 
 resources:
   Resources: ${file(config/env.js):resources}

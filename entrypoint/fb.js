@@ -4,9 +4,11 @@ const dialogflow = require('dialogflow');
 const handler = require('../handler');
 const getTiming = require('../lib/timing');
 const { assemblePush, getLatestPush, markSent } = require('../lib/pushData');
+const Raven = require('raven');
+const RavenLambdaWrapper = require('serverless-sentry-lib');
 
 
-module.exports.verify = (event, context, callback) => {
+module.exports.verify = RavenLambdaWrapper.handler(Raven, (event, context, callback) => {
     const params = event.queryStringParameters || {};
 
     const token = params['hub.verify_token'];
@@ -28,9 +30,9 @@ module.exports.verify = (event, context, callback) => {
         statusCode: 400,
         body: 'Parameter missing',
     });
-};
+});
 
-module.exports.message = (event, context, callback) => {
+module.exports.message = RavenLambdaWrapper.handler(Raven, (event, context, callback) => {
     const payload = JSON.parse(event.body);
 
     callback(null, {
@@ -112,9 +114,9 @@ module.exports.message = (event, context, callback) => {
             console.error('ERROR:', err);
             chat.sendText('Da ist was schief gelaufen.');
         });
-};
+});
 
-module.exports.push = (event, context, callback) => {
+module.exports.push = RavenLambdaWrapper.handler(Raven, (event, context, callback) => {
     let timing;
     try {
         timing = getTiming(event);
@@ -152,9 +154,9 @@ module.exports.push = (event, context, callback) => {
                 body: JSON.stringify({ success: false, message: error.message }),
             });
         });
-};
+});
 
-module.exports.attachment = (event, context, callback) => {
+module.exports.attachment = RavenLambdaWrapper.handler(Raven, (event, context, callback) => {
     const payload = JSON.parse(event.body);
     const url = payload.url;
 
@@ -169,4 +171,4 @@ module.exports.attachment = (event, context, callback) => {
             body: JSON.stringify({ success: false, message: error }),
         });
     });
-};
+});

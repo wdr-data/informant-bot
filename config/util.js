@@ -10,6 +10,7 @@ const requiredEnv = [
     'DF_PROJECTID',
     'CMS_API_URL',
     'CMS_API_TOKEN',
+    'SENTRY_DSN',
 ];
 
 const loadConfig = () => {
