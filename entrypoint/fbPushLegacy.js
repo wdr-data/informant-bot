@@ -2,9 +2,11 @@ const getTiming = require('../lib/timing');
 const { assemblePush, getLatestPush, markSent } = require('../lib/pushData');
 const facebook = require('../lib/facebook');
 const ddb = require('../lib/dynamodb');
+const Raven = require('raven');
+const RavenLambdaWrapper = require('serverless-sentry-lib');
 
 
-module.exports.fetch = function(event, context, callback) {
+module.exports.fetch = RavenLambdaWrapper.handler(Raven, function(event, context, callback) {
     console.log(JSON.stringify(event, null, 2));
 
     // check if timing is right
@@ -29,9 +31,9 @@ module.exports.fetch = function(event, context, callback) {
             console.log('Sending push failed: ', JSON.stringify(error, null, 2));
             callback(error);
         });
-};
+});
 
-module.exports.send = function(event, context, callback) {
+module.exports.send = RavenLambdaWrapper.handler(Raven, function(event, context, callback) {
     console.log('attempting to push chunk for push', event.push.id);
 
     const { intro, button } = assemblePush(event.push);
@@ -72,7 +74,7 @@ module.exports.send = function(event, context, callback) {
             console.error('Sending failed:', err);
             throw err;
         });
-};
+});
 
 function getUsers(timing, start = null, limit = 100) {
     const params = {
@@ -97,9 +99,9 @@ function getUsers(timing, start = null, limit = 100) {
 }
 module.exports.getUsers = getUsers;
 
-module.exports.finish = function(event, context, callback) {
+module.exports.finish = RavenLambdaWrapper.handler(Raven, function(event, context, callback) {
     console.log('Sending of push finished:', event);
     markSent(event.id)
         .then(() => callback(null, {}))
         .catch((err) => callback(err, {}));
-};
+});
