@@ -1,11 +1,11 @@
 # Der 1LIVE Informant - Infos, über die der Sektor spricht
 
-## Über den 1LIVE Informanten 🕶️ 
+## Über den 1LIVE Informanten 🕶️
 
-Hallo, 
-hier bei 1LIVE nennen mich alle nur "Der Informant". 
+Hallo,
+hier bei 1LIVE nennen mich alle nur "Der Informant".
 
-Ich habe die Infos, über die der Sektor spricht: Das, was du von der Welt wissen musst, um mitzureden – und nicht nur das Schlechte. Du ahnst nicht, was jeden Tag so passiert... Wir können auch ein bisschen quatschen. 
+Ich habe die Infos, über die der Sektor spricht: Das, was du von der Welt wissen musst, um mitzureden – und nicht nur das Schlechte. Du ahnst nicht, was jeden Tag so passiert... Wir können auch ein bisschen quatschen.
 
 Meine Nachrichten kannst du ein oder zweimal am Tag haben: Morgens, abends oder beides. Und ich melde mich, wenn etwas wirklich Wichtiges passiert.
 
