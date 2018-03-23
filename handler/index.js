@@ -4,6 +4,7 @@ module.exports = {
         'current_time': require('./actionCurrentTime'),
         'current_news': require('./actionCurrentNews'),
         'subscriptions': require('./payloadSubscribe').subscriptions,
+        'news_about': require('./actionNewsAbout').newsAbout,
     },
     payloads: {
         'report_start': require('./payloadReportStart'),

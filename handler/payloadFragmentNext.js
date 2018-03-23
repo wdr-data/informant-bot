@@ -4,7 +4,7 @@ const fragmentSender = require('../lib/fragmentSender');
 
 const fragmentNext = (chat, payload) => {
     let url = null;
-    if (payload.type === 'push') {
+    if (payload.type === 'push' || payload.type === 'report') {
         url = `${urls.reportFragment(payload.fragment)}?withNext=yes`;
     } else if (payload.type === 'faq') {
         url = `${urls.faqFragment(payload.fragment)}?withNext=yes`;

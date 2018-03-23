@@ -72,7 +72,9 @@ module.exports.message = (event, context, callback) => {
     const text = msgEvent.message.text;
 
     const sessionClient = new dialogflow.SessionsClient({
-        credentials: require('../.df_id.json'), // eslint-disable-line node/no-unpublished-require
+        /* eslint-disable */
+        credentials: require('../.df_id.json') || {},
+        /* eslint-enable */
     });
     const sessionPath = sessionClient.sessionPath(process.env.DF_PROJECTID, psid);
 
@@ -97,7 +99,7 @@ module.exports.message = (event, context, callback) => {
                 console.log(`  Intent: ${result.intent.displayName}`);
                 console.log(`  Action: ${result.action}`);
                 if (result.action in handler.actions) {
-                    handler.actions[result.action](chat);
+                    handler.actions[result.action](chat, result.parameters['fields']);
                 } else {
                     chat.sendText(result.fulfillmentText);
                 }
