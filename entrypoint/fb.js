@@ -72,7 +72,9 @@ module.exports.message = (event, context, callback) => {
     const text = msgEvent.message.text;
 
     const sessionClient = new dialogflow.SessionsClient({
-        credentials: require('../.df_id.json'), // eslint-disable-line node/no-unpublished-require
+        /* eslint-disable */
+        credentials: require('../.df_id.json') || {},
+        /* eslint-enable */
     });
     const sessionPath = sessionClient.sessionPath(process.env.DF_PROJECTID, psid);
 
