@@ -46,8 +46,6 @@
   "scripts": {
     "deploy": "yarn && sls deploy",
     "lint": "eslint .",
-    "postinstall": "npm run rebuild",
-    "rebuild": "npm rebuild --target=6.1.0 --target_arch=x64 --target_platform=linux --target_libc=glibc",
-    "test": "npm run lint && jest"
+    "test": "yarn lint && jest"
   }
 }

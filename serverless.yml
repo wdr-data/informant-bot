@@ -182,6 +182,9 @@ custom:
       'package:initialize': npm run lint
   webpack:
     includeModules: true
+    packagerOptions:
+      scripts:
+        - npm rebuild grpc --target=6.1.0 --target_arch=x64 --target_platform=linux --target_libc=glibc
 
 plugins:
   - serverless-offline
