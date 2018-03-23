@@ -10,42 +10,42 @@ const newsAbout = (chat, payload) => {
                 uri: urls.reports,
                 json: true,
                 qs: id,
-            })
-                .then((report) => {
-                    if (report.length === 0) {
-                        return chat.sendText(`Dazu habe ich leider keine Info...🤔`);
-                    }
+            });
+        })
+        .then((report) => {
+            if (report.length === 0) {
+                return chat.sendText(`Dazu habe ich leider keine Info...🤔`);
+            }
 
-                    if (report.length === 1) {
-                        const data = {
-                            type: 'report',
-                            report: report.id,
-                        };
-                        return chat.sendText(report[0].headline).then(() => {
-                            fragmentSender(
-                                chat,
-                                report[0].next_fragments,
-                                data,
-                                report[0].text,
-                                report[0].media);
-                        });
-                    }
-
-                    const elements = [];
-                    report.forEach((r) => {
-                        elements.push(listElement(r.headline, r.text, buttonPostback(
-                            'Lesen 📰',
-                            {
-                                action: 'report_start',
-                                report: r.id,
-                                type: 'report',
-                            })
-                        ));
-                    });
-                    return chat.sendList(elements.slice(0, 4));
-                }).catch(() => {
-                    return chat.sendText(`Dazu habe ich leider keine Info...🤔`);
+            if (report.length === 1) {
+                const data = {
+                    type: 'report',
+                    report: report.id,
+                };
+                return chat.sendText(report[0].headline).then(() => {
+                    fragmentSender(
+                        chat,
+                        report[0].next_fragments,
+                        data,
+                        report[0].text,
+                        report[0].media);
                 });
+            }
+
+            const elements = [];
+            report.forEach((r) => {
+                elements.push(listElement(r.headline, r.text, buttonPostback(
+                    'Lesen 📰',
+                    {
+                        action: 'report_start',
+                        report: r.id,
+                        type: 'report',
+                    })
+                ));
+            });
+            return chat.sendList(elements.slice(0, 4));
+        }).catch(() => {
+            return chat.sendText(`Dazu habe ich leider keine Info...🤔`);
         });
 };
 
