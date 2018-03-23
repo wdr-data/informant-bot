@@ -9,7 +9,7 @@ module.exports = {
     devtool: 'source-map',
     externals: [
         'memcpy',
-        'grpc',
+        'dialogflow',
         'aws-sdk',
     ],
     performance: {
