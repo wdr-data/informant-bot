@@ -36,6 +36,8 @@
   "dependencies": {
     "aws-sdk": "^2.206.0",
     "dialogflow": "^0.1.0",
+    "moment": "^2.21.0",
+    "moment-feiertage": "^1.0.3",
     "moment-timezone": "^0.5.14",
     "prom-client": "^11.0.0",
     "raven": "^2.4.2",
