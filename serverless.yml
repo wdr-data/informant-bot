@@ -63,13 +63,13 @@ functions:
             timing: morning
       - schedule:
           name: ${self:service}-${self:provider.stage}-pushBroadcast_morning_weekend
-          rate: cron(0 8 ? * ? *)  # UTC+1 (No DST)
+          rate: cron(0 8 ? * * *)  # UTC+1 (No DST)
           enabled: true
           input:
             timing: morning
       - schedule:
           name: ${self:service}-${self:provider.stage}-pushBroadcast_morning_weekend_dst
-          rate: cron(0 7 ? * ? *)  # UTC+2 (DST)
+          rate: cron(0 7 ? * * *)  # UTC+2 (DST)
           enabled: true
           input:
             timing: morning
