@@ -1,6 +1,7 @@
 # Der 1LIVE Informant - Infos, über die der Sektor spricht
 
 [![Build Status](https://travis-ci.org/wdr-data/informant-bot.svg?branch=master)](https://travis-ci.org/wdr-data/informant-bot)
+[![Facebook Messenger](https://img.shields.io/badge/Facebook-Messenger-blue.svg)](https://m.me/1LIVE.Informant)
 
 ## Über den 1LIVE Informanten 🕶️
 

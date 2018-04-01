@@ -5,6 +5,7 @@ module.exports = {
         'current_news': require('./actionCurrentNews'),
         'subscriptions': require('./payloadSubscribe').subscriptions,
         'news_about': require('./actionNewsAbout').newsAbout,
+        'share': require('./payloadShare.js'),
     },
     payloads: {
         'report_start': require('./payloadReportStart'),

@@ -14,18 +14,15 @@ after_success:
 before_script:
   - ./config/prepare-ci.js
 
-before_deploy:
-  - npm i -g serverless
-
 deploy:
   - provider: script
     skip_cleanup: true
-    script: export SLS_STAGE=staging && serverless create_domain && serverless deploy
+    script: export SLS_STAGE=staging && yarn serverless create_domain && yarn serverless deploy
     on:
       branch: master
   - provider: script
     skip_cleanup: true
-    script: export SLS_STAGE=prod && serverless create_domain && serverless deploy
+    script: export SLS_STAGE=prod && yarn serverless create_domain && yarn serverless deploy
     on:
       branch: production
 

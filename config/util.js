@@ -11,6 +11,8 @@ const requiredEnv = [
     'CMS_API_URL',
     'CMS_API_TOKEN',
     'SENTRY_DSN',
+    'PROM_PUSH_API_KEY',
+    'PROM_PUSH_TARGET',
 ];
 
 const loadConfig = () => {
