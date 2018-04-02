@@ -36,12 +36,15 @@
   "dependencies": {
     "aws-sdk": "^2.206.0",
     "dialogflow": "^0.1.0",
+    "moment": "^2.21.0",
+    "moment-feiertage": "^1.0.3",
     "moment-timezone": "^0.5.14",
     "prom-client": "^11.0.0",
     "raven": "^2.4.2",
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5",
-    "serverless-sentry-lib": "^1.0.0"
+    "serverless-sentry-lib": "^1.0.0",
+    "source-map-support": "^0.5.4"
   },
   "engines": {
     "node": ">=6.10.0"

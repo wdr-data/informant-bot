@@ -1,5 +1,6 @@
 /* eslint-disable node/no-unpublished-require */
 const slsw = require('serverless-webpack');
+const webpack = require('webpack');
 
 module.exports = {
     entry: slsw.lib.entries,
@@ -21,4 +22,11 @@ module.exports = {
     module: {
         rules: [ { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' } ],
     },
+    plugins: [
+        new webpack.BannerPlugin({
+            banner: 'require("source-map-support").install();',
+            raw: true,
+            entryOnly: false,
+        }),
+    ],
 };
