@@ -1,6 +1,6 @@
-const { buttonPostback } = require('../lib/facebook');
-const request = require('request-promise-native');
-const urls = require('../lib/urls');
+import { buttonPostback } from '../lib/facebook';
+import request from 'request-promise-native';
+import urls from '../lib/urls';
 
 
 const currentNews = async (chat) => {
