@@ -1,6 +1,6 @@
-const request = require('request');
-const urls = require('../lib/urls');
-const fragmentSender = require('../lib/fragmentSender');
+import request from 'request-promise-native';
+import urls from '../lib/urls';
+import fragmentSender from '../lib/fragmentSender';
 
 const reportStart = async (chat, payload) => {
     const report = await request({

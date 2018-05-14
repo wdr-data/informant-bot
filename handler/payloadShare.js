@@ -1,4 +1,4 @@
-const { buttonShare, buttonUrl, genericElement } = require('../lib/facebook');
+import { buttonShare, buttonUrl, genericElement } from '../lib/facebook';
 
 module.exports = function(chat) {
     const text = 'Teile den Informanten mit deinen Freunden!';

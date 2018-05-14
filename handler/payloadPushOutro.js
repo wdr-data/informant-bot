@@ -1,5 +1,5 @@
-const request = require('request');
-const urls = require('../lib/urls');
+import request from 'request-promise-native';
+import urls from '../lib/urls';
 
 const pushOutro = async (chat, payload) => {
     const push = await request({ uri: `${urls.push(payload.push)}`, json: true });
