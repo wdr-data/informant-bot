@@ -15,5 +15,5 @@ module.exports = function(chat) {
             null,
             [ buttonUrl(callToAction, informantUrl) ]),
     ];
-    chat.sendButtons(text, [ buttonShare(sharedContent) ]);
+    return chat.sendButtons(text, [ buttonShare(sharedContent) ]);
 };
