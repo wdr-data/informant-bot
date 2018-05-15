@@ -1,7 +1,7 @@
-const ddb = require('../lib/dynamodb');
-const { Gauge, register } = require('prom-client');
-const Raven = require('raven');
-const RavenLambdaWrapper = require('serverless-sentry-lib');
+import ddb from '../lib/dynamodb';
+import { Gauge, register } from 'prom-client';
+import Raven from 'raven';
+import RavenLambdaWrapper from 'serverless-sentry-lib';
 
 const subs = new Gauge({
     name: 'subscriptions',
@@ -37,8 +37,7 @@ function collectSubscriberMetrics(timing) {
         });
 }
 
-module.exports.prometheus = RavenLambdaWrapper.handler(Raven, async (event, context, callback) => {
-
+export const prometheus = RavenLambdaWrapper.handler(Raven, async (event, context, callback) => {
     try {
         const metrics = [
             collectSubscriberMetrics(),

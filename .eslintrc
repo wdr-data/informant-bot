@@ -1,5 +1,5 @@
 {
-  "plugins": ["node", "jest"],
+  "plugins": ["node", "jest", "import"],
   "extends": ["eslint:recommended", "plugin:node/recommended", "plugin:jest/recommended"],
   "env": {
     "node": true,
@@ -133,6 +133,7 @@
       }
     ],
     "node/no-unsupported-features": 0,
-    "node/shebang": 0
+    "node/shebang": 0,
+    "import/no-commonjs": 2
   }
 }

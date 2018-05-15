@@ -1,7 +1,7 @@
 const { Expect } = require('../../lib/testing');
 const facebook = require('../../lib/facebook');
 
-const currentNews = require('../actionCurrentNews');
+const currentNews = require('../actionCurrentNews').default;
 
 describe('actionCurrentNews', () => {
     it('sends a specific message with a button', async () => {

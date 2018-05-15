@@ -4,7 +4,7 @@ import fragmentSender from '../lib/fragmentSender';
 import { buttonPostback, listElement } from '../lib/facebook';
 
 
-const newsAbout = async (chat, payload) => {
+export const newsAbout = async (chat, payload) => {
     let id;
 
     try {
@@ -52,7 +52,7 @@ const newsAbout = async (chat, payload) => {
     return chat.sendList(elements.slice(0, 4));
 };
 
-const searchId = async (payload) => {
+export const searchId = async (payload) => {
     const searchParameter = [
         'genres',
         'topics',
@@ -83,9 +83,4 @@ const searchId = async (payload) => {
     }
 
     throw Error();
-};
-
-module.exports = {
-    searchId,
-    newsAbout,
 };
