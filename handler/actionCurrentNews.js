@@ -4,7 +4,7 @@ import request from 'request-promise-native';
 import urls from '../lib/urls';
 
 
-export default async (chat) => {
+export default async (chat, payload) => {
     const data = await request({
         uri: urls.pushes,
         json: true,
@@ -15,9 +15,6 @@ export default async (chat) => {
     });
 
     const push = data.results[0];
-
-    await chat.sendText(push.intro);
-
     const report = push.reports;
     if (report.length === 1) {
         const data = {
@@ -34,7 +31,16 @@ export default async (chat) => {
         );
     }
 
+    if (payload.intro !== false) {
+        await chat.sendText(push.intro);
+    }
+
+    return sendList(chat, push);
+};
+
+const sendList = function(chat, push) {
     const elements = [];
+    const report = push.reports;
     report.forEach((r) => {
         elements.push(listElement(r.headline, null, buttonPostback(
             'Lesen 📰',
@@ -46,5 +52,16 @@ export default async (chat) => {
             }), r.media
         ));
     });
-    return chat.sendList(elements.slice(0, 4));
+
+    return chat.sendList(
+        elements.slice(0, 4),
+        buttonPostback(
+            'Reich jetzt',
+            {
+                action: 'push_outro',
+                push: push.id,
+            })
+    );
 };
+
+module.exports = currentNews;
