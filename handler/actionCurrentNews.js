@@ -42,14 +42,16 @@ const sendList = function(chat, push) {
     const elements = [];
     const report = push.reports;
     report.forEach((r) => {
-        elements.push(listElement(r.headline, null, buttonPostback(
-            'Lesen 📰',
-            {
-                action: 'report_start',
-                push: push.id,
-                report: r.id,
-                type: 'push',
-            }), r.media
+        elements.push(listElement(r.headline, null,
+            buttonPostback(
+                'Lesen 📰',
+                {
+                    action: 'report_start',
+                    push: push.id,
+                    report: r.id,
+                    type: 'push',
+                }),
+            /\.(jpg|png|gif|jpeg)$/.test(r.media) ? r.media : null,
         ));
     });
 
