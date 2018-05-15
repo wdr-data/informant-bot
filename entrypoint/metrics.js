@@ -37,21 +37,26 @@ function collectSubscriberMetrics(timing) {
         });
 }
 
-module.exports.prometheus = RavenLambdaWrapper.handler(Raven, (event, context, callback) => {
-    Promise.all([
-        collectSubscriberMetrics(),
-        collectSubscriberMetrics('morning'),
-        collectSubscriberMetrics('evening'),
-        collectSubscriberMetrics('both'),
-    ])
-        .then(() => {
-            callback(null, {
-                statusCode: 200,
-                headers: { 'Content-Type': register.contentType },
-                body: register.metrics(),
-            });
-        })
-        .catch((err) => {
-            callback(err);
+module.exports.prometheus = RavenLambdaWrapper.handler(Raven, async (event, context, callback) => {
+
+    try {
+        const metrics = [
+            collectSubscriberMetrics(),
+            collectSubscriberMetrics('morning'),
+            collectSubscriberMetrics('evening'),
+            collectSubscriberMetrics('both'),
+        ];
+
+        for (const metric of metrics) {
+            await metric;
+        }
+
+        callback(null, {
+            statusCode: 200,
+            headers: { 'Content-Type': register.contentType },
+            body: register.metrics(),
         });
+    } catch (e) {
+        callback(e.message);
+    }
 });

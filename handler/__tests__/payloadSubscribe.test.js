@@ -36,87 +36,84 @@ describe('payloadSubscribe.subscribe', () => {
 describe('payloadSubscribe.unsubscribe', () => {
     // dynamodb.update: 67136336f73537cfd8a1fede6db932bd94d20423
     // dynamodb.delete: 8779f7a74ed5e22f4aa569488b6779eb2bd1618f
-    it('removes appropriate labels and replies with the correct text', () => {
+    it('removes appropriate labels and replies with the correct text', async () => {
         const chat = new facebook.Chat({ sender: { id: '1' } }, [ 'push-morning' ]);
-        return payloadSubscribe.unsubscribe(chat, { subscription: 'morning' }).then(() => {
-            new Expect(chat)
-                .labels()
-                .labelRemoved('push-morning')
-                .labelRemoved('push-breaking')
-                .text(`Schade. Deine Entscheidung. Ich bin hier, wenn Du mich brauchst.`);
-        });
+        await payloadSubscribe.unsubscribe(chat, { subscription: 'morning' });
+        new Expect(chat)
+            .labels()
+            .labelRemoved('push-morning')
+            .labelRemoved('push-breaking')
+            .text(`Schade. Deine Entscheidung. Ich bin hier, wenn Du mich brauchst.`);
     });
 
-    it('removes the subscription from dynamodb', () => {
+    it('removes the subscription from dynamodb', async () => {
         const chat = new facebook.Chat({ sender: { id: '1' } });
-        return payloadSubscribe.unsubscribe(chat, { subscription: 'morning' }).then(() => {
-            new Expect().dynamoUpdate({
-                TableName: tableName,
-                Key: {
-                    psid: '1',
-                },
-                UpdateExpression: 'SET #timing = :status',
-                ExpressionAttributeNames: {
-                    '#timing': 'morning',
-                },
-                ExpressionAttributeValues: {
-                    ':status': 0,
-                },
-                ReturnValues: 'ALL_NEW',
-            }).dynamoDelete({
-                TableName: tableName,
-                Key: {
-                    psid: '1',
-                },
-            });
+        await payloadSubscribe.unsubscribe(chat, { subscription: 'morning' });
+        new Expect().dynamoUpdate({
+            TableName: tableName,
+            Key: {
+                psid: '1',
+            },
+            UpdateExpression: 'SET #timing = :status',
+            ExpressionAttributeNames: {
+                '#timing': 'morning',
+            },
+            ExpressionAttributeValues: {
+                ':status': 0,
+            },
+            ReturnValues: 'ALL_NEW',
+        }).dynamoDelete({
+            TableName: tableName,
+            Key: {
+                psid: '1',
+            },
         });
     });
 });
 
 describe('payload_subscribe.subscriptions', () => {
-    it('returns list with current subscriptions to user', () => {
+    it('returns list with current subscriptions to user', async () => {
         const chat = new facebook.Chat({ sender: { id: '1' } }, [ 'push-morning' ]);
-        return payloadSubscribe.subscriptions(chat).then(() => {
-            new Expect(chat)
-                .text('Meine Infos kannst du ein oder zweimal am Tag haben: ' +
-        'Morgens, abends oder beides. Und ich melde mich, wenn etwas wirklich Wichtiges passiert.')
-                .labels()
-                .list([
-                    facebook.listElement(
-                        '❌ Beides',
-                        'Deine Infos morgens und abends.',
-                        facebook.buttonPostback(
-                            'Anmelden',
-                            {
-                                action: 'subscribe',
-                                subscription: 'all',
-                            }
-                        )
-                    ),
-                    facebook.listElement(
-                        '✔ Deine Infos am Morgen',
-                        'Um 7.30 Uhr gibt\'s Dein erstes Update.',
-                        facebook.buttonPostback(
-                            'Abmelden',
-                            {
-                                action: 'unsubscribe',
-                                subscription: 'morning',
-                            }
-                        )
-                    ),
-                    facebook.listElement(
-                        '❌ Deine Infos am Abend',
-                        'Um 18.30 Uhr kriegst Du das, was am Tag wichtig war.',
-                        facebook.buttonPostback(
-                            'Anmelden',
-                            {
-                                action: 'subscribe',
-                                subscription: 'evening',
-                            }
-                        )
-                    ),
-                ]
-                );
-        });
+        await payloadSubscribe.subscriptions(chat);
+        new Expect(chat)
+            .text('Meine Infos kannst du ein oder zweimal am Tag haben: ' +
+    'Morgens, abends oder beides. Und ich melde mich, wenn etwas wirklich Wichtiges passiert.')
+            .labels()
+            .list([
+                facebook.listElement(
+                    '❌ Beides',
+                    'Deine Infos morgens und abends.',
+                    facebook.buttonPostback(
+                        'Anmelden',
+                        {
+                            action: 'subscribe',
+                            subscription: 'all',
+                        }
+                    )
+                ),
+                facebook.listElement(
+                    '✔ Deine Infos am Morgen',
+                    'Um 7.30 Uhr gibt\'s Dein erstes Update.',
+                    facebook.buttonPostback(
+                        'Abmelden',
+                        {
+                            action: 'unsubscribe',
+                            subscription: 'morning',
+                        }
+                    )
+                ),
+                facebook.listElement(
+                    '❌ Deine Infos am Abend',
+                    'Um 18.30 Uhr kriegst Du das, was am Tag wichtig war.',
+                    facebook.buttonPostback(
+                        'Anmelden',
+                        {
+                            action: 'subscribe',
+                            subscription: 'evening',
+                        }
+                    )
+                ),
+            ]
+            );
     });
 });
