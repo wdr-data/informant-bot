@@ -10,6 +10,7 @@ export default {
         'faq_imprint': require('./actionFaq').imprint,
         'faq_how_to': require('./actionFaq').howTo,
         'faq_about': require('./actionFaq').about,
+        'faq_onboarding': require('./actionFaq').onboarding,
     },
     payloads: {
         'report_start': require('./payloadReportStart').default,
