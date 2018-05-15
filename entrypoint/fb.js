@@ -1,14 +1,14 @@
-const facebook = require('../lib/facebook');
-const { getAttachmentId } = require('../lib/facebookAttachments');
-const dialogflow = require('dialogflow');
-const handler = require('../handler');
-const getTiming = require('../lib/timing');
-const { assemblePush, getLatestPush, markSent } = require('../lib/pushData');
-const Raven = require('raven');
-const RavenLambdaWrapper = require('serverless-sentry-lib');
+import facebook from '../lib/facebook';
+import { getAttachmentId } from '../lib/facebookAttachments';
+import dialogflow from 'dialogflow';
+import handler from '../handler';
+import getTiming from '../lib/timing';
+import { assemblePush, getLatestPush, markSent } from '../lib/pushData';
+import Raven from 'raven';
+import RavenLambdaWrapper from 'serverless-sentry-lib';
 
 
-module.exports.verify = RavenLambdaWrapper.handler(Raven, (event, context, callback) => {
+export const verify = RavenLambdaWrapper.handler(Raven, (event, context, callback) => {
     const params = event.queryStringParameters || {};
 
     const token = params['hub.verify_token'];
@@ -32,7 +32,7 @@ module.exports.verify = RavenLambdaWrapper.handler(Raven, (event, context, callb
     });
 });
 
-module.exports.message = RavenLambdaWrapper.handler(Raven, async (event, context, callback) => {
+export const message = RavenLambdaWrapper.handler(Raven, async (event, context, callback) => {
     const payload = JSON.parse(event.body);
 
     callback(null, {
@@ -114,7 +114,7 @@ module.exports.message = RavenLambdaWrapper.handler(Raven, async (event, context
     }
 });
 
-module.exports.push = RavenLambdaWrapper.handler(Raven, async (event, context, callback) => {
+export const push = RavenLambdaWrapper.handler(Raven, async (event, context, callback) => {
     let timing;
     try {
         timing = getTiming(event);
@@ -148,7 +148,7 @@ module.exports.push = RavenLambdaWrapper.handler(Raven, async (event, context, c
     }
 });
 
-module.exports.attachment = RavenLambdaWrapper.handler(Raven, async (event, context, callback) => {
+export const attachment = RavenLambdaWrapper.handler(Raven, async (event, context, callback) => {
     const payload = JSON.parse(event.body);
     const url = payload.url;
 

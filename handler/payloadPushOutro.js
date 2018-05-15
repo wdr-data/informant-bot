@@ -1,7 +1,7 @@
 import request from 'request-promise-native';
 import urls from '../lib/urls';
 
-const pushOutro = async (chat, payload) => {
+export default async (chat, payload) => {
     const push = await request({ uri: `${urls.push(payload.push)}`, json: true });
 
     if (push.media) {
@@ -11,5 +11,3 @@ const pushOutro = async (chat, payload) => {
 
     return chat.sendText(push.outro);
 };
-
-module.exports = pushOutro;

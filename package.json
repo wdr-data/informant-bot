@@ -54,5 +54,10 @@
     "deploy": "yarn && sls deploy",
     "lint": "eslint .",
     "test": "yarn lint && jest"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    }
   }
 }

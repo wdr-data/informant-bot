@@ -1,7 +1,7 @@
 const { Expect } = require('../../lib/testing');
 const facebook = require('../../lib/facebook');
 
-const currentTime = require('../actionCurrentTime');
+const currentTime = require('../actionCurrentTime').default;
 
 describe('actionCurrentTime', () => {
     it('sends a message that contains a time', async () => {

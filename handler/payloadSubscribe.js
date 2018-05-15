@@ -1,5 +1,5 @@
-const { buttonPostback, listElement } = require('../lib/facebook');
-const subscriptions = require('../lib/subscriptions');
+import { buttonPostback, listElement } from '../lib/facebook';
+import libSubscriptions from '../lib/subscriptions';
 
 const getHasLabel = async function(chat) {
     const labels = await chat.getLabels();
@@ -10,10 +10,10 @@ const getHasLabel = async function(chat) {
 
 const disableSubscription = async function(psid, timing) {
     try {
-        const sub = await subscriptions.update(psid, timing, false);
+        const sub = await libSubscriptions.update(psid, timing, false);
         console.log(`Disabled subscription ${timing} in dynamoDB for ${psid}`);
         if (!sub.morning && !sub.evening) {
-            await subscriptions.remove(psid);
+            await libSubscriptions.remove(psid);
             console.log(`Deleted User in dynamoDB with psid ${psid}`);
         }
     } catch (error) {
@@ -27,12 +27,12 @@ const enableSubscription = async function(psid, timing) {
         evening: timing === 'evening',
     };
     try {
-        await subscriptions.create(psid, item);
+        await libSubscriptions.create(psid, item);
         console.log(`Created in dynamoDB ${psid} with ${timing}`);
     } catch (error) {
         console.log('Creating user in dynamoDB failed: ', error);
         try {
-            await subscriptions.update(psid, timing, true);
+            await libSubscriptions.update(psid, timing, true);
             console.log(`Enabled subscription ${timing} in dynamoDB for ${psid}`);
         } catch (error) {
             console.log('Updating user in dynamoDB failed: ', error);
@@ -40,7 +40,7 @@ const enableSubscription = async function(psid, timing) {
     }
 };
 
-module.exports.subscriptions = async function(chat) {
+export const subscriptions = async function(chat) {
     const promTxt = chat.sendText('Meine Infos kannst du ein oder zweimal am Tag haben: ' +
         'Morgens, abends oder beides. Und ich melde mich, wenn etwas wirklich Wichtiges passiert.');
 
@@ -91,7 +91,7 @@ module.exports.subscriptions = async function(chat) {
     return chat.sendList(elements);
 };
 
-module.exports.subscribe = function(chat, payload) {
+export const subscribe = function(chat, payload) {
     const promises = [ chat.addLabel('push-breaking') ];
     if (payload.subscription === 'morning' || payload.subscription === 'all') {
         promises.push(
@@ -108,7 +108,7 @@ module.exports.subscribe = function(chat, payload) {
       `Wenn du die letzte Ausgabe sehen willst, schreib einfach "Leg los"`)));
 };
 
-module.exports.unsubscribe = async function(chat, payload) {
+export const unsubscribe = async function(chat, payload) {
     const hasLabel = await getHasLabel(chat);
     const promises = [];
     if (payload.subscription === 'morning' || payload.subscription === 'all') {

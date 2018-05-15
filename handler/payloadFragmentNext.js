@@ -2,7 +2,7 @@ import request from 'request-promise-native';
 import urls from '../lib/urls';
 import fragmentSender from '../lib/fragmentSender';
 
-const fragmentNext = async (chat, payload) => {
+export default async (chat, payload) => {
     let url = null;
     if (payload.type === 'push' || payload.type === 'report') {
         url = `${urls.reportFragment(payload.fragment)}?withNext=yes`;
@@ -20,5 +20,3 @@ const fragmentNext = async (chat, payload) => {
             chat, fragment.next_fragments, payload, fragment.text, fragment.media);
     }
 };
-
-module.exports = fragmentNext;

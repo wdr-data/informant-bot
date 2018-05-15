@@ -3,7 +3,7 @@ import request from 'request-promise-native';
 import urls from '../lib/urls';
 
 
-const currentNews = async (chat) => {
+export default async (chat) => {
     const data = await request({
         uri: urls.pushes,
         json: true,
@@ -28,5 +28,3 @@ const currentNews = async (chat) => {
         });
     return chat.sendButtons(introHeadlines, [ button ]);
 };
-
-module.exports = currentNews;

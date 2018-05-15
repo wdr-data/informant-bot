@@ -1,8 +1,6 @@
-const moment = require('moment-timezone');
+import moment from 'moment-timezone';
 
-const currentTime = (chat) => {
+export default (chat) => {
     const time = moment.tz('Europe/Berlin').format('HH:mm:ss');
     return chat.sendText(`Die exakte Uhrzeit lautet: ${time}`);
 };
-
-module.exports = currentTime;

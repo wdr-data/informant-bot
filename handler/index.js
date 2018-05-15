@@ -1,5 +1,5 @@
 
-module.exports = {
+export default {
     actions: {
         'current_time': require('./actionCurrentTime'),
         'current_news': require('./actionCurrentNews'),
