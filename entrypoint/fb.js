@@ -102,15 +102,15 @@ export const message = RavenLambdaWrapper.handler(Raven, async (event, context, 
             if (result.action in handler.actions) {
                 handler.actions[result.action](chat, result.parameters['fields']);
             } else {
-                chat.sendText(result.fulfillmentText);
+                return chat.sendText(result.fulfillmentText);
             }
         } else {
             console.log(`  No intent matched.`);
-            chat.sendText(`Da bin ich jetzt überfragt. Kannst Du das anders formulieren?`);
+            return chat.sendText(`Da bin ich jetzt überfragt. Kannst Du das anders formulieren?`);
         }
     } catch (e) {
         console.error('ERROR:', e);
-        chat.sendText('Da ist was schief gelaufen.');
+        return chat.sendText('Da ist was schief gelaufen.');
     }
 });
 
@@ -130,7 +130,7 @@ export const push = RavenLambdaWrapper.handler(Raven, async (event, context, cal
         const push = await getLatestPush(timing, { delivered: 0 });
         const { intro, button } = assemblePush(push);
         const message = await facebook.sendBroadcastButtons(intro, [ button ], 'push-' + timing);
-        markSent(push.id).catch(() => {});
+        await markSent(push.id).catch(() => {});
         console.log('Successfully sent push: ', message);
         callback(null, {
             statusCode: 200,
