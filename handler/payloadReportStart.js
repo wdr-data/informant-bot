@@ -1,13 +1,12 @@
-const request = require('request');
-const urls = require('../lib/urls');
-const fragmentSender = require('../lib/fragmentSender');
+import request from 'request-promise-native';
+import urls from '../lib/urls';
+import fragmentSender from '../lib/fragmentSender';
 
-const reportStart = (chat, payload) => {
-    request(`${urls.report(payload.report)}?withFragments=1`, (error, res, body) => {
-        const report = JSON.parse(body);
-
-        fragmentSender(chat, report.next_fragments, payload, report.text, report.media);
+export default async (chat, payload) => {
+    const report = await request({
+        uri: `${urls.report(payload.report)}?withFragments=1`,
+        json: true,
     });
-};
 
-module.exports = reportStart;
+    return fragmentSender(chat, report.next_fragments, payload, report.text, report.media);
+};

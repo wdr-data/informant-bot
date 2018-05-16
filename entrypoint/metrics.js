@@ -1,7 +1,7 @@
-const ddb = require('../lib/dynamodb');
-const { Gauge, register } = require('prom-client');
-const Raven = require('raven');
-const RavenLambdaWrapper = require('serverless-sentry-lib');
+import ddb from '../lib/dynamodb';
+import { Gauge, register } from 'prom-client';
+import Raven from 'raven';
+import RavenLambdaWrapper from 'serverless-sentry-lib';
 
 const subs = new Gauge({
     name: 'subscriptions',
@@ -37,21 +37,25 @@ function collectSubscriberMetrics(timing) {
         });
 }
 
-module.exports.prometheus = RavenLambdaWrapper.handler(Raven, (event, context, callback) => {
-    Promise.all([
-        collectSubscriberMetrics(),
-        collectSubscriberMetrics('morning'),
-        collectSubscriberMetrics('evening'),
-        collectSubscriberMetrics('both'),
-    ])
-        .then(() => {
-            callback(null, {
-                statusCode: 200,
-                headers: { 'Content-Type': register.contentType },
-                body: register.metrics(),
-            });
-        })
-        .catch((err) => {
-            callback(err);
+export const prometheus = RavenLambdaWrapper.handler(Raven, async (event, context, callback) => {
+    try {
+        const metrics = [
+            collectSubscriberMetrics(),
+            collectSubscriberMetrics('morning'),
+            collectSubscriberMetrics('evening'),
+            collectSubscriberMetrics('both'),
+        ];
+
+        for (const metric of metrics) {
+            await metric;
+        }
+
+        callback(null, {
+            statusCode: 200,
+            headers: { 'Content-Type': register.contentType },
+            body: register.metrics(),
         });
+    } catch (e) {
+        callback(e.message);
+    }
 });

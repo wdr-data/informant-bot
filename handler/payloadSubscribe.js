@@ -1,5 +1,5 @@
-const { buttonPostback, listElement } = require('../lib/facebook');
-const subscriptions = require('../lib/subscriptions');
+import { buttonPostback, listElement } from '../lib/facebook';
+import libSubscriptions from '../lib/subscriptions';
 
 const getHasLabel = async function(chat) {
     const labels = await chat.getLabels();
@@ -10,10 +10,10 @@ const getHasLabel = async function(chat) {
 
 const disableSubscription = async function(psid, timing) {
     try {
-        const sub = await subscriptions.update(psid, timing, false);
+        const sub = await libSubscriptions.update(psid, timing, false);
         console.log(`Disabled subscription ${timing} in dynamoDB for ${psid}`);
         if (!sub.morning && !sub.evening) {
-            await subscriptions.remove(psid);
+            await libSubscriptions.remove(psid);
             console.log(`Deleted User in dynamoDB with psid ${psid}`);
         }
     } catch (error) {
@@ -27,12 +27,12 @@ const enableSubscription = async function(psid, timing) {
         evening: timing === 'evening',
     };
     try {
-        await subscriptions.create(psid, item);
+        await libSubscriptions.create(psid, item);
         console.log(`Created in dynamoDB ${psid} with ${timing}`);
     } catch (error) {
         console.log('Creating user in dynamoDB failed: ', error);
         try {
-            await subscriptions.update(psid, timing, true);
+            await libSubscriptions.update(psid, timing, true);
             console.log(`Enabled subscription ${timing} in dynamoDB for ${psid}`);
         } catch (error) {
             console.log('Updating user in dynamoDB failed: ', error);
@@ -40,61 +40,58 @@ const enableSubscription = async function(psid, timing) {
     }
 };
 
-module.exports.subscriptions = function(chat) {
-    return Promise.all([
-        chat.sendText('Meine Infos kannst du ein oder zweimal am Tag haben: ' +
-      'Morgens, abends oder beides. Und ich melde mich, wenn etwas wirklich Wichtiges passiert.'),
+export const subscriptions = async function(chat) {
+    const promTxt = chat.sendText('Meine Infos kannst du ein oder zweimal am Tag haben: ' +
+        'Morgens, abends oder beides. Und ich melde mich, wenn etwas wirklich Wichtiges passiert.');
 
-        getHasLabel(chat).then(
-            function(hasLabel) {
-                const elements = [];
+    const hasLabel = await getHasLabel(chat);
+    await promTxt;
 
-                elements.push(listElement(
-                    (hasLabel('push-morning') && hasLabel('push-evening') ? '✔' : '❌') + ' Beides',
-                    'Deine Infos morgens und abends.',
-                    buttonPostback(
-                        !(hasLabel('push-morning') &&
-                         hasLabel('push-evening')) ? 'Anmelden' : 'Abmelden',
-                        {
-                            action: !(hasLabel('push-morning') && hasLabel('push-evening'))
-                                ? 'subscribe'
-                                : 'unsubscribe',
-                            subscription: 'all',
-                        }
-                    )
-                ));
+    const elements = [];
 
-                elements.push(listElement(
-                    (hasLabel('push-morning') ? '✔' : '❌') + ' Deine Infos am Morgen',
-                    'Um 7.30 Uhr gibt\'s Dein erstes Update.',
-                    buttonPostback(
-                        !hasLabel('push-morning') ? 'Anmelden' : 'Abmelden',
-                        {
-                            action: !hasLabel('push-morning') ? 'subscribe' : 'unsubscribe',
-                            subscription: 'morning',
-                        }
-                    )
-                ));
-
-                elements.push(listElement(
-                    (hasLabel('push-evening') ? '✔' : '❌') + ' Deine Infos am Abend',
-                    'Um 18.30 Uhr kriegst Du das, was am Tag wichtig war.',
-                    buttonPostback(
-                        !hasLabel('push-evening') ? 'Anmelden' : 'Abmelden',
-                        {
-                            action: !hasLabel('push-evening') ? 'subscribe' : 'unsubscribe',
-                            subscription: 'evening',
-                        }
-                    )
-                ));
-
-                return chat.sendList(elements);
+    elements.push(listElement(
+        (hasLabel('push-morning') && hasLabel('push-evening') ? '✔' : '❌') + ' Beides',
+        'Deine Infos morgens und abends.',
+        buttonPostback(
+            !(hasLabel('push-morning') &&
+             hasLabel('push-evening')) ? 'Anmelden' : 'Abmelden',
+            {
+                action: !(hasLabel('push-morning') && hasLabel('push-evening'))
+                    ? 'subscribe'
+                    : 'unsubscribe',
+                subscription: 'all',
             }
-        ),
-    ]);
+        )
+    ));
+
+    elements.push(listElement(
+        (hasLabel('push-morning') ? '✔' : '❌') + ' Deine Infos am Morgen',
+        'Um 7.30 Uhr gibt\'s Dein erstes Update.',
+        buttonPostback(
+            !hasLabel('push-morning') ? 'Anmelden' : 'Abmelden',
+            {
+                action: !hasLabel('push-morning') ? 'subscribe' : 'unsubscribe',
+                subscription: 'morning',
+            }
+        )
+    ));
+
+    elements.push(listElement(
+        (hasLabel('push-evening') ? '✔' : '❌') + ' Deine Infos am Abend',
+        'Um 18.30 Uhr kriegst Du das, was am Tag wichtig war.',
+        buttonPostback(
+            !hasLabel('push-evening') ? 'Anmelden' : 'Abmelden',
+            {
+                action: !hasLabel('push-evening') ? 'subscribe' : 'unsubscribe',
+                subscription: 'evening',
+            }
+        )
+    ));
+
+    return chat.sendList(elements);
 };
 
-module.exports.subscribe = function(chat, payload) {
+export const subscribe = function(chat, payload) {
     const promises = [ chat.addLabel('push-breaking') ];
     if (payload.subscription === 'morning' || payload.subscription === 'all') {
         promises.push(
@@ -111,29 +108,26 @@ module.exports.subscribe = function(chat, payload) {
       `Wenn du die letzte Ausgabe sehen willst, schreib einfach "Leg los"`)));
 };
 
-module.exports.unsubscribe = function(chat, payload) {
-    return getHasLabel(chat).then(
-        function(hasLabel) {
-            const promises = [];
-            if (payload.subscription === 'morning' || payload.subscription === 'all') {
-                promises.push(
-                    chat.removeLabel('push-morning'),
-                    disableSubscription(chat.event.sender.id, 'morning'));
-            }
-            if (payload.subscription === 'evening' || payload.subscription === 'all') {
-                promises.push(
-                    chat.removeLabel('push-evening'),
-                    disableSubscription(chat.event.sender.id, 'evening'));
-            }
-            if (
-                payload.subscription === 'all' ||
-        !hasLabel('push-' + (payload.subscription === 'morning' ? 'evening' : 'morning'))
-            ) {
-                promises.push(
-                    chat.removeLabel('push-breaking'));
-            }
-            return Promise.all(promises.concat(
-                chat.sendText(`Schade. Deine Entscheidung. Ich bin hier, wenn Du mich brauchst.`)));
-        }
-    );
+export const unsubscribe = async function(chat, payload) {
+    const hasLabel = await getHasLabel(chat);
+    const promises = [];
+    if (payload.subscription === 'morning' || payload.subscription === 'all') {
+        promises.push(
+            chat.removeLabel('push-morning'),
+            disableSubscription(chat.event.sender.id, 'morning'));
+    }
+    if (payload.subscription === 'evening' || payload.subscription === 'all') {
+        promises.push(
+            chat.removeLabel('push-evening'),
+            disableSubscription(chat.event.sender.id, 'evening'));
+    }
+    if (
+        payload.subscription === 'all' ||
+!hasLabel('push-' + (payload.subscription === 'morning' ? 'evening' : 'morning'))
+    ) {
+        promises.push(
+            chat.removeLabel('push-breaking'));
+    }
+    return Promise.all(promises.concat(
+        chat.sendText(`Schade. Deine Entscheidung. Ich bin hier, wenn Du mich brauchst.`)));
 };

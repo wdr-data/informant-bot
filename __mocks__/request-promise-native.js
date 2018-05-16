@@ -28,9 +28,9 @@
 //    limitations under the License.
 
 
-const extend = require('extend');
-const hash = require('object-hash');
-const fs = require('fs');
+import extend from 'extend';
+import hash from 'object-hash';
+import fs from 'fs';
 
 const calls = [];
 beforeEach(() => {
@@ -117,4 +117,4 @@ request.del = verbFunc('delete');
 request['delete'] = verbFunc('delete');
 request.calls = calls;
 
-module.exports = request;
+export default request;
