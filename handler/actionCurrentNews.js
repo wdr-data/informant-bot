@@ -16,6 +16,11 @@ export default async (chat, payload) => {
 
     const push = data.results[0];
     const report = push.reports;
+
+    if (payload.intro !== false) {
+        await chat.sendText(push.intro);
+    }
+
     if (report.length === 1) {
         const data = {
             type: 'report',
@@ -31,18 +36,13 @@ export default async (chat, payload) => {
         );
     }
 
-    if (payload.intro !== false) {
-        await chat.sendText(push.intro);
-    }
-
     return sendList(chat, push);
 };
 
 const sendList = function(chat, push) {
-    const elements = [];
     const report = push.reports;
-    report.forEach((r) => {
-        elements.push(listElement(r.headline, null,
+    const elements = report.map((r) =>
+        listElement(r.headline, null,
             buttonPostback(
                 'Lesen 📰',
                 {
@@ -52,13 +52,13 @@ const sendList = function(chat, push) {
                     type: 'push',
                 }),
             /\.(jpg|png|gif|jpeg)$/.test(r.media) ? r.media : null,
-        ));
-    });
+        )
+    );
 
     return chat.sendList(
         elements.slice(0, 4),
         buttonPostback(
-            'Reich jetzt',
+            'Reicht jetzt',
             {
                 action: 'push_outro',
                 push: push.id,

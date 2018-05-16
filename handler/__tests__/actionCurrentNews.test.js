@@ -71,7 +71,7 @@ describe('actionCurrentNews', () => {
                     null,
                 ),
             ], facebook.buttonPostback(
-                'Reich jetzt',
+                'Reicht jetzt',
                 {
                     action: 'push_outro',
                     push: 4,
