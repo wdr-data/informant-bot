@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.206.0",
+    "cheerio": "^1.0.0-rc.2",
     "dialogflow": "^0.4.0",
     "eslint-plugin-import": "^2.11.0",
     "moment": "^2.21.0",
