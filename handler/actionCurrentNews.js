@@ -65,5 +65,3 @@ const sendList = function(chat, push) {
             })
     );
 };
-
-module.exports = currentNews;
