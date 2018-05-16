@@ -1,4 +1,4 @@
-import facebook from '../lib/facebook';
+import { Chat, sendBroadcastButtons, guessAttachmentType } from '../lib/facebook';
 import { getAttachmentId } from '../lib/facebookAttachments';
 import dialogflow from 'dialogflow';
 import handler from '../handler';
@@ -45,7 +45,7 @@ export const message = RavenLambdaWrapper.handler(Raven, async (event, context, 
     const msgEvent = payload.entry[0].messaging[0];
     const psid = msgEvent.sender.id;
 
-    const chat = new facebook.Chat(msgEvent);
+    const chat = new Chat(msgEvent);
 
     let replyPayload;
     if (msgEvent.postback) {
@@ -129,7 +129,7 @@ export const push = RavenLambdaWrapper.handler(Raven, async (event, context, cal
     try {
         const push = await getLatestPush(timing, { delivered: 0 });
         const { intro, button } = assemblePush(push);
-        const message = await facebook.sendBroadcastButtons(intro, [ button ], 'push-' + timing);
+        const message = await sendBroadcastButtons(intro, [ button ], 'push-' + timing);
         await markSent(push.id).catch(() => {});
         console.log('Successfully sent push: ', message);
         callback(null, {
@@ -153,7 +153,7 @@ export const attachment = RavenLambdaWrapper.handler(Raven, async (event, contex
     const url = payload.url;
 
     try {
-        const id = await getAttachmentId(url, facebook.guessAttachmentType(url));
+        const id = await getAttachmentId(url, guessAttachmentType(url));
         callback(null, {
             statusCode: 200,
             body: JSON.stringify({ success: true, message: id }),
