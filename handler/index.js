@@ -6,6 +6,11 @@ export default {
         'subscriptions': require('./payloadSubscribe').subscriptions,
         'news_about': require('./actionNewsAbout').newsAbout,
         'share': require('./payloadShare.js').default,
+        'faq_data_protection': require('./actionFaq').default('datenschutz'),
+        'faq_imprint': require('./actionFaq').default('impressum'),
+        'faq_how_to': require('./actionFaq').default('how_to'),
+        'faq_about': require('./actionFaq').default('about'),
+        'faq_onboarding': require('./actionFaq').default('onboarding'),
     },
     payloads: {
         'report_start': require('./payloadReportStart').default,
