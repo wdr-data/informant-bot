@@ -15,5 +15,5 @@ export default async function(chat) {
             null,
             [ buttonUrl(callToAction, informantUrl) ]),
     ];
-    return await chat.sendButtons(text, [ buttonShare(sharedContent) ]);
+    return chat.sendButtons(text, [ buttonShare(sharedContent) ]);
 }
