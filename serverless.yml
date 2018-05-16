@@ -101,6 +101,13 @@ functions:
           path: metrics
           method: get
 
+  audio:
+    handler: entrypoint/audio.scrape
+    events:
+      - http:
+          path: audio
+          method: get
+
 stepFunctions:
   stateMachines:
     pushLegacy:
