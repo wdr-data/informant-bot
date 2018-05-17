@@ -103,10 +103,15 @@ functions:
 
   audio:
     handler: entrypoint/audio.scrape
+    timeout: 30
     events:
       - http:
           path: audio
           method: get
+      - schedule:
+          name: ${self:service}-${self:provider.stage}-audio
+          rate: rate(10 minutes)
+          enabled: true
 
 stepFunctions:
   stateMachines:
