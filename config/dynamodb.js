@@ -29,6 +29,28 @@ const tableProps = {
             },
         ],
     },
+    'audios': {
+        AttributeDefinitions: [
+            {
+                AttributeName: 'url',
+                AttributeType: 'S',
+            },
+            {
+                AttributeName: 'time',
+                AttributeType: 'N',
+            },
+        ],
+        KeySchema: [
+            {
+                AttributeName: 'url',
+                KeyType: 'HASH',
+            },
+            {
+                AttributeName: 'time',
+                KeyType: 'RANGE',
+            },
+        ],
+    },
 };
 
 const tableNames = (stage) => {
