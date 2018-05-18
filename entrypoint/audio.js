@@ -9,7 +9,7 @@ const tableName = process.env.DYNAMODB_AUDIOS;
 export const scrape = RavenLambdaWrapper.handler(Raven, async (event, context, callback) => {
     try {
         const audioResponse = await request({
-            uri: 'https://www1.wdr.de/mediathek/audio/1live/infos/infos-1-100.podcast',
+            uri: process.env.INFOS_AUDIO_URL,
         });
         const $ = load(audioResponse, { xmlMode: true });
         const url = $('rss > channel > item > link').text();
