@@ -3,6 +3,24 @@ const tableName = process.env.DYNAMODB_AUDIOS;
 
 
 export default async (chat, payload) => {
+    let item;
+    try {
+        item = await newestItem();
+    } catch (e) {
+        const today = new Date();
+        const yesterday = today.setDate(today.getDate() - 1);
+        item = await newestItem(yesterday);
+    }
+
+    await chat.sendText(`Deine ` + item.title + `.`);
+    return chat.sendAttachment(item.url);
+};
+
+function newestItem(date = null) {
+    if (date === null) {
+        date = new Date();
+    }
+
     const newestParam = {
         TableName: tableName,
         IndexName: 'dateIndex',
@@ -11,13 +29,13 @@ export default async (chat, payload) => {
             '#dateattr': 'date',
         },
         ExpressionAttributeValues: {
-            ':date': new Date().toISOString().split('T')[0],
+            ':date': date.toISOString().split('T')[0],
         },
         ScanIndexForward: false,
         Limit: 1,
     };
 
-    const newestItem = await new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         dynamoDb.query(newestParam, (err, result) => {
             // handle potential errors
             if (err) {
@@ -33,6 +51,4 @@ export default async (chat, payload) => {
             }
         });
     });
-    await chat.sendText(`Deine ` + newestItem.title + `.`);
-    return chat.sendAttachment(newestItem.url);
-};
+}
