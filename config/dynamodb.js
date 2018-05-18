@@ -39,6 +39,10 @@ const tableProps = {
                 AttributeName: 'time',
                 AttributeType: 'N',
             },
+            {
+                AttributeName: 'date',
+                AttributeType: 'S',
+            },
         ],
         KeySchema: [
             {
@@ -48,6 +52,22 @@ const tableProps = {
             {
                 AttributeName: 'time',
                 KeyType: 'RANGE',
+            },
+        ],
+        GlobalSecondaryIndexes: [
+            {
+                IndexName: 'dateIndex',
+                KeySchema: [
+                    {
+                        AttributeName: 'date',
+                        KeyType: 'HASH',
+                    },
+                ],
+                Projection: { ProjectionType: 'ALL' },
+                ProvisionedThroughput: {
+                    ReadCapacityUnits: 2,
+                    WriteCapacityUnits: 1,
+                },
             },
         ],
     },

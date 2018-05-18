@@ -13,6 +13,7 @@ export const scrape = RavenLambdaWrapper.handler(Raven, async (event, context, c
         });
         const $ = load(audioResponse, { xmlMode: true });
         const url = $('rss > channel > item > link').text();
+        const title = $('rss > channel > item > title').text();
         const existsParam = {
             TableName: tableName,
             KeyConditionExpression: '#urlattr = :url',
@@ -55,6 +56,8 @@ export const scrape = RavenLambdaWrapper.handler(Raven, async (event, context, c
             Item: {
                 url,
                 time: Math.floor(new Date()),
+                date: new Date().toISOString().split('T')[0],
+                title,
             },
         };
 
