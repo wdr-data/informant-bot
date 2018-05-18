@@ -1,21 +1,13 @@
-const request = require('request');
-const urls = require('../lib/urls');
+import request from 'request-promise-native';
+import urls from '../lib/urls';
 
-const pushOutro = (chat, payload) => {
-    request(`${urls.push(payload.push)}`, (error, res, body) => {
-        const push = JSON.parse(body);
+export default async (chat, payload) => {
+    const push = await request({ uri: `${urls.push(payload.push)}`, json: true });
 
-        if (push.media) {
-            chat.sendText(push.outro).then(() => {
-                chat.sendAttachment(push.media);
-            }).catch((error) => {
-                console.log('Sending outro text failed', error);
-            });
-            return;
-        }
+    if (push.media) {
+        await chat.sendText(push.outro);
+        return chat.sendAttachment(push.media);
+    }
 
-        chat.sendText(push.outro);
-    });
+    return chat.sendText(push.outro);
 };
-
-module.exports = pushOutro;

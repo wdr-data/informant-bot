@@ -1,4 +1,4 @@
-const request = require('request-promise-native');
+import request from 'request-promise-native';
 
 const FB_PAGETOKEN = process.env.FB_PAGETOKEN;
 const MESSENGER_PROFILE_URL = 'https://graph.facebook.com/v2.6/me/messenger_profile';

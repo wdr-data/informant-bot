@@ -1,4 +1,5 @@
 /* eslint-disable node/no-unpublished-require */
+/* eslint-disable import/no-commonjs */
 const slsw = require('serverless-webpack');
 const webpack = require('webpack');
 

@@ -1,12 +1,12 @@
-const getTiming = require('../lib/timing');
-const { assemblePush, getLatestPush, markSent } = require('../lib/pushData');
-const facebook = require('../lib/facebook');
-const ddb = require('../lib/dynamodb');
-const Raven = require('raven');
-const RavenLambdaWrapper = require('serverless-sentry-lib');
+import getTiming from '../lib/timing';
+import { assemblePush, getLatestPush, markSent } from '../lib/pushData';
+import facebook from '../lib/facebook';
+import ddb from '../lib/dynamodb';
+import Raven from 'raven';
+import RavenLambdaWrapper from 'serverless-sentry-lib';
 
 
-module.exports.fetch = RavenLambdaWrapper.handler(Raven, function(event, context, callback) {
+export const fetch = RavenLambdaWrapper.handler(Raven, function(event, context, callback) {
     console.log(JSON.stringify(event, null, 2));
 
     // check if timing is right
@@ -33,7 +33,7 @@ module.exports.fetch = RavenLambdaWrapper.handler(Raven, function(event, context
         });
 });
 
-module.exports.send = RavenLambdaWrapper.handler(Raven, function(event, context, callback) {
+export const send = RavenLambdaWrapper.handler(Raven, function(event, context, callback) {
     console.log('attempting to push chunk for push', event.push.id);
 
     const { intro, button } = assemblePush(event.push);
@@ -76,7 +76,7 @@ module.exports.send = RavenLambdaWrapper.handler(Raven, function(event, context,
         });
 });
 
-function getUsers(timing, start = null, limit = 100) {
+export function getUsers(timing, start = null, limit = 100) {
     const params = {
         Limit: limit,
         TableName: process.env.DYNAMODB_SUBSCRIPTIONS,
@@ -97,9 +97,8 @@ function getUsers(timing, start = null, limit = 100) {
         });
     });
 }
-module.exports.getUsers = getUsers;
 
-module.exports.finish = RavenLambdaWrapper.handler(Raven, function(event, context, callback) {
+export const finish = RavenLambdaWrapper.handler(Raven, function(event, context, callback) {
     console.log('Sending of push finished:', event);
     markSent(event.id)
         .then(() => callback(null, {}))

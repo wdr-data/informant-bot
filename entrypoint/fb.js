@@ -1,14 +1,14 @@
-const facebook = require('../lib/facebook');
-const { getAttachmentId } = require('../lib/facebookAttachments');
-const dialogflow = require('dialogflow');
-const handler = require('../handler');
-const getTiming = require('../lib/timing');
-const { assemblePush, getLatestPush, markSent } = require('../lib/pushData');
-const Raven = require('raven');
-const RavenLambdaWrapper = require('serverless-sentry-lib');
+import { Chat, sendBroadcastButtons, guessAttachmentType } from '../lib/facebook';
+import { getAttachmentId } from '../lib/facebookAttachments';
+import dialogflow from 'dialogflow';
+import handler from '../handler';
+import getTiming from '../lib/timing';
+import { assemblePush, getLatestPush, markSent } from '../lib/pushData';
+import Raven from 'raven';
+import RavenLambdaWrapper from 'serverless-sentry-lib';
 
 
-module.exports.verify = RavenLambdaWrapper.handler(Raven, (event, context, callback) => {
+export const verify = RavenLambdaWrapper.handler(Raven, (event, context, callback) => {
     const params = event.queryStringParameters || {};
 
     const token = params['hub.verify_token'];
@@ -32,7 +32,7 @@ module.exports.verify = RavenLambdaWrapper.handler(Raven, (event, context, callb
     });
 });
 
-module.exports.message = RavenLambdaWrapper.handler(Raven, (event, context, callback) => {
+export const message = RavenLambdaWrapper.handler(Raven, async (event, context, callback) => {
     const payload = JSON.parse(event.body);
 
     callback(null, {
@@ -45,7 +45,7 @@ module.exports.message = RavenLambdaWrapper.handler(Raven, (event, context, call
     const msgEvent = payload.entry[0].messaging[0];
     const psid = msgEvent.sender.id;
 
-    const chat = new facebook.Chat(msgEvent);
+    const chat = new Chat(msgEvent);
 
     let replyPayload;
     if (msgEvent.postback) {
@@ -90,33 +90,31 @@ module.exports.message = RavenLambdaWrapper.handler(Raven, (event, context, call
         },
     };
 
-    sessionClient
-        .detectIntent(request)
-        .then((responses) => {
-            console.log('Detected intent');
-            const result = responses[0].queryResult;
-            console.log(`  Query: ${result.queryText}`);
-            console.log(`  Response: ${result.fulfillmentText}`);
-            if (result.intent) {
-                console.log(`  Intent: ${result.intent.displayName}`);
-                console.log(`  Action: ${result.action}`);
-                if (result.action in handler.actions) {
-                    handler.actions[result.action](chat, result.parameters['fields']);
-                } else {
-                    chat.sendText(result.fulfillmentText);
-                }
+    try {
+        const responses = await sessionClient.detectIntent(request);
+        console.log('Detected intent');
+        const result = responses[0].queryResult;
+        console.log(`  Query: ${result.queryText}`);
+        console.log(`  Response: ${result.fulfillmentText}`);
+        if (result.intent) {
+            console.log(`  Intent: ${result.intent.displayName}`);
+            console.log(`  Action: ${result.action}`);
+            if (result.action in handler.actions) {
+                handler.actions[result.action](chat, result.parameters['fields']);
             } else {
-                console.log(`  No intent matched.`);
-                chat.sendText(`Da bin ich jetzt überfragt. Kannst Du das anders formulieren?`);
+                return chat.sendText(result.fulfillmentText);
             }
-        })
-        .catch((err) => {
-            console.error('ERROR:', err);
-            chat.sendText('Da ist was schief gelaufen.');
-        });
+        } else {
+            console.log(`  No intent matched.`);
+            return chat.sendText(`Da bin ich jetzt überfragt. Kannst Du das anders formulieren?`);
+        }
+    } catch (e) {
+        console.error('ERROR:', e);
+        return chat.sendText('Da ist was schief gelaufen.');
+    }
 });
 
-module.exports.push = RavenLambdaWrapper.handler(Raven, (event, context, callback) => {
+export const push = RavenLambdaWrapper.handler(Raven, async (event, context, callback) => {
     let timing;
     try {
         timing = getTiming(event);
@@ -128,47 +126,42 @@ module.exports.push = RavenLambdaWrapper.handler(Raven, (event, context, callbac
         return;
     }
 
-    getLatestPush(timing, { delivered: 0 })
-        .then((push) => {
-            const { intro, button } = assemblePush(push);
-            return Promise.all([
-                facebook.sendBroadcastButtons(intro, [ button ], 'push-' + timing),
-                Promise.resolve(push),
-            ]);
-        })
-        .then(([ message, push ]) => {
-            markSent(push.id).catch(() => {});
-            console.log('Successfully sent push: ', message);
-            callback(null, {
-                statusCode: 200,
-                body: JSON.stringify({
-                    success: true,
-                    message: 'Successfully sent push: ' + message,
-                }),
-            });
-        })
-        .catch((error) => {
-            console.log('Sending push failed: ', JSON.stringify(error, null, 2));
-            callback(null, {
-                statusCode: 500,
-                body: JSON.stringify({ success: false, message: error.message }),
-            });
+    try {
+        const push = await getLatestPush(timing, { delivered: 0 });
+        const { intro, button } = assemblePush(push);
+        const message = await sendBroadcastButtons(intro, [ button ], 'push-' + timing);
+        await markSent(push.id).catch(() => {});
+        console.log('Successfully sent push: ', message);
+        callback(null, {
+            statusCode: 200,
+            body: JSON.stringify({
+                success: true,
+                message: 'Successfully sent push: ' + message,
+            }),
         });
+    } catch (e) {
+        console.log('Sending push failed: ', JSON.stringify(e, null, 2));
+        callback(null, {
+            statusCode: 500,
+            body: JSON.stringify({ success: false, message: e.message }),
+        });
+    }
 });
 
-module.exports.attachment = RavenLambdaWrapper.handler(Raven, (event, context, callback) => {
+export const attachment = RavenLambdaWrapper.handler(Raven, async (event, context, callback) => {
     const payload = JSON.parse(event.body);
     const url = payload.url;
 
-    getAttachmentId(url, facebook.guessAttachmentType(url)).then((id) => {
+    try {
+        const id = await getAttachmentId(url, guessAttachmentType(url));
         callback(null, {
             statusCode: 200,
             body: JSON.stringify({ success: true, message: id }),
         });
-    }).catch((error) => {
+    } catch (e) {
         callback(null, {
             statusCode: 500,
-            body: JSON.stringify({ success: false, message: error }),
+            body: JSON.stringify({ success: false, message: e.message }),
         });
-    });
+    }
 });

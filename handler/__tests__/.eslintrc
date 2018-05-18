@@ -1,6 +1,5 @@
 {
   "rules": {
-    "node/no-unsupported-features": 2,
     "import/no-commonjs": 0
   }
 }
