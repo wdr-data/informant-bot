@@ -101,6 +101,15 @@ functions:
           path: metrics
           method: get
 
+  audio:
+    handler: entrypoint/audio.scrape
+    timeout: 30
+    events:
+      - schedule:
+          name: ${self:service}-${self:provider.stage}-audio
+          rate: rate(10 minutes)
+          enabled: true
+
 stepFunctions:
   stateMachines:
     pushLegacy:

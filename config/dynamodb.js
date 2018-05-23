@@ -29,6 +29,48 @@ const tableProps = {
             },
         ],
     },
+    'audios': {
+        AttributeDefinitions: [
+            {
+                AttributeName: 'url',
+                AttributeType: 'S',
+            },
+            {
+                AttributeName: 'time',
+                AttributeType: 'N',
+            },
+            {
+                AttributeName: 'date',
+                AttributeType: 'S',
+            },
+        ],
+        KeySchema: [
+            {
+                AttributeName: 'url',
+                KeyType: 'HASH',
+            },
+            {
+                AttributeName: 'time',
+                KeyType: 'RANGE',
+            },
+        ],
+        GlobalSecondaryIndexes: [
+            {
+                IndexName: 'dateIndex',
+                KeySchema: [
+                    {
+                        AttributeName: 'date',
+                        KeyType: 'HASH',
+                    },
+                ],
+                Projection: { ProjectionType: 'ALL' },
+                ProvisionedThroughput: {
+                    ReadCapacityUnits: 2,
+                    WriteCapacityUnits: 1,
+                },
+            },
+        ],
+    },
 };
 
 const tableNames = (stage) => {
