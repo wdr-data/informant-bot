@@ -26,7 +26,7 @@ export default async (chat, payload) => {
             report: firstReport.id,
             type: 'push',
         });
-    const payloads = push.reports.map((r) =>
+    const quickReplies = push.reports.map((r) =>
         quickReply(r.headline,
             {
                 action: 'report_start',
@@ -37,5 +37,5 @@ export default async (chat, payload) => {
             },
         ));
 
-    return chat.sendButtons(introHeadlines, [ button ], payloads);
+    return chat.sendButtons(introHeadlines, [ button ], quickReplies);
 };
