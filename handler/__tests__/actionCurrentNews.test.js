@@ -21,6 +21,11 @@ describe('actionCurrentNews', () => {
                             report: 2,
                             type: 'push',
                         }),
+                    facebook.buttonPostback(
+                        'Infos zum Hören 🎧',
+                        {
+                            action: 'current_audio',
+                        }),
                 ],
                 [
                     {
