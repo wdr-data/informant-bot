@@ -1,4 +1,5 @@
 import request from 'request-promise-native';
+import moment from 'moment-timezone';
 import urls from '../lib/urls';
 import fragmentSender from '../lib/fragmentSender';
 import { buttonPostback, listElement } from '../lib/facebook';
@@ -28,7 +29,8 @@ export const newsAbout = async (chat, payload) => {
             type: 'report',
             report: report.id,
         };
-        await chat.sendText(report[0].headline);
+        const reportDate = moment(report[0].created).tz('Europe/Berlin').format('DD.MM.YYYY');
+        await chat.sendText(`${report[0].headline} vom ${reportDate}`);
         return fragmentSender(
             chat,
             report[0].next_fragments,
@@ -40,7 +42,8 @@ export const newsAbout = async (chat, payload) => {
 
     const elements = [];
     report.forEach((r) => {
-        elements.push(listElement(r.headline, r.text, buttonPostback(
+        const reportDate = moment(r.created).tz('Europe/Berlin').format('DD.MM.YYYY');
+        elements.push(listElement(`${reportDate} - ${r.headline}`, r.text, buttonPostback(
             'Lesen 📰',
             {
                 action: 'report_start',
