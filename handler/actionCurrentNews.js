@@ -18,13 +18,18 @@ export default async (chat, payload) => {
     const introHeadlines = push.intro.concat('\n')
         .concat(push.reports.map((r) => '➡ '.concat(r.headline)).join('\n'));
     const firstReport = push.reports[0];
-    const button = buttonPostback(
+    const buttonAll = buttonPostback(
         'Alle Infos',
         {
             action: 'report_start',
             push: push.id,
             report: firstReport.id,
             type: 'push',
+        });
+    const buttonAudio = buttonPostback(
+        'Infos zum Hören 🎧',
+        {
+            action: 'current_audio',
         });
     const quickReplies = push.reports.map((r) =>
         quickReply(r.headline,
@@ -37,5 +42,5 @@ export default async (chat, payload) => {
             },
         ));
 
-    return chat.sendButtons(introHeadlines, [ button ], quickReplies);
+    return chat.sendButtons(introHeadlines, [ buttonAll, buttonAudio ], quickReplies);
 };
