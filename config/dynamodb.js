@@ -62,6 +62,10 @@ const tableProps = {
                         AttributeName: 'date',
                         KeyType: 'HASH',
                     },
+                    {
+                        AttributeName: 'time',
+                        KeyType: 'RANGE',
+                    },
                 ],
                 Projection: { ProjectionType: 'ALL' },
                 ProvisionedThroughput: {
