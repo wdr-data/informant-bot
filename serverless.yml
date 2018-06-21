@@ -205,7 +205,6 @@ plugins:
   - serverless-offline
   - serverless-domain-manager
   - serverless-plugin-scripts
-  - serverless-step-functions
   - serverless-pseudo-parameters
   - serverless-webpack
   - serverless-sentry
