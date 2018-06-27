@@ -58,11 +58,9 @@ export const newsAbout = async (chat, payload) => {
 export const searchId = async (payload) => {
     const searchParameter = [
         'genres',
-        'topics',
         'tags',
     ];
     const map = {
-        topics: 'topic',
         genres: 'genres',
         tags: 'tags',
     };
