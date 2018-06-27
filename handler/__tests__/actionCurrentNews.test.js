@@ -22,7 +22,7 @@ describe('actionCurrentNews', () => {
                             type: 'push',
                         }),
                     facebook.buttonPostback(
-                        'Infos zum Hören 🎧',
+                        'Aktuelle Infos 🎧',
                         {
                             action: 'current_audio',
                         }),
