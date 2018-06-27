@@ -107,7 +107,7 @@ functions:
     events:
       - schedule:
           name: ${self:service}-${self:provider.stage}-audio
-          rate: rate(10 minutes)
+          rate: rate(3 minutes)
           enabled: true
 
 stepFunctions:
