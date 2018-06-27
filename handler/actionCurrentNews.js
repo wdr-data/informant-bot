@@ -27,7 +27,7 @@ export default async (chat, payload) => {
             type: 'push',
         });
     const buttonAudio = buttonPostback(
-        'Infos zum Hören 🎧',
+        'Aktuelle Infos hören',
         {
             action: 'current_audio',
         });
