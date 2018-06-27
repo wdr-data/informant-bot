@@ -140,7 +140,7 @@ export const push = RavenLambdaWrapper.handler(Raven, async (event, context, cal
             }),
         });
     } catch (e) {
-        console.log('Sending push failed: ', JSON.stringify(e, null, 2));
+        console.error('Sending push failed: ', e.message);
         callback(null, {
             statusCode: 500,
             body: JSON.stringify({ success: false, message: e.message }),

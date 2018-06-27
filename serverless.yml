@@ -101,6 +101,15 @@ functions:
           path: metrics
           method: get
 
+  audio:
+    handler: entrypoint/audio.scrape
+    timeout: 30
+    events:
+      - schedule:
+          name: ${self:service}-${self:provider.stage}-audio
+          rate: rate(3 minutes)
+          enabled: true
+
 stepFunctions:
   stateMachines:
     pushLegacy:
@@ -196,7 +205,6 @@ plugins:
   - serverless-offline
   - serverless-domain-manager
   - serverless-plugin-scripts
-  - serverless-step-functions
   - serverless-pseudo-parameters
   - serverless-webpack
   - serverless-sentry

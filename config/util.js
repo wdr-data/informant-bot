@@ -13,6 +13,7 @@ const requiredEnv = [
     'SENTRY_DSN',
     'PROM_PUSH_API_KEY',
     'PROM_PUSH_TARGET',
+    'INFOS_AUDIO_URL',
 ];
 
 const loadConfig = () => {
