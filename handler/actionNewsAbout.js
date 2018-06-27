@@ -30,7 +30,7 @@ export const newsAbout = async (chat, payload) => {
             report: report.id,
         };
         const reportDate = moment(report[0].created).tz('Europe/Berlin').format('DD.MM.YYYY');
-        await chat.sendText(`${report[0].headline} vom ${reportDate}`);
+        await chat.sendText(`${reportDate} - ${report[0].headline}`);
         return fragmentSender(
             chat,
             report[0].next_fragments,
