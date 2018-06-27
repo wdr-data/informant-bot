@@ -37,7 +37,7 @@ describe('actionCurrentNews', () => {
                             report: 2,
                             type: 'push',
                         },
-                        title: 'Luft in einigen NRW-Städten ist besser geworden',
+                        title: 'Bessere Luft',
                     },
                     {
                         imageUrl: null,
@@ -48,7 +48,7 @@ describe('actionCurrentNews', () => {
                             report: 253,
                             type: 'push',
                         },
-                        title: 'Unfall löst Diskussion über selbstfahrende Autos aus',
+                        title: 'Unfall',
                     },
                     {
                         imageUrl: null,
@@ -59,7 +59,7 @@ describe('actionCurrentNews', () => {
                             report: 251,
                             type: 'push',
                         },
-                        title: 'Public Viewing wird auch nach 22 Uhr erlaubt',
+                        title: 'Public Viewing',
                     },
                     {
                         imageUrl: null,
@@ -70,7 +70,7 @@ describe('actionCurrentNews', () => {
                             report: 254,
                             type: 'push',
                         },
-                        title: 'Das Letzte: Deine Songs zum Glücklichsein',
+                        title: 'Das Letzte',
                     },
                 ]
             );
