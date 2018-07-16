@@ -36,7 +36,7 @@ export const fetch = RavenLambdaWrapper.handler(Raven, function(event, context, 
 export const send = RavenLambdaWrapper.handler(Raven, function(event, context, callback) {
     console.log('attempting to push chunk for push', event.push.id);
 
-    const { intro, button } = assemblePush(event.push);
+    const { intro, button, quickReplies } = assemblePush(event.push);
 
     let count = 0;
     let lastUser;
@@ -53,7 +53,7 @@ export const send = RavenLambdaWrapper.handler(Raven, function(event, context, c
         })
         .then((users) => Promise.all(users.map((user) => {
             const chat = new facebook.Chat({ sender: { id: user.psid } });
-            return chat.sendButtons(intro, [ button ]).catch(console.error);
+            return chat.sendButtons(intro, [ button ], quickReplies).catch(console.error);
         })))
         .then(() => {
             console.log(`Push sent to ${count} users`);
