@@ -128,9 +128,9 @@ export const push = RavenLambdaWrapper.handler(Raven, async (event, context, cal
 
     try {
         const push = await getLatestPush(timing, { delivered: 0 });
-        const { intro, button, quickReplies } = assemblePush(push);
+        const { intro, buttons, quickReplies } = assemblePush(push);
         const message = await sendBroadcastButtons(
-            intro, [ button ], quickReplies, 'push-' + timing
+            intro, buttons, quickReplies, 'push-' + timing
         );
         await markSent(push.id).catch(() => {});
         console.log('Successfully sent push: ', message);
