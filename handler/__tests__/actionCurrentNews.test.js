@@ -37,7 +37,7 @@ describe('actionCurrentNews', () => {
                             report: 2,
                             type: 'push',
                         },
-                        title: 'Bessere Luft',
+                        title: '➡ Bessere Luft',
                     },
                     {
                         imageUrl: null,
@@ -48,7 +48,7 @@ describe('actionCurrentNews', () => {
                             report: 253,
                             type: 'push',
                         },
-                        title: 'Unfall',
+                        title: '➡ Unfall',
                     },
                     {
                         imageUrl: null,
@@ -59,7 +59,7 @@ describe('actionCurrentNews', () => {
                             report: 251,
                             type: 'push',
                         },
-                        title: 'Public Viewing',
+                        title: '➡ Public Viewing',
                     },
                     {
                         imageUrl: null,
@@ -70,7 +70,7 @@ describe('actionCurrentNews', () => {
                             report: 254,
                             type: 'push',
                         },
-                        title: 'Das Letzte',
+                        title: '➡ Das Letzte',
                     },
                 ]
             );

@@ -32,7 +32,7 @@ export default async (chat, payload) => {
             action: 'current_audio',
         });
     const quickReplies = push.reports.map((r) =>
-        quickReply(r.short_headline ? r.short_headline : r.headline,
+        quickReply(r.short_headline ? '➡ ' + r.short_headline : '➡ ' + r.headline,
             {
                 action: 'report_start',
                 push: push.id,
