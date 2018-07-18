@@ -82,6 +82,10 @@ export const message = RavenLambdaWrapper.handler(Raven, async (event, context, 
         } else {
             text = '#cannothandlepicture';
         }
+    } else if (
+        'attachments' in msgEvent.message && msgEvent.message.attachments[0].type === 'audio'
+    ) {
+        text = '#thisisanaudio';
     }
 
     const sessionClient = new dialogflow.SessionsClient({
