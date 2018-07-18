@@ -76,8 +76,6 @@ describe('payload_subscribe.subscriptions', () => {
         const chat = new facebook.Chat({ sender: { id: '1' } }, [ 'push-morning' ]);
         await payloadSubscribe.subscriptions(chat);
         new Expect(chat)
-            .text('Meine Infos kannst du ein oder zweimal am Tag haben: ' +
-    'Morgens, abends oder beides. Und ich melde mich, wenn etwas wirklich Wichtiges passiert.')
             .labels()
             .list([
                 facebook.listElement(
