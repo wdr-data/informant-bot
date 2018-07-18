@@ -71,7 +71,7 @@ export const message = RavenLambdaWrapper.handler(Raven, async (event, context, 
         return;
     }
 
-    const text = msgEvent.message.text;
+    const text = msgEvent.message.text.slice(0, 255);
 
     const sessionClient = new dialogflow.SessionsClient({
         /* eslint-disable */
