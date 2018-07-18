@@ -71,7 +71,18 @@ export const message = RavenLambdaWrapper.handler(Raven, async (event, context, 
         return;
     }
 
-    const text = msgEvent.message.text.slice(0, 255);
+    let text = '#dontknowwhatthisis';
+    if ('text' in msgEvent.message) {
+        text = msgEvent.message.text.slice(0, 255);
+    } else if (
+        'attachments' in msgEvent.message && msgEvent.message.attachments[0].type === 'image'
+    ) {
+        if ('sticker_id' in msgEvent.message && msgEvent.message.sticker_id === 369239263222822) {
+            text = '#thumbsup';
+        } else {
+            text = '#cannothandlepicture';
+        }
+    }
 
     const sessionClient = new dialogflow.SessionsClient({
         /* eslint-disable */
