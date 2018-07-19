@@ -130,6 +130,13 @@ CMS_BASE_URL/api/v1
 As a feature we provide audio news from a podcast feed.
 --> https://www1.wdr.de/mediathek/audio/1live/infos/infos-1-100.podcast
 
+If your `yarn sls deploy` runs successfully: 
+- you will receive endpoints in your consle, grab the first one - ending with fb
+- go to your app on developers.facebook.com and setup a webhook, using the endpoint and the `FB_VERIFYTOKEN` you set up earlier in your `.env.yml`.   
+- in developers.facebook.com go to 'messenger' and select a page to subscribe your webhook to the page events 
+
+Now you can start chatting with your bot and develop new features.
+
 
 ## Datenschutz
 Es gelten die Facebook-Datenschutz-Regeln. Falls Nutzer sich für Push-Nachrichten anmelden, speichert der Bot eine PSID (page specific id). Diese ID identifiziert den User nur im Chat und hat sonst keine Bedeutung für Facebook.
