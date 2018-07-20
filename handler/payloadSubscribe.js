@@ -41,11 +41,7 @@ const enableSubscription = async function(psid, timing) {
 };
 
 export const subscriptions = async function(chat) {
-    const promTxt = chat.sendText('Meine Infos kannst du ein oder zweimal am Tag haben: ' +
-        'Morgens, abends oder beides. Und ich melde mich, wenn etwas wirklich Wichtiges passiert.');
-
     const hasLabel = await getHasLabel(chat);
-    await promTxt;
 
     const elements = [];
 
