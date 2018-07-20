@@ -6,6 +6,7 @@ import getTiming from '../lib/timing';
 import { assemblePush, getLatestPush, markSent } from '../lib/pushData';
 import Raven from 'raven';
 import RavenLambdaWrapper from 'serverless-sentry-lib';
+import { pushPrometheus, promMetrics } from '../lib/metrics';
 
 
 export const verify = RavenLambdaWrapper.handler(Raven, (event, context, callback) => {
@@ -86,6 +87,23 @@ export const message = RavenLambdaWrapper.handler(Raven, async (event, context, 
         'attachments' in msgEvent.message && msgEvent.message.attachments[0].type === 'audio'
     ) {
         text = '#thisisanaudio';
+    }
+
+    if ('postback' in msgEvent && 'referral' in msgEvent.postback &&
+            'ref' in msgEvent.postback.referral) {
+        const ref = msgEvent.postback.referral.ref;
+        if (ref === 'stats-amp-index' || ref.startswith('stats-amp-report-')) {
+            promMetrics.subscriptions.inc({
+                linked: ref,
+            });
+
+            try {
+                return pushPrometheus();
+            } catch (err) {
+                return console.error('Sending metrics failed:', err);
+            }
+        }
+        return chat.sendText('Willkommen zurück. Was kann ich für dich tun?');
     }
 
     const sessionClient = new dialogflow.SessionsClient({
