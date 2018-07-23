@@ -122,7 +122,14 @@ export const message = RavenLambdaWrapper.handler(Raven, async (event, context, 
         return chat.sendText(`Da bin ich jetzt überfragt. Kannst Du das anders formulieren?`);
     } catch (e) {
         console.error('ERROR:', e);
-        return chat.sendText('Da ist was schief gelaufen.');
+        Raven.captureException(e);
+
+        try {
+            return chat.sendText('Da ist was schief gelaufen.');
+        } catch (e) {
+            console.error('Reporting error to user failed with:', e);
+            return;
+        }
     }
 });
 
