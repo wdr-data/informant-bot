@@ -32,20 +32,40 @@ export const verify = RavenLambdaWrapper.handler(Raven, (event, context, callbac
     });
 });
 
+
+// wraps the function handler with extensive error handling
 export const message = RavenLambdaWrapper.handler(Raven, async (event, context, callback) => {
-    const payload = JSON.parse(event.body);
+    let chat = null;
+    try {
+        const payload = JSON.parse(event.body);
 
-    callback(null, {
-        statusCode: 200,
-        body: 'works',
-    });
+        callback(null, {
+            statusCode: 200,
+            body: 'works',
+        });
 
-    console.log(JSON.stringify(payload, null, 2));
+        console.log(JSON.stringify(payload, null, 2));
 
-    const msgEvent = payload.entry[0].messaging[0];
+        const msgEvent = payload.entry[0].messaging[0];
+        chat = new Chat(msgEvent);
+
+        return handleMessage(event, context, chat, msgEvent);
+    } catch (error) {
+        console.error('ERROR:', error);
+        Raven.captureException(error);
+
+        try {
+            if (chat) {
+                return chat.sendText('Da ist was schief gelaufen.');
+            }
+        } catch (e) {
+            console.error('Reporting error to user failed with:', e);
+        }
+    }
+});
+
+const handleMessage = async (event, context, chat, msgEvent) => {
     const psid = msgEvent.sender.id;
-
-    const chat = new Chat(msgEvent);
 
     let replyPayload;
     if (msgEvent.postback) {
@@ -103,35 +123,23 @@ export const message = RavenLambdaWrapper.handler(Raven, async (event, context, 
         },
     };
 
-    try {
-        const responses = await sessionClient.detectIntent(request);
-        console.log('Detected intent');
-        const result = responses[0].queryResult;
-        console.log(`  Query: ${result.queryText}`);
-        console.log(`  Response: ${result.fulfillmentText}`);
-        if (result.intent) {
-            console.log(`  Intent: ${result.intent.displayName}`);
-            console.log(`  Action: ${result.action}`);
-            if (result.action in handler.actions) {
-                return handler.actions[result.action](chat, result.parameters['fields']);
-            }
-            return chat.sendText(result.fulfillmentText);
+    const responses = await sessionClient.detectIntent(request);
+    console.log('Detected intent');
+    const result = responses[0].queryResult;
+    console.log(`  Query: ${result.queryText}`);
+    console.log(`  Response: ${result.fulfillmentText}`);
+    if (result.intent) {
+        console.log(`  Intent: ${result.intent.displayName}`);
+        console.log(`  Action: ${result.action}`);
+        if (result.action in handler.actions) {
+            return handler.actions[result.action](chat, result.parameters['fields']);
         }
-
-        console.log('No intent matched.');
-        return chat.sendText(`Da bin ich jetzt überfragt. Kannst Du das anders formulieren?`);
-    } catch (e) {
-        console.error('ERROR:', e);
-        Raven.captureException(e);
-
-        try {
-            return chat.sendText('Da ist was schief gelaufen.');
-        } catch (e) {
-            console.error('Reporting error to user failed with:', e);
-            return;
-        }
+        return chat.sendText(result.fulfillmentText);
     }
-});
+
+    console.log('No intent matched.');
+    return chat.sendText(`Da bin ich jetzt überfragt. Kannst Du das anders formulieren?`);
+};
 
 export const push = RavenLambdaWrapper.handler(Raven, async (event, context, callback) => {
     let timing;
