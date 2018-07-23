@@ -64,11 +64,9 @@ export const message = RavenLambdaWrapper.handler(Raven, async (event, context, 
 
     if (replyPayload) {
         if (replyPayload.action in handler.payloads) {
-            handler.payloads[replyPayload.action](chat, replyPayload);
-        } else {
-            chat.sendText(`Da ist was schief gelaufen.`);
+            return handler.payloads[replyPayload.action](chat, replyPayload);
         }
-        return;
+        return chat.sendText(`Da ist was schief gelaufen.`);
     }
 
     let text = '#dontknowwhatthisis';
@@ -115,14 +113,13 @@ export const message = RavenLambdaWrapper.handler(Raven, async (event, context, 
             console.log(`  Intent: ${result.intent.displayName}`);
             console.log(`  Action: ${result.action}`);
             if (result.action in handler.actions) {
-                handler.actions[result.action](chat, result.parameters['fields']);
-            } else {
-                return chat.sendText(result.fulfillmentText);
+                return handler.actions[result.action](chat, result.parameters['fields']);
             }
-        } else {
-            console.log(`  No intent matched.`);
-            return chat.sendText(`Da bin ich jetzt überfragt. Kannst Du das anders formulieren?`);
+            return chat.sendText(result.fulfillmentText);
         }
+
+        console.log('No intent matched.');
+        return chat.sendText(`Da bin ich jetzt überfragt. Kannst Du das anders formulieren?`);
     } catch (e) {
         console.error('ERROR:', e);
         return chat.sendText('Da ist was schief gelaufen.');
