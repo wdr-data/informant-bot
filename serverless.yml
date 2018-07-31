@@ -89,14 +89,6 @@ functions:
           input:
             timing: evening
 
-  fbPushLegacyFetch:
-    handler: entrypoint/fbPushLegacy.fetch
-  fbPushLegacySend:
-    handler: entrypoint/fbPushLegacy.send
-    timeout: 30
-  fbPushLegacyFinish:
-    handler: entrypoint/fbPushLegacy.finish
-
   metrics:
     handler: entrypoint/metrics.prometheus
     events:
@@ -112,75 +104,6 @@ functions:
           name: ${self:service}-${self:provider.stage}-audio
           rate: rate(3 minutes)
           enabled: true
-
-stepFunctions:
-  stateMachines:
-    pushLegacy:
-      name: ${self:service}-${self:provider.stage}-pushLegacy
-      events:
-        # - http:
-        #     path: push
-        #     method: post
-        - schedule:
-            name: ${self:service}-${self:provider.stage}-pushLegacy_morning_2
-            rate: cron(30 6 ? * MON-FRI *)  # UTC+1 (No DST)
-            enabled: false
-            input:
-              timing: morning
-        - schedule:
-            name: ${self:service}-${self:provider.stage}-pushLegacy_morning_dst_2
-            rate: cron(30 5 ? * MON-FRI *)  # UTC+2 (DST)
-            enabled: false
-            input:
-              timing: morning
-        - schedule:
-            name: ${self:service}-${self:provider.stage}-pushLegacy_morning_weekend_2
-            rate: cron(0 8 ? * SAT,SUN *)  # UTC+1 (No DST)
-            enabled: false
-            input:
-              timing: morning
-        - schedule:
-            name: ${self:service}-${self:provider.stage}-pushLegacy_morning_weekend_dst_2
-            rate: cron(0 7 ? * SAT,SUN *)  # UTC+2 (DST)
-            enabled: false
-            input:
-              timing: morning
-        - schedule:
-            name: ${self:service}-${self:provider.stage}-pushLegacy_evening_2
-            rate: cron(30 17 * * ? *)  # UTC+1 (No DST)
-            enabled: false
-            input:
-              timing: evening
-        - schedule:
-            name: ${self:service}-${self:provider.stage}-pushLegacy_evening_dst_2
-            rate: cron(30 16 * * ? *)  # UTC+2 (DST)
-            enabled: false
-            input:
-              timing: evening
-      definition:
-        StartAt: fetching
-        States:
-          fetching:
-            Type: Task
-            Resource: "arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-${self:provider.stage}-fbPushLegacyFetch"
-            Next: loop
-          loop:
-            Type: Choice
-            Choices:
-              - Variable: "$.state"
-                StringEquals: "nextChunk"
-                Next: sending
-              - Variable: "$.state"
-                StringEquals: "finished"
-                Next: finished
-          sending:
-            Type: Task
-            Resource: "arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-${self:provider.stage}-fbPushLegacySend"
-            Next: loop
-          finished:
-            Type: Task
-            Resource: "arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-${self:provider.stage}-fbPushLegacyFinish"
-            End: true
 
 custom:
   customDomain:
