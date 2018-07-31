@@ -6,6 +6,9 @@ provider:
   runtime: nodejs6.10
   stage: ${file(config/env.js):stage}
   environment: ${file(config/env.js):env}
+  role: 'arn:aws:iam::#{AWS::AccountId}:role/hackingstudio/informant/hackingstudio-informant-bot-functions'
+  deploymentBucket:
+    name: ${self:service}-${self:provider.stage}-serverlessdeploymentbucket
   iamRoleStatements:
     - Effect: Allow
       Action:
