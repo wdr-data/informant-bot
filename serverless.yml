@@ -118,42 +118,6 @@ stepFunctions:
         - http:
             path: pushLegacy
             method: post
-        - schedule:
-            name: ${self:service}-${self:provider.stage}-pushLegacy_morning_2
-            rate: cron(30 6 ? * MON-FRI *)  # UTC+1 (No DST)
-            enabled: false
-            input:
-              timing: morning
-        - schedule:
-            name: ${self:service}-${self:provider.stage}-pushLegacy_morning_dst_2
-            rate: cron(30 5 ? * MON-FRI *)  # UTC+2 (DST)
-            enabled: false
-            input:
-              timing: morning
-        - schedule:
-            name: ${self:service}-${self:provider.stage}-pushLegacy_morning_weekend_2
-            rate: cron(0 8 ? * SAT,SUN *)  # UTC+1 (No DST)
-            enabled: false
-            input:
-              timing: morning
-        - schedule:
-            name: ${self:service}-${self:provider.stage}-pushLegacy_morning_weekend_dst_2
-            rate: cron(0 7 ? * SAT,SUN *)  # UTC+2 (DST)
-            enabled: false
-            input:
-              timing: morning
-        - schedule:
-            name: ${self:service}-${self:provider.stage}-pushLegacy_evening_2
-            rate: cron(30 17 * * ? *)  # UTC+1 (No DST)
-            enabled: false
-            input:
-              timing: evening
-        - schedule:
-            name: ${self:service}-${self:provider.stage}-pushLegacy_evening_dst_2
-            rate: cron(30 16 * * ? *)  # UTC+2 (DST)
-            enabled: false
-            input:
-              timing: evening
       definition:
         StartAt: fetching
         States:
@@ -206,6 +170,7 @@ plugins:
   - serverless-domain-manager
   - serverless-plugin-scripts
   - serverless-pseudo-parameters
+  - serverless-step-functions
   - serverless-webpack
   - serverless-sentry
 
