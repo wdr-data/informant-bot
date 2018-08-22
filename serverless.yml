@@ -8,7 +8,7 @@ provider:
   environment: ${file(config/env.js):env}
   role: 'arn:aws:iam::#{AWS::AccountId}:role/hackingstudio/informant/hackingstudio-informant-bot-functions'
   deploymentBucket:
-    name: ${self:service}-${self:provider.stage}-serverlessdeploymentbucket
+    name: ${self:service}-${self:provider.stage}-serverlessdeployment
   iamRoleStatements:
     - Effect: Allow
       Action:
