@@ -12,7 +12,7 @@ export const scrape = RavenLambdaWrapper.handler(Raven, async (event, context, c
             uri: process.env.INFOS_AUDIO_URL,
         });
         const $ = load(audioResponse, { xmlMode: true });
-        const url = $('rss > channel > item > link').text();
+        const url = $('rss > channel > item > enclosure')[0].attribs.url;
         const title = $('rss > channel > item > title').text();
         const existsParam = {
             TableName: tableName,
