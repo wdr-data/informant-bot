@@ -5,6 +5,11 @@ sudo: false
 node_js:
 - 6
 
+env:
+  global:
+    - ENV_BUCKET_NAME=hackingstudio-informant-bot-env
+    - AWS_REGION=eu-central-1
+
 cache: yarn
 
 after_success:
