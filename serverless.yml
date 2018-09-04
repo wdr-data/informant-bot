@@ -132,7 +132,6 @@ plugins:
   - serverless-domain-manager
   - serverless-plugin-scripts
   - serverless-pseudo-parameters
-  - serverless-step-functions
   - serverless-webpack
   - serverless-sentry
 
