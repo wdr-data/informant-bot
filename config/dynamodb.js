@@ -95,9 +95,6 @@ const tableConfig = (stage) => {
                     ReadCapacityUnits: 2,
                     WriteCapacityUnits: 1,
                 },
-                PointInTimeRecoverySpecification: {
-                    PointInTimeRecoveryEnabled: true,
-                },
             }, tableProps[name]),
         };
         return acc;
