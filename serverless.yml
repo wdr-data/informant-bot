@@ -1,4 +1,4 @@
-service: tim-bot
+service: hackingstudio-informant-bot
 
 provider:
   name: aws
