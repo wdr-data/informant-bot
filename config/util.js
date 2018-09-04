@@ -32,7 +32,7 @@ const loadS3 = (filename, json = false) => {
     const s3client = new S3({ region: 'eu-central-1' });
     const s3path = `${branch}/${filename}`;
     const uri = s3client.getSignedUrl('getObject', {
-        Bucket: 'wdr-tim-bot-env',
+        Bucket: process.env.ENV_BUCKET_NAME,
         Key: s3path,
     });
     return request({ uri, json })

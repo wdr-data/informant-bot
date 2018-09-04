@@ -1,4 +1,4 @@
-service: tim-bot
+service: hackingstudio-informant-bot
 
 provider:
   name: aws
@@ -6,6 +6,9 @@ provider:
   runtime: nodejs6.10
   stage: ${file(config/env.js):stage}
   environment: ${file(config/env.js):env}
+  role: 'arn:aws:iam::#{AWS::AccountId}:role/hackingstudio/informant/hackingstudio-informant-bot-functions'
+  deploymentBucket:
+    name: ${self:service}-${self:provider.stage}-serverlessdeployment
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -50,49 +53,41 @@ functions:
           path: push
           method: post
       - schedule:
-          name: ${self:service}-${self:provider.stage}-pushBroadcast_morning
+          name: ${self:service}-${self:provider.stage}-push_m
           rate: cron(30 6 ? * MON-FRI *)  # UTC+1 (No DST)
           enabled: true
           input:
             timing: morning
       - schedule:
-          name: ${self:service}-${self:provider.stage}-pushBroadcast_morning_dst
+          name: ${self:service}-${self:provider.stage}-push_m_dst
           rate: cron(30 5 ? * MON-FRI *)  # UTC+2 (DST)
           enabled: true
           input:
             timing: morning
       - schedule:
-          name: ${self:service}-${self:provider.stage}-pushBroadcast_morning_weekend
+          name: ${self:service}-${self:provider.stage}-push_m_w
           rate: cron(0 8 ? * * *)  # UTC+1 (No DST)
           enabled: true
           input:
             timing: morning
       - schedule:
-          name: ${self:service}-${self:provider.stage}-pushBroadcast_morning_weekend_dst
+          name: ${self:service}-${self:provider.stage}-push_m_w_dst
           rate: cron(0 7 ? * * *)  # UTC+2 (DST)
           enabled: true
           input:
             timing: morning
       - schedule:
-          name: ${self:service}-${self:provider.stage}-pushBroadcast_evening
+          name: ${self:service}-${self:provider.stage}-push_e
           rate: cron(30 17 * * ? *)  # UTC+1 (No DST)
           enabled: true
           input:
             timing: evening
       - schedule:
-          name: ${self:service}-${self:provider.stage}-pushBroadcast_evening_dst
+          name: ${self:service}-${self:provider.stage}-push_e_dst
           rate: cron(30 16 * * ? *)  # UTC+2 (DST)
           enabled: true
           input:
             timing: evening
-
-  fbPushLegacyFetch:
-    handler: entrypoint/fbPushLegacy.fetch
-  fbPushLegacySend:
-    handler: entrypoint/fbPushLegacy.send
-    timeout: 30
-  fbPushLegacyFinish:
-    handler: entrypoint/fbPushLegacy.finish
 
   metrics:
     handler: entrypoint/metrics.prometheus
@@ -109,75 +104,6 @@ functions:
           name: ${self:service}-${self:provider.stage}-audio
           rate: rate(3 minutes)
           enabled: true
-
-stepFunctions:
-  stateMachines:
-    pushLegacy:
-      name: ${self:service}-${self:provider.stage}-pushLegacy
-      events:
-        # - http:
-        #     path: push
-        #     method: post
-        - schedule:
-            name: ${self:service}-${self:provider.stage}-pushLegacy_morning_2
-            rate: cron(30 6 ? * MON-FRI *)  # UTC+1 (No DST)
-            enabled: false
-            input:
-              timing: morning
-        - schedule:
-            name: ${self:service}-${self:provider.stage}-pushLegacy_morning_dst_2
-            rate: cron(30 5 ? * MON-FRI *)  # UTC+2 (DST)
-            enabled: false
-            input:
-              timing: morning
-        - schedule:
-            name: ${self:service}-${self:provider.stage}-pushLegacy_morning_weekend_2
-            rate: cron(0 8 ? * SAT,SUN *)  # UTC+1 (No DST)
-            enabled: false
-            input:
-              timing: morning
-        - schedule:
-            name: ${self:service}-${self:provider.stage}-pushLegacy_morning_weekend_dst_2
-            rate: cron(0 7 ? * SAT,SUN *)  # UTC+2 (DST)
-            enabled: false
-            input:
-              timing: morning
-        - schedule:
-            name: ${self:service}-${self:provider.stage}-pushLegacy_evening_2
-            rate: cron(30 17 * * ? *)  # UTC+1 (No DST)
-            enabled: false
-            input:
-              timing: evening
-        - schedule:
-            name: ${self:service}-${self:provider.stage}-pushLegacy_evening_dst_2
-            rate: cron(30 16 * * ? *)  # UTC+2 (DST)
-            enabled: false
-            input:
-              timing: evening
-      definition:
-        StartAt: fetching
-        States:
-          fetching:
-            Type: Task
-            Resource: "arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-${self:provider.stage}-fbPushLegacyFetch"
-            Next: loop
-          loop:
-            Type: Choice
-            Choices:
-              - Variable: "$.state"
-                StringEquals: "nextChunk"
-                Next: sending
-              - Variable: "$.state"
-                StringEquals: "finished"
-                Next: finished
-          sending:
-            Type: Task
-            Resource: "arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-${self:provider.stage}-fbPushLegacySend"
-            Next: loop
-          finished:
-            Type: Task
-            Resource: "arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-${self:provider.stage}-fbPushLegacyFinish"
-            End: true
 
 custom:
   customDomain:
@@ -206,7 +132,6 @@ plugins:
   - serverless-domain-manager
   - serverless-plugin-scripts
   - serverless-pseudo-parameters
-  - serverless-step-functions
   - serverless-webpack
   - serverless-sentry
 
