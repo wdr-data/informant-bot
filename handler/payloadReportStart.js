@@ -7,6 +7,9 @@ export default async (chat, payload) => {
         uri: `${urls.report(payload.report)}?withFragments=1`,
         json: true,
     });
+    if (report.is_quiz) {
+        payload.quiz = true;
+    }
 
     return fragmentSender(chat, report.next_fragments, payload, report.text, report.media);
 };
