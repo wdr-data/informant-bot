@@ -9,10 +9,10 @@ export default async (chat, payload) => {
     }
 
     if (url) {
-        const quiz = await request({ uri: url, json: true });
-        const option = quiz.options[quiz.options.findIndex((o) => o.id === payload.option)];
+        const options = await request({ uri: url, json: true });
+        const chosenOption = options[options.findIndex((o) => o.id === payload.option)];
         payload.quiz = false;
         return fragmentSender(
-            chat, undefined, payload, option.quiz_text, option.media);
+            chat, undefined, payload, chosenOption.quiz_text, chosenOption.media);
     }
 };
