@@ -16,6 +16,7 @@ export default {
     payloads: {
         'report_start': require('./payloadReportStart').default,
         'fragment_next': require('./payloadFragmentNext').default,
+        'quiz_response': require('./payloadQuizResponse').default,
         'faq': require('./payloadFaq').default,
         'push_outro': require('./payloadPushOutro').default,
         'subscriptions': require('./payloadSubscribe').subscriptions,
