@@ -27,8 +27,11 @@ export const newsAbout = async (chat, payload) => {
     if (report.length === 1) {
         const data = {
             type: 'report',
-            report: report.id,
+            report: report[0].id,
         };
+        if (report[0].is_quiz) {
+            data.quiz = true;
+        }
         const reportDate = moment(report[0].created).tz('Europe/Berlin').format('DD.MM.YYYY');
         await chat.sendText(`${reportDate} - ${report[0].headline}`);
         return fragmentSender(
