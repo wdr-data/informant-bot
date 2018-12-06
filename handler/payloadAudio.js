@@ -9,7 +9,11 @@ export default async (chat, payload) => {
     } catch (e) {
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
-        item = await newestItem(yesterday);
+        try {
+            item = await newestItem(yesterday);
+        } catch (e) {
+            return chat.sendText('Leider kann ich im Moment keine Aufzeichnung finden :(');
+        }
     }
 
     await chat.sendText(`Deine ` + item.title + `.`);
