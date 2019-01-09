@@ -119,9 +119,9 @@ stepFunctions:
       role: arn:aws:iam::#{AWS::AccountId}:role/hackingstudio-informant-permis-BotStateMachineRole-1WUDC546SV8YE
       name: ${self:service}-${self:provider.stage}-pushLegacy
       events:
-        - http:
-            path: push
-            method: post
+        # - http:
+        #     path: push
+        #     method: post
         - schedule:
             name: ${self:service}-${self:provider.stage}-pL_m
             rate: cron(30 6 ? * MON-FRI *)  # UTC+1 (No DST)
