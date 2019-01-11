@@ -116,7 +116,7 @@ functions:
 stepFunctions:
   stateMachines:
     pushLegacy:
-      role: arn:aws:iam::#{AWS::AccountId}:role/hackingstudio-informant-bot-statemachine
+      role: arn:aws:iam::#{AWS::AccountId}:role/hackingstudio/informant/hackingstudio-informant-bot-statemachine
       name: ${self:service}-${self:provider.stage}-pushLegacy
       events:
         # - http:
