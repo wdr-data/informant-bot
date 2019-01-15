@@ -23,6 +23,10 @@ provider:
       Action:
         - cloudwatch:PutMetricData
       Resource: "*"
+    - Effect: Allow
+      Action:
+        - states:StartExecution
+      Resource: "*"
 
 functions:
   fbVerify:
@@ -112,6 +116,11 @@ functions:
           name: ${self:service}-${self:provider.stage}-audio
           rate: rate(3 minutes)
           enabled: true
+
+  proxy:
+    handler: entrypoint/fbPushLegacy.proxy
+    environment:
+      statemachine_arn: ${self:resources.Outputs.StateMachine.Value}
 
 stepFunctions:
   stateMachines:
@@ -216,3 +225,8 @@ plugins:
 
 resources:
   Resources: ${file(config/env.js):resources}
+  Outputs:
+    StateMachine:
+      Description: The ARN of the provisioning state machine
+      Value:
+        Ref: PushLegacy

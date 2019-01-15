@@ -4,6 +4,24 @@ import { Chat } from '../lib/facebook';
 import ddb from '../lib/dynamodb';
 import Raven from 'raven';
 import RavenLambdaWrapper from 'serverless-sentry-lib';
+import * as aws from 'aws-sdk';
+
+
+export const proxy = (event, context, callback) => {
+    const params = {
+        stateMachineArn: process.env.statemachine_arn,
+        input: JSON.stringify({}),
+    };
+
+    const stepfunctions = new aws.StepFunctions();
+    stepfunctions.startExecution(params, function(err, data) {
+        if (err) {
+            console.log('err while executing step function');
+        } else {
+            console.log('started execution of step function');
+        }
+    });
+};
 
 
 export const fetch = RavenLambdaWrapper.handler(Raven, function(event, context, callback) {
