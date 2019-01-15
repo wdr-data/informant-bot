@@ -120,7 +120,7 @@ functions:
   proxy:
     handler: entrypoint/fbPushLegacy.proxy
     environment:
-      statemachine_arn: ${self:resources.Outputs.StateMachine.Value}
+      statemachine_arn: "arn:aws:states:#{AWS::Region}:#{AWS::AccountId}:stateMachine:${self:service}-${self:provider.stage}-pushLegacy"
 
 stepFunctions:
   stateMachines:
@@ -225,8 +225,3 @@ plugins:
 
 resources:
   Resources: ${file(config/env.js):resources}
-  Outputs:
-    StateMachine:
-      Description: The ARN of the provisioning state machine
-      Value:
-        Ref: PushLegacy
