@@ -113,6 +113,48 @@ functions:
           rate: rate(3 minutes)
           enabled: true
 
+  proxy:
+    handler: entrypoint/fbPushLegacy.proxy
+    environment:
+      statemachine_arn: "arn:aws:states:#{AWS::Region}:#{AWS::AccountId}:stateMachine:${self:service}-${self:provider.stage}-pushLegacy"
+    events:
+      - schedule:
+         name: ${self:service}-${self:provider.stage}-pL_m
+         rate: cron(30 6 ? * MON-FRI *)  # UTC+1 (No DST)
+         enabled: true
+         input:
+           timing: morning
+      - schedule:
+         name: ${self:service}-${self:provider.stage}-pL_m_dst
+         rate: cron(30 5 ? * MON-FRI *)  # UTC+2 (DST)
+         enabled: true
+         input:
+           timing: morning
+      - schedule:
+         name: ${self:service}-${self:provider.stage}-pL_m_w
+         rate: cron(0 8 ? * SAT,SUN *)  # UTC+1 (No DST)
+         enabled: true
+         input:
+           timing: morning
+      - schedule:
+         name: ${self:service}-${self:provider.stage}-pL_m_w_dst
+         rate: cron(0 7 ? * SAT,SUN *)  # UTC+2 (DST)
+         enabled: true
+         input:
+           timing: morning
+      - schedule:
+         name: ${self:service}-${self:provider.stage}-pL_e
+         rate: cron(30 17 * * ? *)  # UTC+1 (No DST)
+         enabled: true
+         input:
+           timing: evening
+      - schedule:
+         name: ${self:service}-${self:provider.stage}-pL_e_dst
+         rate: cron(30 16 * * ? *)  # UTC+2 (DST)
+         enabled: true
+         input:
+           timing: evening
+
 stepFunctions:
   stateMachines:
     pushLegacy:
