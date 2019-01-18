@@ -10,7 +10,7 @@ import * as aws from 'aws-sdk';
 export const proxy = (event, context, callback) => {
     const params = {
         stateMachineArn: process.env.statemachine_arn,
-        input: JSON.stringify(JSON.parse(event.body)),
+        input: event,
     };
 
     const stepfunctions = new aws.StepFunctions();
