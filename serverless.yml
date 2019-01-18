@@ -23,6 +23,10 @@ provider:
       Action:
         - cloudwatch:PutMetricData
       Resource: "*"
+    - Effect: Allow
+      Action:
+        - states:StartExecution
+      Resource: "*"
 
 functions:
   fbVerify:
@@ -112,6 +116,11 @@ functions:
           name: ${self:service}-${self:provider.stage}-audio
           rate: rate(3 minutes)
           enabled: true
+
+  proxy:
+    handler: entrypoint/fbPushLegacy.proxy
+    environment:
+      statemachine_arn: "arn:aws:states:#{AWS::Region}:#{AWS::AccountId}:stateMachine:${self:service}-${self:provider.stage}-pushLegacy"
 
 stepFunctions:
   stateMachines:
