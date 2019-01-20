@@ -158,6 +158,7 @@ functions:
          enabled: true
          input:
            timing: evening
+
 stepFunctions:
   stateMachines:
     pushLegacy:
