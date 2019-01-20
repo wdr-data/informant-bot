@@ -23,6 +23,10 @@ provider:
       Action:
         - cloudwatch:PutMetricData
       Resource: "*"
+    - Effect: Allow
+      Action:
+        - states:StartExecution
+      Resource: "*"
 
 functions:
   fbVerify:
