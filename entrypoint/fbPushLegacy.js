@@ -16,7 +16,7 @@ export const proxy = (event, context, callback) => {
     const stepfunctions = new aws.StepFunctions();
     stepfunctions.startExecution(params, function(err, data) {
         if (err) {
-            console.log('err while executing step function');
+            console.log('err while executing step function:', err);
         } else {
             console.log('started execution of step function');
         }
