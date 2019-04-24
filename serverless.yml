@@ -3,7 +3,7 @@ service: hackingstudio-informant-bot
 provider:
   name: aws
   region: ${file(config.yml):region}
-  runtime: nodejs6.10
+  runtime: nodejs8.10
   stage: ${file(config/env.js):stage}
   environment: ${file(config/env.js):env}
   role: 'arn:aws:iam::#{AWS::AccountId}:role/hackingstudio/informant/hackingstudio-informant-bot-functions'
@@ -210,7 +210,7 @@ custom:
         - aws-sdk
     packagerOptions:
       scripts:
-        - npm rebuild grpc --target=6.1.0 --target_arch=x64 --target_platform=linux --target_libc=glibc
+        - npm rebuild grpc --target=8.10.0 --target_arch=x64 --target_platform=linux --target_libc=glibc
   sentry:
     dsn: ${file(config/env.js):env.SENTRY_DSN}
 
