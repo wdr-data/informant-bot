@@ -6,23 +6,21 @@ import Raven from 'raven';
 import RavenLambdaWrapper from 'serverless-sentry-lib';
 import * as aws from 'aws-sdk';
 
-
-export const proxy = (event, context, callback) => {
+export const proxy = RavenLambdaWrapper.handler(Raven, async (event) => {
     const params = {
         stateMachineArn: process.env.statemachine_arn,
-        input: JSON.stringify(event),
+        input: typeof event === 'string' ? event : JSON.stringify(event),
     };
 
     const stepfunctions = new aws.StepFunctions();
-    stepfunctions.startExecution(params, function(err, data) {
-        if (err) {
-            console.log('err while executing step function:', err);
-        } else {
-            console.log('started execution of step function');
-        }
-    });
-};
 
+    await stepfunctions.startExecution(params).promise();
+    console.log('started execution of step function');
+    return {
+        statusCode: 200,
+        body: 'OK',
+    };
+});
 
 export const fetch = RavenLambdaWrapper.handler(Raven, function(event, context, callback) {
     console.log(JSON.stringify(event, null, 2));
@@ -66,7 +64,7 @@ export const send = RavenLambdaWrapper.handler(Raven, function(event, context, c
                 throw exit;
             }
             count = users.length;
-            lastUser = users[users.length-1];
+            lastUser = users[users.length - 1];
             return users;
         })
         .then((users) => Promise.all(users.map((user) => {
