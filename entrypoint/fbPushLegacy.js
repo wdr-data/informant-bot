@@ -9,7 +9,7 @@ import * as aws from 'aws-sdk';
 export const proxy = RavenLambdaWrapper.handler(Raven, async (event) => {
     const params = {
         stateMachineArn: process.env.statemachine_arn,
-        input: typeof event === 'string' ? event : JSON.stringify(event)
+        input: typeof event === 'string' ? event : JSON.stringify(event),
     };
 
     const stepfunctions = new aws.StepFunctions();
@@ -18,7 +18,7 @@ export const proxy = RavenLambdaWrapper.handler(Raven, async (event) => {
     console.log('started execution of step function');
     return {
         statusCode: 200,
-        body: 'OK'
+        body: 'OK',
     };
 });
 
@@ -64,7 +64,7 @@ export const send = RavenLambdaWrapper.handler(Raven, function(event, context, c
                 throw exit;
             }
             count = users.length;
-            lastUser = users[users.length-1];
+            lastUser = users[users.length - 1];
             return users;
         })
         .then((users) => Promise.all(users.map((user) => {
