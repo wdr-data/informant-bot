@@ -122,6 +122,9 @@ functions:
     environment:
       statemachine_arn: "arn:aws:states:#{AWS::Region}:#{AWS::AccountId}:stateMachine:${self:service}-${self:provider.stage}-pushLegacy"
     events:
+      - http:
+          path: push
+          method: post
       - schedule:
          name: ${self:service}-${self:provider.stage}-pL_m
          rate: cron(30 6 ? * MON-FRI *)  # UTC+1 (No DST)
