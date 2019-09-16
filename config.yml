@@ -1,4 +1,3 @@
 ---
-
 region: eu-central-1
-domain_base: bot.informant.wt.wdr.cloud
+domain_base: bot.informant.wdr.cloud

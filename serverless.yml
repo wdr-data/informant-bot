@@ -1,4 +1,4 @@
-service: hackingstudio-informant-bot
+service: informant-bot
 
 provider:
   name: aws
@@ -6,9 +6,6 @@ provider:
   runtime: nodejs8.10
   stage: ${file(config/env.js):stage}
   environment: ${file(config/env.js):env}
-  role: 'arn:aws:iam::#{AWS::AccountId}:role/hackingstudio/informant/hackingstudio-informant-bot-functions'
-  deploymentBucket:
-    name: ${self:service}-${self:provider.stage}-serverlessdeployment
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -167,7 +164,6 @@ functions:
 stepFunctions:
   stateMachines:
     pushLegacy:
-      role: arn:aws:iam::#{AWS::AccountId}:role/hackingstudio/informant/hackingstudio-informant-bot-statemachine
       name: ${self:service}-${self:provider.stage}-pushLegacy
       definition:
         StartAt: fetching
