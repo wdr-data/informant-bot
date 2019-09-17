@@ -76,9 +76,11 @@ export const scrape = RavenLambdaWrapper.handler(Raven, async (event, context, c
             body: 'Audio parsed successfully: ' + url,
         });
     } catch (e) {
-        return callback(null, {
+        console.error(e);
+        callback(null, {
             statusCode: 500,
             body: e.message,
         });
+        throw e;
     }
 });
