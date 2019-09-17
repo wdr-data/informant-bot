@@ -53,13 +53,7 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
     const { intro, buttons, quickReplies } = assemblePush(event.push);
 
     try {
-        console.log(`start:`);
-        console.log(event.start);
-
         const { users, last } = await getUsers(event.timing, event.start);
-
-        console.log('last:');
-        console.log(last);
 
         if (users.length === 0) {
             return {
@@ -105,7 +99,7 @@ export function getUsers(timing, start = null, limit = 1) {
         params.ExpressionAttributeValues = { ':p': 1 };
     }
     if (start) {
-        params.ExclusiveStartKey = { 'psid': start };
+        params.ExclusiveStartKey = start;
     }
     return new Promise((resolve, reject) => {
         ddb.scan(params, (err, data) => {
