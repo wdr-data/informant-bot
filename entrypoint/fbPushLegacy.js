@@ -56,9 +56,10 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
         const { users, last } = await getUsers(event.timing, event.start);
 
         if (users.length === 0) {
-            const exit = new Error('No more users');
-            exit.name = 'users-empty';
-            throw exit;
+            return {
+                state: 'finished',
+                id: event.push.id,
+            };
         }
 
         await Promise.all(users.map((user) => {
@@ -67,6 +68,15 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
         }));
 
         console.log(`Push sent to ${users.length} users`);
+
+        // LastEvaluatedKey is empty, scan is finished
+        if (!last) {
+            return {
+                state: 'finished',
+                id: event.push.id,
+            };
+        }
+
         return {
             state: 'nextChunk',
             timing: event.timing,
@@ -74,12 +84,6 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
             start: last,
         };
     } catch (err) {
-        if (err.name === 'users-empty') {
-            return {
-                state: 'finished',
-                id: event.push.id,
-            };
-        }
         console.error('Sending failed:', err);
         throw err;
     }
