@@ -101,7 +101,7 @@ export const subscribe = function(chat, payload) {
     }
     return Promise.all(promises.concat(
         chat.sendText(`Ich schick dir ab jetzt die Nachrichten, wie du sie bestellt hast. ` +
-      `Wenn du die letzte Ausgabe sehen willst, schreib einfach "Leg los"`)));
+            `Wenn du die letzte Ausgabe sehen willst, schreib einfach "Leg los"`)));
 };
 
 export const unsubscribe = async function(chat, payload) {
@@ -119,7 +119,7 @@ export const unsubscribe = async function(chat, payload) {
     }
     if (
         payload.subscription === 'all' ||
-!hasLabel('push-' + (payload.subscription === 'morning' ? 'evening' : 'morning'))
+        !hasLabel('push-' + (payload.subscription === 'morning' ? 'evening' : 'morning'))
     ) {
         promises.push(
             chat.removeLabel('push-breaking'));
