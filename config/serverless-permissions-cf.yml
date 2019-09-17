@@ -183,3 +183,16 @@ Resources:
               - route53:GetHostedZone
               - route53:ListResourceRecordSets
             Resource: !Sub arn:aws:route53:::hostedzone/${HostedZoneId}
+
+  ServerlessDeployDynamoDBPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - "dynamodb:*"
+            Resource:
+              - !Sub "arn:aws:dynamodb:::${ServiceName}-*"
+
