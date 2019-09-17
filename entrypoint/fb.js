@@ -32,7 +32,7 @@ export const verify = RavenLambdaWrapper.handler(Raven, (event, context, callbac
 
 
 // wraps the function handler with extensive error handling
-export const message = RavenLambdaWrapper.handler(Raven, async (event, context, callback) => {
+export const message = async (event, context, callback) => {
     let chat = null;
     try {
         const payload = JSON.parse(event.body);
@@ -47,20 +47,20 @@ export const message = RavenLambdaWrapper.handler(Raven, async (event, context, 
         const msgEvent = payload.entry[0].messaging[0];
         chat = new Chat(msgEvent);
 
-        return handleMessage(event, context, chat, msgEvent);
+        await handleMessage(event, context, chat, msgEvent);
     } catch (error) {
         console.error('ERROR:', error);
         Raven.captureException(error);
 
         try {
             if (chat) {
-                return chat.sendText('Da ist was schief gelaufen.');
+                await chat.sendText('Da ist was schief gelaufen.');
             }
         } catch (e) {
             console.error('Reporting error to user failed with:', e);
         }
     }
-});
+};
 
 const handleMessage = async (event, context, chat, msgEvent) => {
     const psid = msgEvent.sender.id;
