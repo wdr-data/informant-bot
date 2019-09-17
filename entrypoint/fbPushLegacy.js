@@ -22,7 +22,7 @@ export const proxy = RavenLambdaWrapper.handler(Raven, async (event) => {
     };
 });
 
-export const fetch = RavenLambdaWrapper.handler(Raven, function(event, context, callback) {
+export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
     console.log(JSON.stringify(event, null, 2));
 
     // check if timing is right
@@ -30,66 +30,63 @@ export const fetch = RavenLambdaWrapper.handler(Raven, function(event, context, 
     try {
         timing = getTiming(event);
     } catch (e) {
-        callback(e);
-        return;
+        throw e;
     }
 
-    getLatestPush(timing, { delivered: 0 })
-        .then((push) => {
-            console.log('Starting to send push with id:', push.id);
-            callback(null, {
-                state: 'nextChunk',
-                timing,
-                push,
-            });
-        })
-        .catch((error) => {
-            console.log('Sending push failed: ', JSON.stringify(error, null, 2));
-            callback(error);
-        });
+    try {
+        const push = await getLatestPush(timing, { delivered: 0 });
+        console.log('Starting to send push with id:', push.id);
+        return {
+            state: 'nextChunk',
+            timing,
+            push,
+        };
+    } catch (error) {
+        console.log('Sending push failed: ', JSON.stringify(error, null, 2));
+        throw error;
+    }
 });
 
-export const send = RavenLambdaWrapper.handler(Raven, function(event, context, callback) {
+export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
     console.log('attempting to push chunk for push', event.push.id);
 
     const { intro, buttons, quickReplies } = assemblePush(event.push);
 
     let count = 0;
     let lastUser;
-    getUsers(event.timing, event.start)
-        .then((users) => {
-            if (users.length === 0) {
-                const exit = new Error('No more users');
-                exit.name = 'users-empty';
-                throw exit;
-            }
-            count = users.length;
-            lastUser = users[users.length - 1];
-            return users;
-        })
-        .then((users) => Promise.all(users.map((user) => {
+    try {
+        const users = await getUsers(event.timing, event.start);
+
+        if (users.length === 0) {
+            const exit = new Error('No more users');
+            exit.name = 'users-empty';
+            throw exit;
+        }
+
+        count = users.length;
+        lastUser = users[users.length - 1];
+        await Promise.all(users.map((user) => {
             const chat = new Chat({ sender: { id: user.psid } });
             return chat.sendButtons(intro, buttons, quickReplies).catch(console.error);
-        })))
-        .then(() => {
-            console.log(`Push sent to ${count} users`);
-            callback(null, {
-                state: 'nextChunk',
-                timing: event.timing,
-                push: event.push,
-                start: lastUser.psid,
-            });
-        })
-        .catch((err) => {
-            if (err.name === 'users-empty') {
-                return callback(null, {
-                    state: 'finished',
-                    id: event.push.id,
-                });
-            }
-            console.error('Sending failed:', err);
-            throw err;
-        });
+        }));
+
+        console.log(`Push sent to ${count} users`);
+        return {
+            state: 'nextChunk',
+            timing: event.timing,
+            push: event.push,
+            start: lastUser.psid,
+        };
+    } catch (err) {
+        if (err.name === 'users-empty') {
+            return {
+                state: 'finished',
+                id: event.push.id,
+            };
+        }
+        console.error('Sending failed:', err);
+        throw err;
+    }
 });
 
 export function getUsers(timing, start = null, limit = 100) {
