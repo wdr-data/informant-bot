@@ -34,8 +34,13 @@ export const enableSubscription = async function(psid, timing) {
 };
 
 export const subscriptions = async function(chat) {
-    const sub = await libSubscriptions.load(chat.psid);
-    console.log(sub);
+    let sub;
+    try {
+        sub = await libSubscriptions.load(chat.psid);
+        console.log(sub);
+    } catch (err) {
+        console.error(err);
+    }
 
     const elements = [];
 
