@@ -91,7 +91,7 @@ const handleMessage = async (event, context, chat, msgEvent) => {
 
     let text = '#dontknowwhatthisis';
     if ('text' in msgEvent.message) {
-        text = msgEvent.message;
+        text = msgEvent.message.text;
     } else if (
         'attachments' in msgEvent.message && msgEvent.message.attachments[0].type === 'image'
     ) {
