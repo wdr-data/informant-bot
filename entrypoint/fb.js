@@ -91,7 +91,7 @@ const handleMessage = async (event, context, chat, msgEvent) => {
 
     let text = '#dontknowwhatthisis';
     if ('text' in msgEvent.message) {
-        text = msgEvent.message.text.slice(0, 255);
+        text = msgEvent.message.text;
     } else if (
         'attachments' in msgEvent.message && msgEvent.message.attachments[0].type === 'image'
     ) {
@@ -106,6 +106,11 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         text = '#thisisanaudio';
     }
 
+    switch (text) {
+    case '#psid':
+        return chat.sendText(`Deine Page-Specific ID ist \`${chat.psid}\``);
+    }
+
     const sessionClient = new dialogflow.SessionsClient({
         /* eslint-disable */
         credentials: require('../.df_id.json') || {},
@@ -117,7 +122,7 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         session: sessionPath,
         queryInput: {
             text: {
-                text: text,
+                text: text.slice(0, 255),
                 languageCode: 'de-DE',
             },
         },
