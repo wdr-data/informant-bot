@@ -52,10 +52,8 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
 
     const { intro, buttons, quickReplies } = assemblePush(event.push);
 
-    let count = 0;
-    let lastUser;
     try {
-        const users = await getUsers(event.timing, event.start);
+        const { users, last } = await getUsers(event.timing, event.start);
 
         if (users.length === 0) {
             const exit = new Error('No more users');
@@ -63,19 +61,17 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
             throw exit;
         }
 
-        count = users.length;
-        lastUser = users[users.length - 1];
         await Promise.all(users.map((user) => {
             const chat = new Chat({ sender: { id: user.psid } });
             return chat.sendButtons(intro, buttons, quickReplies).catch(console.error);
         }));
 
-        console.log(`Push sent to ${count} users`);
+        console.log(`Push sent to ${users.length} users`);
         return {
             state: 'nextChunk',
             timing: event.timing,
             push: event.push,
-            start: lastUser.psid,
+            start: last,
         };
     } catch (err) {
         if (err.name === 'users-empty') {
@@ -106,7 +102,7 @@ export function getUsers(timing, start = null, limit = 100) {
             if (err) {
                 return reject(err);
             }
-            resolve(data.Items);
+            resolve({ users: data.Items, last: data.LastEvaluatedKey });
         });
     });
 }
