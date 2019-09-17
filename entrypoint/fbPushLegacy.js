@@ -89,7 +89,7 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
     }
 });
 
-export function getUsers(timing, start = null, limit = 100) {
+export function getUsers(timing, start = null, limit = 50) {
     const params = {
         Limit: limit,
         TableName: process.env.DYNAMODB_SUBSCRIPTIONS,
