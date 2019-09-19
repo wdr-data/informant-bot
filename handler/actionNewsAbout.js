@@ -2,8 +2,7 @@ import request from 'request-promise-native';
 
 import moment from 'moment-timezone';
 import urls from '../lib/urls';
-import { buttonPostback, listElement } from '../lib/facebook';
-
+import { buttonPostback, genericElement } from '../lib/facebook';
 
 export const newsAbout = async (chat, payload) => {
     let id;
@@ -26,24 +25,26 @@ export const newsAbout = async (chat, payload) => {
 
     const elements = [];
     report.forEach((r) => {
-        const reportDate = moment(r.created).tz('Europe/Berlin').format('DD.MM.YYYY');
-        elements.push(listElement(`${reportDate} - ${r.headline}`, r.text, buttonPostback(
-            'Lesen 📰',
-            {
-                action: 'report_start',
-                report: r.id,
-                type: 'report',
-            })
-        ));
+        const reportDate = moment(r.created)
+            .tz('Europe/Berlin')
+            .format('DD.MM.YYYY');
+        elements.push(
+            genericElement(
+                `${reportDate} - ${r.headline}`,
+                r.text,
+                buttonPostback('Lesen 📰', {
+                    action: 'report_start',
+                    report: r.id,
+                    type: 'report',
+                })
+            )
+        );
     });
-    return chat.sendGenericList(elements.slice(0, 10));
+    return chat.sendGenericTemplate(elements.slice(0, 10));
 };
 
 export const searchId = async (payload) => {
-    const searchParameter = [
-        'genres',
-        'tags',
-    ];
+    const searchParameter = [ 'genres', 'tags' ];
     const map = {
         genres: 'genres',
         tags: 'tags',

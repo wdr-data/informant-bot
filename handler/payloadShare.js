@@ -12,7 +12,6 @@ export default async function(chat) {
         genericElement(
             title,
             subtitle,
-            null,
             [ buttonUrl(callToAction, informantUrl) ]),
     ];
     return chat.sendButtons(text, [ buttonShare(sharedContent) ]);
