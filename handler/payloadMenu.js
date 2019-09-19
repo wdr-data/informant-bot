@@ -31,33 +31,3 @@ export default async function(chat) {
     ];
     return chat.sendGenericTemplate(elements);
 }
-
-/*
-
-
-'call_to_actions': [
-
-    {
-        title: '📄 Wie funktioniert das hier?',
-        type: 'postback',
-        payload: JSON.stringify({ action: 'faq', slug: 'how_to' }),
-    },
-    {
-        title: '🛡 Datenschutz',
-        type: 'postback',
-        payload: JSON.stringify({ action: 'faq', slug: 'datenschutz' }),
-    },
-    {
-        title: '📇 Impressum',
-        type: 'postback',
-        payload: JSON.stringify({ action: 'faq', slug: 'impressum' }),
-    },
-    {
-        title: '💌 Teilen',
-        type: 'postback',
-        payload: JSON.stringify({ action: 'share' }),
-    },
-],
-
-test
-*/
