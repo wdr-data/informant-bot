@@ -2,8 +2,8 @@ import { buttonShare, buttonUrl, genericElement } from '../lib/facebook';
 
 export default async function(chat) {
     const text = 'Teile den Informanten mit deinen Freunden!';
-    const title = 'Jetzt den 1LIVE Informanten testen 😎';
-    const subtitle = 'Erhalte 1LIVE News im Facebook Messenger';
+    const title = 'Schon vom 1LIVE Informanten gehört? 😎';
+    const subtitle = 'Erhalte die 1LIVE News und mehr im Facebook Messenger';
 
     const callToAction = 'Jetzt Kontakt aufnehmen';
     const informantUrl = 'https://www.m.me/1LIVE.Informant';
@@ -12,7 +12,6 @@ export default async function(chat) {
         genericElement(
             title,
             subtitle,
-            null,
             [ buttonUrl(callToAction, informantUrl) ]),
     ];
     return chat.sendButtons(text, [ buttonShare(sharedContent) ]);
