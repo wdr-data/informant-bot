@@ -1,9 +1,7 @@
-import { Chat, sendBroadcastButtons, guessAttachmentType } from '../lib/facebook';
+import { Chat, guessAttachmentType } from '../lib/facebook';
 import { getAttachmentId } from '../lib/facebookAttachments';
 import dialogflow from 'dialogflow';
 import handler from '../handler';
-import getTiming from '../lib/timing';
-import { assemblePush, getLatestPush, markSent } from '../lib/pushData';
 import Raven from 'raven';
 import RavenLambdaWrapper from 'serverless-sentry-lib';
 
@@ -34,7 +32,7 @@ export const verify = RavenLambdaWrapper.handler(Raven, (event, context, callbac
 
 
 // wraps the function handler with extensive error handling
-export const message = RavenLambdaWrapper.handler(Raven, async (event, context, callback) => {
+export const message = async (event, context, callback) => {
     let chat = null;
     try {
         const payload = JSON.parse(event.body);
@@ -49,20 +47,20 @@ export const message = RavenLambdaWrapper.handler(Raven, async (event, context, 
         const msgEvent = payload.entry[0].messaging[0];
         chat = new Chat(msgEvent);
 
-        return handleMessage(event, context, chat, msgEvent);
+        await handleMessage(event, context, chat, msgEvent);
     } catch (error) {
         console.error('ERROR:', error);
         Raven.captureException(error);
 
         try {
             if (chat) {
-                return chat.sendText('Da ist was schief gelaufen.');
+                await chat.sendText('Da ist was schief gelaufen.');
             }
         } catch (e) {
             console.error('Reporting error to user failed with:', e);
         }
     }
-});
+};
 
 const handleMessage = async (event, context, chat, msgEvent) => {
     const psid = msgEvent.sender.id;
@@ -145,42 +143,6 @@ const handleMessage = async (event, context, chat, msgEvent) => {
     console.log('No intent matched.');
     return chat.sendText(`Da bin ich jetzt überfragt. Kannst Du das anders formulieren?`);
 };
-
-export const push = RavenLambdaWrapper.handler(Raven, async (event, context, callback) => {
-    let timing;
-    try {
-        timing = getTiming(event);
-    } catch (e) {
-        callback(null, {
-            statusCode: 400,
-            body: JSON.stringify({ success: false, message: e.message }),
-        });
-        return;
-    }
-
-    try {
-        const push = await getLatestPush(timing, { delivered: 0 });
-        const { intro, buttons, quickReplies } = assemblePush(push);
-        const message = await sendBroadcastButtons(
-            intro, buttons, quickReplies, 'push-' + timing
-        );
-        await markSent(push.id).catch(() => {});
-        console.log('Successfully sent push: ', message);
-        callback(null, {
-            statusCode: 200,
-            body: JSON.stringify({
-                success: true,
-                message: 'Successfully sent push: ' + message,
-            }),
-        });
-    } catch (e) {
-        console.error('Sending push failed: ', e.message);
-        callback(null, {
-            statusCode: 500,
-            body: JSON.stringify({ success: false, message: e.message }),
-        });
-    }
-});
 
 export const attachment = RavenLambdaWrapper.handler(Raven, async (event, context, callback) => {
     const payload = JSON.parse(event.body);

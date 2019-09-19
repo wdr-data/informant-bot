@@ -2,6 +2,7 @@ import getTiming from '../lib/timing';
 import { assemblePush, getLatestPush, markSent } from '../lib/pushData';
 import { Chat } from '../lib/facebook';
 import ddb from '../lib/dynamodb';
+import subscriptions from '../lib/subscriptions';
 import Raven from 'raven';
 import RavenLambdaWrapper from 'serverless-sentry-lib';
 import * as aws from 'aws-sdk';
@@ -47,6 +48,33 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
     }
 });
 
+const handlePushFailed = async (chat, error) => {
+    console.error(error);
+
+    if (error.error.code === 'ETIMEDOUT') {
+        console.error('Request timed out!');
+        Raven.captureException(error);
+        return;
+    } else if (error.statusCode !== 400) {
+        console.error('Not a bad request!');
+        Raven.captureException(error);
+        return;
+    }
+
+    // Handle FB error codes
+    const resp = error.error.error; // Yes, this is real
+
+    // 551: This person isn't available right now.
+    // 100: No matching user found
+    if (resp.code === 551 || resp.code === 100) {
+        console.log(`Deleting user ${chat.psid} due to code ${resp.code}`);
+        return subscriptions.remove(chat.psid);
+    } else {
+        console.error(`Unknown error code ${resp.code}!`);
+        Raven.captureException(error);
+    }
+};
+
 export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
     console.log('attempting to push chunk for push', event.push.id);
 
@@ -64,7 +92,12 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
 
         await Promise.all(users.map((user) => {
             const chat = new Chat({ sender: { id: user.psid } });
-            return chat.sendButtons(intro, buttons, quickReplies).catch(console.error);
+            return chat.sendButtons(
+                intro,
+                buttons,
+                quickReplies,
+                { timeout: 20000, messagingType: 'NON_PROMOTIONAL_SUBSCRIPTION' }
+            ).catch((err) => handlePushFailed(chat, err));
         }));
 
         console.log(`Push sent to ${users.length} users`);

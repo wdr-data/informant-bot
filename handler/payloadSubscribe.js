@@ -1,14 +1,7 @@
 import { buttonPostback, listElement } from '../lib/facebook';
 import libSubscriptions from '../lib/subscriptions';
 
-const getHasLabel = async function(chat) {
-    const labels = await chat.getLabels();
-    return function(labelName) {
-        return labels.indexOf(labelName) !== -1;
-    };
-};
-
-const disableSubscription = async function(psid, timing) {
+export const disableSubscription = async function(psid, timing) {
     try {
         const sub = await libSubscriptions.update(psid, timing, false);
         console.log(`Disabled subscription ${timing} in dynamoDB for ${psid}`);
@@ -21,7 +14,7 @@ const disableSubscription = async function(psid, timing) {
     }
 };
 
-const enableSubscription = async function(psid, timing) {
+export const enableSubscription = async function(psid, timing) {
     const item = {
         morning: timing === 'morning',
         evening: timing === 'evening',
@@ -41,18 +34,20 @@ const enableSubscription = async function(psid, timing) {
 };
 
 export const subscriptions = async function(chat) {
-    const hasLabel = await getHasLabel(chat);
+    const sub = await libSubscriptions.load(chat.psid) ||
+     { psid: chat.psid, morning: false, evening: false };
+
 
     const elements = [];
 
     elements.push(listElement(
-        (hasLabel('push-morning') && hasLabel('push-evening') ? '✔' : '❌') + ' Beides',
+        (sub.morning && sub.evening ? '✔' : '❌') + ' Beides',
         'Deine Infos morgens und abends.',
         buttonPostback(
-            !(hasLabel('push-morning') &&
-             hasLabel('push-evening')) ? 'Anmelden' : 'Abmelden',
+            !(sub.morning &&
+             sub.evening) ? 'Anmelden' : 'Abmelden',
             {
-                action: !(hasLabel('push-morning') && hasLabel('push-evening'))
+                action: !(sub.morning && sub.evening)
                     ? 'subscribe'
                     : 'unsubscribe',
                 subscription: 'all',
@@ -61,24 +56,24 @@ export const subscriptions = async function(chat) {
     ));
 
     elements.push(listElement(
-        (hasLabel('push-morning') ? '✔' : '❌') + ' Deine Infos am Morgen',
+        (sub.morning ? '✔' : '❌') + ' Deine Infos am Morgen',
         'Um 7.30 Uhr gibt\'s Dein erstes Update.',
         buttonPostback(
-            !hasLabel('push-morning') ? 'Anmelden' : 'Abmelden',
+            !sub.morning ? 'Anmelden' : 'Abmelden',
             {
-                action: !hasLabel('push-morning') ? 'subscribe' : 'unsubscribe',
+                action: !sub.morning ? 'subscribe' : 'unsubscribe',
                 subscription: 'morning',
             }
         )
     ));
 
     elements.push(listElement(
-        (hasLabel('push-evening') ? '✔' : '❌') + ' Deine Infos am Abend',
+        (sub.evening ? '✔' : '❌') + ' Deine Infos am Abend',
         'Um 18.30 Uhr kriegst Du das, was am Tag wichtig war.',
         buttonPostback(
-            !hasLabel('push-evening') ? 'Anmelden' : 'Abmelden',
+            !sub.evening ? 'Anmelden' : 'Abmelden',
             {
-                action: !hasLabel('push-evening') ? 'subscribe' : 'unsubscribe',
+                action: !sub.evening ? 'subscribe' : 'unsubscribe',
                 subscription: 'evening',
             }
         )
@@ -88,16 +83,12 @@ export const subscriptions = async function(chat) {
 };
 
 export const subscribe = function(chat, payload) {
-    const promises = [ chat.addLabel('push-breaking') ];
+    const promises = [];
     if (payload.subscription === 'morning' || payload.subscription === 'all') {
-        promises.push(
-            chat.addLabel('push-morning'),
-            enableSubscription(chat.event.sender.id, 'morning'));
+        promises.push(enableSubscription(chat.event.sender.id, 'morning'));
     }
     if (payload.subscription === 'evening' || payload.subscription === 'all') {
-        promises.push(
-            chat.addLabel('push-evening'),
-            enableSubscription(chat.event.sender.id, 'evening'));
+        promises.push(enableSubscription(chat.event.sender.id, 'evening'));
     }
     return Promise.all(promises.concat(
         chat.sendText(`Ich schick dir ab jetzt die Nachrichten, wie du sie bestellt hast. ` +
@@ -105,24 +96,12 @@ export const subscribe = function(chat, payload) {
 };
 
 export const unsubscribe = async function(chat, payload) {
-    const hasLabel = await getHasLabel(chat);
     const promises = [];
     if (payload.subscription === 'morning' || payload.subscription === 'all') {
-        promises.push(
-            chat.removeLabel('push-morning'),
-            disableSubscription(chat.event.sender.id, 'morning'));
+        promises.push(disableSubscription(chat.event.sender.id, 'morning'));
     }
     if (payload.subscription === 'evening' || payload.subscription === 'all') {
-        promises.push(
-            chat.removeLabel('push-evening'),
-            disableSubscription(chat.event.sender.id, 'evening'));
-    }
-    if (
-        payload.subscription === 'all' ||
-        !hasLabel('push-' + (payload.subscription === 'morning' ? 'evening' : 'morning'))
-    ) {
-        promises.push(
-            chat.removeLabel('push-breaking'));
+        promises.push(disableSubscription(chat.event.sender.id, 'evening'));
     }
     return Promise.all(promises.concat(
         chat.sendText(`Schade. Deine Entscheidung. Ich bin hier, wenn Du mich brauchst.`)));

@@ -192,7 +192,14 @@ Resources:
         Statement:
           - Effect: Allow
             Action:
-              - "dynamodb:*"
+              - dynamodb:CreateTable
+              - dynamodb:DescribeReservedCapacityOfferings
+              - dynamodb:UpdateTimeToLive
+              - dynamodb:DescribeTable
+              - dynamodb:ListTables
+              - dynamodb:DescribeReservedCapacity
+              - dynamodb:PurchaseReservedCapacityOfferings
+              - dynamodb:DescribeLimits
+              - dynamodb:UpdateTable
             Resource:
-              - !Sub "arn:aws:dynamodb:::${ServiceName}-*"
-
+              - !Sub "arn:aws:dynamodb:::table/informant-bot-*"
