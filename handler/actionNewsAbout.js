@@ -1,7 +1,7 @@
 import request from 'request-promise-native';
 import moment from 'moment-timezone';
-import urls from '../lib/urls';
 
+import urls from '../lib/urls';
 import { buttonPostback, genericElement } from '../lib/facebook';
 
 export const newsAbout = async (chat, payload) => {

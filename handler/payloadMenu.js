@@ -1,7 +1,6 @@
-import { genericElement, buttonPostback, buttonUrl, buttonShare } from '../lib/facebook';
+import { genericElement, buttonPostback } from '../lib/facebook';
 
 export default async function(chat) {
-
     const elements = [
         genericElement(
             '🔧 An-/Abmelden',
