@@ -79,7 +79,7 @@ export const subscriptions = async function(chat) {
         )
     ));
 
-    return chat.sendList(elements);
+    return chat.sendGenericList(elements);
 };
 
 export const subscribe = function(chat, payload) {
