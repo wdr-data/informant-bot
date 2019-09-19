@@ -15,12 +15,12 @@ const MENU_ACTIONS = [
         payload: JSON.stringify({ action: 'current_news' }),
     },
     {
-        title: 'Teilen',
+        title: '💌 Teilen',
         type: 'postback',
         payload: JSON.stringify({ action: 'share' }),
     },
     {
-        title: 'Einstellungen & mehr',
+        title: '🤟 Mehr',
         type: 'postback',
         payload: JSON.stringify({ action: 'menu_details' }),
     },
