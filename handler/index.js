@@ -25,5 +25,6 @@ export default {
         'share': require('./payloadShare.js').default,
         'current_news': require('./actionCurrentNews').default,
         'current_audio': require('./payloadAudio').default,
+        'menu_details': require('./payloadMenu.js').default,
     },
 };

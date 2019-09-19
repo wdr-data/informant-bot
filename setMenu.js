@@ -15,40 +15,14 @@ const MENU_ACTIONS = [
         payload: JSON.stringify({ action: 'current_news' }),
     },
     {
-        title: '🔧 An-/Abmelden',
+        title: 'Teilen',
         type: 'postback',
-        payload: JSON.stringify({ action: 'subscriptions' }),
+        payload: JSON.stringify({ action: 'share' }),
     },
     {
-        title: '🕵 Über den Informanten',
-        type: 'nested',
-        'call_to_actions': [
-            {
-                title: '🕵 Informant?',
-                type: 'postback',
-                payload: JSON.stringify({ action: 'faq', slug: 'about' }),
-            },
-            {
-                title: '📄 Wie funktioniert das hier?',
-                type: 'postback',
-                payload: JSON.stringify({ action: 'faq', slug: 'how_to' }),
-            },
-            {
-                title: '🛡 Datenschutz',
-                type: 'postback',
-                payload: JSON.stringify({ action: 'faq', slug: 'datenschutz' }),
-            },
-            {
-                title: '📇 Impressum',
-                type: 'postback',
-                payload: JSON.stringify({ action: 'faq', slug: 'impressum' }),
-            },
-            {
-                title: '💌 Teilen',
-                type: 'postback',
-                payload: JSON.stringify({ action: 'share' }),
-            },
-        ],
+        title: 'Einstellungen & mehr',
+        type: 'postback',
+        payload: JSON.stringify({ action: 'menu_details' }),
     },
 ];
 
