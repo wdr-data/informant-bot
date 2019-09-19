@@ -64,7 +64,12 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
 
         await Promise.all(users.map((user) => {
             const chat = new Chat({ sender: { id: user.psid } });
-            return chat.sendButtons(intro, buttons, quickReplies).catch(console.error);
+            return chat.sendButtons(
+                intro,
+                buttons,
+                quickReplies,
+                { timeout: 20000, messagingType: 'NON_PROMOTIONAL_SUBSCRIPTION' }
+            ).catch(console.error);
         }));
 
         console.log(`Push sent to ${users.length} users`);
