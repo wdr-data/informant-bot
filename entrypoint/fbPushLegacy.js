@@ -73,7 +73,7 @@ const handlePushFailed = async (chat, error) => {
         console.error(`Unknown error code ${resp.code}!`);
         Raven.captureException(error);
     }
-}
+};
 
 export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
     console.log('attempting to push chunk for push', event.push.id);
