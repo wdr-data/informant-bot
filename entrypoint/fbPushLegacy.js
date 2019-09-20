@@ -65,8 +65,8 @@ const handlePushFailed = async (chat, error) => {
     const resp = error.error.error; // Yes, this is real
 
     // 551: This person isn't available right now.
-    // 100: No matching user found
-    if (resp.code === 551 || resp.code === 100) {
+    // 100 / 2018001: No matching user found
+    if (resp.code === 551 || resp.code === 100 && resp['error_subcode'] === 2018001) {
         console.log(`Deleting user ${chat.psid} due to code ${resp.code}`);
         return subscriptions.remove(chat.psid);
     } else {
