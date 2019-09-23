@@ -26,5 +26,6 @@ export default {
         'current_news': require('./actionCurrentNews').default,
         'current_audio': require('./payloadCurrentAudio').default,
         'menu_details': require('./payloadMenu.js').default,
+        'report_audio': require('./payloadAudio').default,
     },
 };
