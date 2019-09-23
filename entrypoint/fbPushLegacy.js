@@ -31,7 +31,7 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
     try {
         timing = getTiming(event);
     } catch (e) {
-        throw e;
+        console.log(e);
     }
 
     try {
