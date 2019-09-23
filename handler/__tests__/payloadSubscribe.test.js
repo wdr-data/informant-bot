@@ -71,8 +71,8 @@ describe('payload_subscribe.subscriptions', () => {
         const chat = new facebook.Chat({ sender: { id: '2' } });
         await payloadSubscribe.subscriptions(chat);
         new Expect(chat)
-            .list([
-                facebook.listElement(
+            .genericTemplate([
+                facebook.genericElement(
                     '❌ Beides',
                     'Deine Infos morgens und abends.',
                     facebook.buttonPostback(
@@ -83,7 +83,7 @@ describe('payload_subscribe.subscriptions', () => {
                         }
                     )
                 ),
-                facebook.listElement(
+                facebook.genericElement(
                     '✔ Deine Infos am Morgen',
                     'Um 7.30 Uhr gibt\'s Dein erstes Update.',
                     facebook.buttonPostback(
@@ -94,7 +94,7 @@ describe('payload_subscribe.subscriptions', () => {
                         }
                     )
                 ),
-                facebook.listElement(
+                facebook.genericElement(
                     '❌ Deine Infos am Abend',
                     'Um 18.30 Uhr kriegst Du das, was am Tag wichtig war.',
                     facebook.buttonPostback(

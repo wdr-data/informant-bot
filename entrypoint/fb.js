@@ -133,6 +133,7 @@ const handleMessage = async (event, context, chat, msgEvent) => {
     console.log(`  Response: ${result.fulfillmentText}`);
     if (result.intent) {
         console.log(`  Intent: ${result.intent.displayName}`);
+        console.log(`  Parameters: ${JSON.stringify(result.parameters)}`);
         console.log(`  Action: ${result.action}`);
         if (result.action in handler.actions) {
             return handler.actions[result.action](chat, result.parameters['fields']);

@@ -10,6 +10,9 @@ export default async (chat, payload) => {
     if (report.is_quiz) {
         payload.quiz = true;
     }
+    if (report.link) {
+        payload.link = report.link;
+    }
 
     return fragmentSender(chat, report.next_fragments, payload, report.text, report.media);
 };
