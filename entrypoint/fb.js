@@ -145,20 +145,13 @@ const handleMessage = async (event, context, chat, msgEvent) => {
     return chat.sendText(`Da bin ich jetzt überfragt. Kannst Du das anders formulieren?`);
 };
 
-export const attachment = RavenLambdaWrapper.handler(Raven, async (event, context, callback) => {
+export const attachment = RavenLambdaWrapper.handler(Raven, async (event) => {
     const payload = JSON.parse(event.body);
     const url = payload.url;
 
-    try {
-        const id = await getAttachmentId(url, guessAttachmentType(url));
-        callback(null, {
-            statusCode: 200,
-            body: JSON.stringify({ success: true, message: id }),
-        });
-    } catch (e) {
-        callback(null, {
-            statusCode: 500,
-            body: JSON.stringify({ success: false, message: e.message }),
-        });
-    }
+    const id = await getAttachmentId(url, guessAttachmentType(url));
+    return {
+        statusCode: 200,
+        body: JSON.stringify({ success: true, message: id }),
+    };
 });
