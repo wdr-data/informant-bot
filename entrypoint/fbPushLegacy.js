@@ -32,6 +32,7 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
         timing = getTiming(event);
     } catch (e) {
         console.log(e);
+        return {state: 'finished'};
     }
 
     try {
@@ -146,6 +147,11 @@ export function getUsers(timing, start = null, limit = 50) {
 
 export const finish = RavenLambdaWrapper.handler(Raven, function(event, context, callback) {
     console.log('Sending of push finished:', event);
+
+    if (!event.id) {
+        return callback(null, {})
+    }
+
     markSent(event.id)
         .then(() => callback(null, {}))
         .catch((err) => callback(err, {}));
