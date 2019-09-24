@@ -25,18 +25,34 @@ export const newsAbout = async (chat, payload) => {
 
     const elements = [];
     report.forEach((r) => {
+        const buttons = [];
         const reportDate = moment(r.created)
             .tz('Europe/Berlin')
             .format('DD.MM.YYYY');
+        if (r.audio) {
+            buttons.push(
+                buttonPostback(
+                    'Jetzt anhören 🎧',
+                    {
+                        action: 'report_audio',
+                        audioUrl: r.audio,
+                    }
+
+                ));
+        }
+        buttons.push(
+            buttonPostback('Lesen 📰',
+                {
+                    action: 'report_start',
+                    report: r.id,
+                    type: 'report',
+                }));
+
         elements.push(
             genericElement(
                 `${reportDate} - ${r.headline}`,
                 r.text,
-                buttonPostback('Lesen 📰', {
-                    action: 'report_start',
-                    report: r.id,
-                    type: 'report',
-                })
+                buttons
             )
         );
     });

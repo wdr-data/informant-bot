@@ -11,7 +11,7 @@ export default {
         'faq_how_to': require('./actionFaq').default('how_to'),
         'faq_about': require('./actionFaq').default('about'),
         'faq_onboarding': require('./actionFaq').default('onboarding'),
-        'current_audio': require('./payloadAudio').default,
+        'current_audio': require('./payloadCurrentAudio').default,
     },
     payloads: {
         'report_start': require('./payloadReportStart').default,
@@ -24,7 +24,8 @@ export default {
         'unsubscribe': require('./payloadSubscribe').unsubscribe,
         'share': require('./payloadShare.js').default,
         'current_news': require('./actionCurrentNews').default,
-        'current_audio': require('./payloadAudio').default,
+        'current_audio': require('./payloadCurrentAudio').default,
         'menu_details': require('./payloadMenu.js').default,
+        'report_audio': require('./payloadAudio').default,
     },
 };
