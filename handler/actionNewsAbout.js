@@ -25,7 +25,7 @@ export const newsAbout = async (chat, payload) => {
 
     const elements = [];
     report.forEach((r) => {
-        let buttons = [];
+        const buttons = [];
         const reportDate = moment(r.created)
             .tz('Europe/Berlin')
             .format('DD.MM.YYYY');
