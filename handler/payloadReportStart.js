@@ -13,6 +13,9 @@ export default async (chat, payload) => {
     if (report.link) {
         payload.link = report.link;
     }
+    if (report.audio) {
+        payload.audio = report.audio;
+    }
 
     return fragmentSender(chat, report.next_fragments, payload, report.text, report.media);
 };

@@ -4,7 +4,7 @@ export default async function(chat) {
     const elements = [
         genericElement(
             '🔧 An-/Abmelden',
-            'Verwarte deine Push-Einstellungen.',
+            'Verwalte deine Push-Einstellungen.',
             buttonPostback('Mehr', { action: 'subscriptions' })
         ),
         genericElement(
