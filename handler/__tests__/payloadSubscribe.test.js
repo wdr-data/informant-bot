@@ -17,13 +17,14 @@ describe('payloadSubscribe.subscribe', () => {
 
     it('adds a subscription to dynamodb', () => {
         const chat = new facebook.Chat({ sender: { id: '1' } });
-        return payloadSubscribe.subscribe(chat, { subscription: 'morning' }).then(() => {
+        return payloadSubscribe.subscribe(chat, { subscription: 'breaking' }).then(() => {
             new Expect().dynamoPut({
                 TableName: tableName,
                 Item: {
                     psid: '1',
-                    morning: 1,
+                    morning: 0,
                     evening: 0,
+                    breaking: 1,
                 },
                 ConditionExpression: 'attribute_not_exists(psid)',
             });
@@ -73,8 +74,8 @@ describe('payload_subscribe.subscriptions', () => {
         new Expect(chat)
             .genericTemplate([
                 facebook.genericElement(
-                    '❌ Beides',
-                    'Deine Infos morgens und abends.',
+                    '❌ Alles',
+                    'Deine Infos morgens, abends und bei Eilmeldungen.',
                     facebook.buttonPostback(
                         'Anmelden',
                         {
@@ -102,6 +103,17 @@ describe('payload_subscribe.subscriptions', () => {
                         {
                             action: 'subscribe',
                             subscription: 'evening',
+                        }
+                    )
+                ),
+                facebook.genericElement(
+                    '❌ Eilmeldungen',
+                    'Bei großen Sachen sag ich dir auch zwischendurch Bescheid.',
+                    facebook.buttonPostback(
+                        'Anmelden',
+                        {
+                            action: 'subscribe',
+                            subscription: 'breaking',
                         }
                     )
                 ),
