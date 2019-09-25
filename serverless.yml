@@ -220,6 +220,7 @@ custom:
 
 plugins:
   - serverless-offline
+  - serverless-domain-manager
   - serverless-plugin-scripts
   - serverless-pseudo-parameters
   - serverless-step-functions
