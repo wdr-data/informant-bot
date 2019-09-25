@@ -1,11 +1,15 @@
+import request from 'request-promise-native';
+import Raven from 'raven';
+import RavenLambdaWrapper from 'serverless-sentry-lib';
+import * as aws from 'aws-sdk';
+
 import getTiming from '../lib/timing';
+import urls from '../lib/urls';
+import fragmentSender from '../lib/fragmentSender';
 import { assemblePush, getLatestPush, markSent } from '../lib/pushData';
 import { Chat } from '../lib/facebook';
 import ddb from '../lib/dynamodb';
 import subscriptions from '../lib/subscriptions';
-import Raven from 'raven';
-import RavenLambdaWrapper from 'serverless-sentry-lib';
-import * as aws from 'aws-sdk';
 
 export const proxy = RavenLambdaWrapper.handler(Raven, async (event) => {
     const params = {
@@ -26,6 +30,25 @@ export const proxy = RavenLambdaWrapper.handler(Raven, async (event) => {
 export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
     console.log(JSON.stringify(event, null, 2));
 
+    if (event.report) {
+        try {
+            const report = await request({
+                uri: `${urls.report(event.report)}?withFragments=1`,
+                json: true,
+            });
+            console.log('Starting to send report with id:', report.id);
+            return {
+                state: 'nextChunk',
+                timing: 'breaking',
+                type: 'report',
+                data: report,
+            };
+        } catch (error) {
+            console.log('Sending report failed: ', JSON.stringify(error, null, 2));
+            throw error;
+        }
+    }
+
     // check if timing is right
     let timing;
     try {
@@ -41,7 +64,8 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
         return {
             state: 'nextChunk',
             timing,
-            push,
+            type: 'push',
+            data: push,
         };
     } catch (error) {
         console.log('Sending push failed: ', JSON.stringify(error, null, 2));
@@ -79,7 +103,6 @@ const handlePushFailed = async (chat, error) => {
 export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
     console.log('attempting to push chunk for push', event.push.id);
 
-    const { intro, buttons, quickReplies } = assemblePush(event.push);
 
     try {
         const { users, last } = await getUsers(event.timing, event.start);
@@ -87,34 +110,63 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
         if (users.length === 0) {
             return {
                 state: 'finished',
-                id: event.push.id,
+                id: event.data.id,
+                type: event.type,
             };
         }
 
-        await Promise.all(users.map((user) => {
-            const chat = new Chat({ sender: { id: user.psid } });
-            return chat.sendButtons(
-                intro,
-                buttons,
-                quickReplies,
-                { timeout: 20000, messagingType: 'NON_PROMOTIONAL_SUBSCRIPTION' }
-            ).catch((err) => handlePushFailed(chat, err));
-        }));
+        if (event.type === 'report') {
+            const report = event.data;
+            const payload = {
+                action: 'report_start',
+                report: report.id,
+                type: 'report',
+            };
 
-        console.log(`Push sent to ${users.length} users`);
+            if (report.is_quiz) {
+                payload.quiz = true;
+            }
+            if (report.link) {
+                payload.link = report.link;
+            }
+            if (report.audio) {
+                payload.audio = report.audio;
+            }
+
+            await Promise.all(users.map((user) => {
+                const chat = new Chat({ sender: { id: user.psid } });
+                return fragmentSender(
+                    chat, report.next_fragments, payload, `🚨 ${report.text}`, report.media
+                ).catch((err) => Raven.captureException(err));
+            }));
+        } else if (event.type === 'push') {
+            const { intro, buttons, quickReplies } = assemblePush(event.data);
+            await Promise.all(users.map((user) => {
+                const chat = new Chat({ sender: { id: user.psid } });
+                return chat.sendButtons(
+                    intro,
+                    buttons,
+                    quickReplies,
+                    { timeout: 20000, messagingType: 'NON_PROMOTIONAL_SUBSCRIPTION' }
+                ).catch((err) => handlePushFailed(chat, err));
+            }));
+        }
+        console.log(`${event.type} sent to ${users.length} users`);
 
         // LastEvaluatedKey is empty, scan is finished
         if (!last) {
             return {
                 state: 'finished',
-                id: event.push.id,
+                id: event.data.id,
+                type: event.type,
             };
         }
 
         return {
             state: 'nextChunk',
             timing: event.timing,
-            push: event.push,
+            type: event.type,
+            data: event.data,
             start: last,
         };
     } catch (err) {
@@ -146,13 +198,13 @@ export function getUsers(timing, start = null, limit = 50) {
 }
 
 export const finish = RavenLambdaWrapper.handler(Raven, function(event, context, callback) {
-    console.log('Sending of push finished:', event);
+    console.log(`Sending of ${event.type} finished:`, event);
 
     if (!event.id) {
         return callback(null, {});
     }
 
-    markSent(event.id)
+    markSent(event.id, event.type)
         .then(() => callback(null, {}))
         .catch((err) => callback(err, {}));
 });

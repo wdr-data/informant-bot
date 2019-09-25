@@ -124,6 +124,9 @@ functions:
       - http:
           path: push
           method: post
+      - http:
+          path: breaking
+          method: post
       - schedule:
           name: ${self:service}-${self:provider.stage}-pL_m
           rate: cron(30 6 ? * MON-FRI *) # UTC+1 (No DST)
