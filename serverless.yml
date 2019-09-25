@@ -26,6 +26,9 @@ provider:
       Resource: "*"
 
 functions:
+  updateBreakingSubscriptions:
+    handler: entrypoint/tools.updateBreakingSubscriptions
+    timeout: 30
   fbVerify:
     handler: entrypoint/fb.verify
     events:
@@ -217,7 +220,6 @@ custom:
 
 plugins:
   - serverless-offline
-  - serverless-domain-manager
   - serverless-plugin-scripts
   - serverless-pseudo-parameters
   - serverless-step-functions
