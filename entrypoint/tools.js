@@ -21,6 +21,7 @@ function getSubs(start = null, limit = 25) {
 }
 
 export const updateBreakingSubscriptions = async (event) => {
+    let count = 0;
     let start;
     do {
         const { subs, last } = await getSubs(start);
@@ -35,6 +36,7 @@ export const updateBreakingSubscriptions = async (event) => {
                 (sub) => sub.breaking === undefined
             ).map(
                 (sub) => {
+                    count += 1;
                     console.log(`${sub.psid}: ${sub.morning || sub.evening}`);
                     return subscriptions.update(sub.psid, 'breaking', sub.morning || sub.evening);
                 }
@@ -42,5 +44,5 @@ export const updateBreakingSubscriptions = async (event) => {
         );
     } while (start);
 
-    return 'Done.';
+    return `Done. Updated ${count} subscriptions.`;
 };
