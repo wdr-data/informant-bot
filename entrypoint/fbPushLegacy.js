@@ -30,6 +30,10 @@ export const proxy = RavenLambdaWrapper.handler(Raven, async (event) => {
 export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
     console.log(JSON.stringify(event, null, 2));
 
+    if ('body' in event) {
+        event = JSON.parse(event.body);
+    }
+
     if (event.report) {
         try {
             const report = await request({
