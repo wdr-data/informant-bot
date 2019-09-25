@@ -105,7 +105,7 @@ const handlePushFailed = async (chat, error) => {
 };
 
 export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
-    console.log('attempting to push chunk for push', event.push.id);
+    console.log(`attempting to push chunk for ${event.type}`, event.data.id);
 
 
     try {
