@@ -5,7 +5,7 @@ export const disableSubscription = async function(psid, timing) {
     try {
         const sub = await libSubscriptions.update(psid, timing, false);
         console.log(`Disabled subscription ${timing} in dynamoDB for ${psid}`);
-        if (!sub.morning && !sub.evening) {
+        if (!sub.morning && !sub.evening && !sub.breaking) {
             await libSubscriptions.remove(psid);
             console.log(`Deleted User in dynamoDB with psid ${psid}`);
         }
@@ -18,6 +18,7 @@ export const enableSubscription = async function(psid, timing) {
     const item = {
         morning: timing === 'morning',
         evening: timing === 'evening',
+        breaking: timing === 'breaking',
     };
     try {
         await libSubscriptions.create(psid, item);
@@ -39,12 +40,14 @@ export const subscriptions = async function(chat) {
 
     const elements = [];
 
+    const subbedAll = sub.morning && sub.evening && sub.breaking;
+
     elements.push(
         genericElement(
-            (sub.morning && sub.evening ? '✔' : '❌') + ' Beides',
-            'Deine Infos morgens und abends.',
-            buttonPostback(!(sub.morning && sub.evening) ? 'Anmelden' : 'Abmelden', {
-                action: !(sub.morning && sub.evening) ? 'subscribe' : 'unsubscribe',
+            (subbedAll ? '✔' : '❌') + ' Alles',
+            'Deine Infos morgens, abends und bei Eilmeldungen.',
+            buttonPostback(!subbedAll ? 'Anmelden' : 'Abmelden', {
+                action: !subbedAll ? 'subscribe' : 'unsubscribe',
                 subscription: 'all',
             })
         )
@@ -72,6 +75,17 @@ export const subscriptions = async function(chat) {
         )
     );
 
+    elements.push(
+        genericElement(
+            (sub.breaking ? '✔' : '❌') + ' Eilmeldungen',
+            'Bei großen Sachen sag ich dir auch zwischendurch Bescheid.',
+            buttonPostback(!sub.breaking ? 'Anmelden' : 'Abmelden', {
+                action: !sub.breaking ? 'subscribe' : 'unsubscribe',
+                subscription: 'breaking',
+            })
+        )
+    );
+
     return chat.sendGenericTemplate(elements);
 };
 
@@ -82,6 +96,9 @@ export const subscribe = function(chat, payload) {
     }
     if (payload.subscription === 'evening' || payload.subscription === 'all') {
         promises.push(enableSubscription(chat.event.sender.id, 'evening'));
+    }
+    if (payload.subscription === 'breaking' || payload.subscription === 'all') {
+        promises.push(enableSubscription(chat.event.sender.id, 'breaking'));
     }
     return Promise.all(
         promises.concat(
@@ -100,6 +117,9 @@ export const unsubscribe = async function(chat, payload) {
     }
     if (payload.subscription === 'evening' || payload.subscription === 'all') {
         promises.push(disableSubscription(chat.event.sender.id, 'evening'));
+    }
+    if (payload.subscription === 'breaking' || payload.subscription === 'all') {
+        promises.push(disableSubscription(chat.event.sender.id, 'breaking'));
     }
     return Promise.all(
         promises.concat(chat.sendText(
