@@ -136,10 +136,16 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                 payload.audio = report.audio;
             }
 
+            const unsubscribeNote = 'Um Eilmeldungen abzubestellen, schau im Menü unter *🤘 Mehr*.';
+
             await Promise.all(users.map((user) => {
                 const chat = new Chat({ sender: { id: user.psid } });
                 return fragmentSender(
-                    chat, report.next_fragments, payload, `🚨 ${report.text}`, report.media
+                    chat,
+                    report.next_fragments,
+                    payload,
+                    `🚨 ${report.text}\n\n${unsubscribeNote}`,
+                    report.media,
                 ).catch((err) => Raven.captureException(err));
             }));
         } else if (event.type === 'push') {
@@ -182,11 +188,10 @@ export function getUsers(timing, start = null, limit = 50) {
     const params = {
         Limit: limit,
         TableName: process.env.DYNAMODB_SUBSCRIPTIONS,
+        FilterExpression: `${timing} = :p`,
+        ExpressionAttributeValues: { ':p': 1 },
     };
-    if (timing === 'morning' || timing === 'evening') {
-        params.FilterExpression = `${timing} = :p`;
-        params.ExpressionAttributeValues = { ':p': 1 };
-    }
+
     if (start) {
         params.ExclusiveStartKey = start;
     }
