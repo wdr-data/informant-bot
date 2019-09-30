@@ -125,7 +125,7 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
     try {
         let users, last;
         if (event.preview) {
-            users = [ event.preview ];
+            users = [ {psid: event.preview} ];
         } else {
             const result = await getUsers(event.timing, event.start);
             users = result.users;
