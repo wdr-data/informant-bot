@@ -230,6 +230,11 @@ export function getUsers(timing, start = null, limit = 50) {
 export const finish = RavenLambdaWrapper.handler(Raven, function(event, context, callback) {
     console.log(`Sending of ${event.type} finished:`, event);
 
+    if (event.preview) {
+        console.log(`Only a preview, not marking as sent.`);
+        return callback(null, {});
+    }
+
     if (!event.id) {
         return callback(null, {});
     }
