@@ -36,16 +36,22 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
 
     if (event.report) {
         try {
-            const report = await request({
+            const params = {
                 uri: `${urls.report(event.report)}?withFragments=1`,
                 json: true,
-            });
+            };
+            // Authorize so we can access unpublished items
+            if (event.preview) {
+                params.headers = { Authorization: 'Token ' + process.env.CMS_API_TOKEN };
+            }
+            const report = await request(params);
             console.log('Starting to send report with id:', report.id);
             return {
                 state: 'nextChunk',
                 timing: 'breaking',
                 type: 'report',
                 data: report,
+                preview: event.preview,
             };
         } catch (error) {
             console.log('Sending report failed: ', JSON.stringify(error, null, 2));
@@ -53,23 +59,32 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
         }
     }
 
-    // check if timing is right
-    let timing;
     try {
-        timing = getTiming(event);
-    } catch (e) {
-        console.log(e);
-        return { state: 'finished' };
-    }
-
-    try {
-        const push = await getLatestPush(timing, { delivered: 0 });
+        let push, timing;
+        if (event.preview) {
+            const params = {
+                uri: urls.push(event.push),
+                json: true,
+            };
+            // Authorize so we can access unpublished items
+            params.headers = { Authorization: 'Token ' + process.env.CMS_API_TOKEN };
+            push = await request(params);
+        } else {
+            try {
+                timing = getTiming(event);
+            } catch (e) {
+                console.log(e);
+                return { state: 'finished' };
+            }
+            push = await getLatestPush(timing, { delivered: 0 });
+        }
         console.log('Starting to send push with id:', push.id);
         return {
             state: 'nextChunk',
             timing,
             type: 'push',
             data: push,
+            preview: event.preview,
         };
     } catch (error) {
         console.log('Sending push failed: ', JSON.stringify(error, null, 2));
@@ -108,7 +123,14 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
     console.log(`attempting to push chunk for ${event.type}`, event.data.id);
 
     try {
-        const { users, last } = await getUsers(event.timing, event.start);
+        let users, last;
+        if (event.preview) {
+            users = [ { psid: event.preview } ];
+        } else {
+            const result = await getUsers(event.timing, event.start);
+            users = result.users;
+            last = result.last;
+        }
 
         if (users.length === 0) {
             return {
