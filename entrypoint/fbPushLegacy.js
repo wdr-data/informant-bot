@@ -137,6 +137,7 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                 state: 'finished',
                 id: event.data.id,
                 type: event.type,
+                preview: event.preview,
             };
         }
 
@@ -190,6 +191,7 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                 state: 'finished',
                 id: event.data.id,
                 type: event.type,
+                preview: event.preview,
             };
         }
 
@@ -199,6 +201,7 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
             type: event.type,
             data: event.data,
             start: last,
+            preview: event.preview,
         };
     } catch (err) {
         console.error('Sending failed:', err);
