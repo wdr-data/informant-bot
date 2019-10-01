@@ -9,7 +9,12 @@ export default async (chat, payload) => {
     }
 
     if (url) {
-        const options = await request({ uri: url, json: true });
+        const params = { uri: url, json: true };
+        // Authorize so we can access unpublished items
+        if (payload.preview) {
+            params.headers = { Authorization: 'Token ' + process.env.CMS_API_TOKEN };
+        }
+        const options = await request(params);
         const chosenOption = options[options.findIndex((o) => o.id === payload.option)];
         payload.quiz = false;
         return fragmentSender(

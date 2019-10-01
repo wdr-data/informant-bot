@@ -11,7 +11,13 @@ export default async (chat, payload) => {
     }
 
     if (url) {
-        let fragment = await request({ uri: url, json: true });
+        const params = { uri: url, json: true };
+        // Authorize so we can access unpublished items
+        if (payload.preview) {
+            params.headers = { Authorization: 'Token ' + process.env.CMS_API_TOKEN };
+        }
+        let fragment = await request(params);
+
         if (fragment.isArray) {
             fragment = fragment[0];
         }

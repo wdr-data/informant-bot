@@ -3,10 +3,16 @@ import urls from '../lib/urls';
 import fragmentSender from '../lib/fragmentSender';
 
 export default async (chat, payload) => {
-    const report = await request({
+    const params = {
         uri: `${urls.report(payload.report)}?withFragments=1`,
         json: true,
-    });
+    };
+    // Authorize so we can access unpublished items
+    if (payload.preview) {
+        params.headers = { Authorization: 'Token ' + process.env.CMS_API_TOKEN };
+    }
+    const report = await request(params);
+
     if (report.is_quiz) {
         payload.quiz = true;
     }

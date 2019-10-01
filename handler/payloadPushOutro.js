@@ -2,12 +2,19 @@ import request from 'request-promise-native';
 import urls from '../lib/urls';
 
 export default async (chat, payload) => {
-    const push = await request({ uri: `${urls.push(payload.push)}`, json: true });
+    const params = {
+        uri: `${urls.push(payload.push)}`,
+        json: true,
+    };
+    // Authorize so we can access unpublished items
+    if (payload.preview) {
+        params.headers = { Authorization: 'Token ' + process.env.CMS_API_TOKEN };
+    }
+    const push = await request(params);
+
+    await chat.sendText(push.outro);
 
     if (push.media) {
-        await chat.sendText(push.outro);
         return chat.sendAttachment(push.media);
     }
-
-    return chat.sendText(push.outro);
 };

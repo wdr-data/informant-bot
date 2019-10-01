@@ -147,6 +147,7 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                 action: 'report_start',
                 report: report.id,
                 type: 'report',
+                preview: event.preview,
             };
 
             if (report.is_quiz) {
@@ -172,7 +173,7 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                 ).catch((err) => Raven.captureException(err));
             }));
         } else if (event.type === 'push') {
-            const { intro, buttons, quickReplies } = assemblePush(event.data);
+            const { intro, buttons, quickReplies } = assemblePush(event.data, event.preview);
             await Promise.all(users.map((user) => {
                 const chat = new Chat({ sender: { id: user.psid } });
                 return chat.sendButtons(
