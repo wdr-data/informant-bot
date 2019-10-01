@@ -12,6 +12,6 @@ export default async (chat, payload) => {
         });
         const text = 'Du hörst *' + report.headline + '* 🎧';
 
-        return fragmentSender(chat, report.nextFragments, payload, text);
+        return fragmentSender(chat, report.next_fragments, payload, text);
     }
 };

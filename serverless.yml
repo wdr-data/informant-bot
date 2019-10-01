@@ -26,6 +26,9 @@ provider:
       Resource: "*"
 
 functions:
+  updateBreakingSubscriptions:
+    handler: entrypoint/tools.updateBreakingSubscriptions
+    timeout: 30
   fbVerify:
     handler: entrypoint/fb.verify
     events:
@@ -50,9 +53,9 @@ functions:
     handler: entrypoint/fb.push
     timeout: 30
     events:
-      # - http:
-      #     path: push
-      #     method: post
+      - http:
+          path: push
+          method: post
       - schedule:
           name: ${self:service}-${self:provider.stage}-push_m
           rate: cron(30 6 ? * MON-FRI *) # UTC+1 (No DST)
@@ -123,6 +126,9 @@ functions:
     events:
       - http:
           path: push
+          method: post
+      - http:
+          path: breaking
           method: post
       - schedule:
           name: ${self:service}-${self:provider.stage}-pL_m
