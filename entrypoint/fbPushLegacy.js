@@ -161,6 +161,12 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
             }
 
             const unsubscribeNote = 'Um Eilmeldungen abzubestellen, schau im Menü unter *🤘 Mehr*.';
+            let messageText;
+            if (report.type === 'breaking') {
+                messageText = `🚨 ${report.text}\n\n${unsubscribeNote}`;
+            } else {
+                messageText = report.text;
+            }
 
             await Promise.all(users.map((user) => {
                 const chat = new Chat({ sender: { id: user.psid } });
@@ -168,7 +174,7 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                     chat,
                     report.next_fragments,
                     payload,
-                    `🚨 ${report.text}\n\n${unsubscribeNote}`,
+                    messageText,
                     report.media,
                 ).catch((err) => Raven.captureException(err));
             }));
