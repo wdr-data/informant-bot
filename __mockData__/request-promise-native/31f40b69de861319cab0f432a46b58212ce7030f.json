@@ -1,8 +1,8 @@
 [
     {
         "id": 2,
-        "name": "foo",
-        "slug": "foo",
+        "name": "informant-foo",
+        "slug": "informant-foo",
         "text": "Foo",
         "media": null,
         "media_original": null,
