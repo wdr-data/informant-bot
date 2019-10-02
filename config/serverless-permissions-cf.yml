@@ -211,3 +211,15 @@ Resources:
               - dynamodb:PurchaseReservedCapacityOfferings
             Resource:
               - "*"
+
+  ServerlessDeployStepFunctionsPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - "states:TagResource"
+            Resource:
+              - "arn:aws:states:::stateMachine:*"
