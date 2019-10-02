@@ -1,4 +1,4 @@
-service: informant-bot
+service: wdraktuell-bot-fb
 
 provider:
   name: aws

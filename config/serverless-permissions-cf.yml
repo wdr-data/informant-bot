@@ -193,13 +193,33 @@ Resources:
           - Effect: Allow
             Action:
               - dynamodb:CreateTable
-              - dynamodb:DescribeReservedCapacityOfferings
               - dynamodb:UpdateTimeToLive
               - dynamodb:DescribeTable
-              - dynamodb:ListTables
-              - dynamodb:DescribeReservedCapacity
-              - dynamodb:PurchaseReservedCapacityOfferings
-              - dynamodb:DescribeLimits
               - dynamodb:UpdateTable
             Resource:
-              - !Sub "arn:aws:dynamodb:::table/informant-bot-*"
+              - !Sub "arn:aws:dynamodb:*:*:table/${ServiceName}-*"
+          - Effect: Allow
+            Action:
+              - dynamodb:ListTables
+            Resource:
+              - "*"
+          - Effect: Allow
+            Action:
+              - dynamodb:DescribeLimits
+              - dynamodb:DescribeReservedCapacity
+              - dynamodb:DescribeReservedCapacityOfferings
+              - dynamodb:PurchaseReservedCapacityOfferings
+            Resource:
+              - "*"
+
+  ServerlessDeployStepFunctionsPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - "states:TagResource"
+            Resource:
+              - "*"

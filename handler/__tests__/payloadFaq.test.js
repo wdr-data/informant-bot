@@ -5,7 +5,7 @@ const payloadFaq = require('../payloadFaq').default;
 
 describe('payloadFaq', () => {
     it('sends a specific faq', () => {
-    // 31f40b69de861319cab0f432a46b58212ce7030f
+        // c59fc898d8abbb9d04abca459eb928a2fbc18b54
         const chat = new facebook.Chat();
         return payloadFaq(chat, { slug: 'foo' }).then(() => {
             new Expect(chat).text('Foo', []);
