@@ -1,8 +1,8 @@
 [
     {
         "id": 2,
-        "name": "informant-foo",
-        "slug": "informant-foo",
+        "name": "wdraktuell-foo",
+        "slug": "wdraktuell-foo",
         "text": "Foo",
         "media": null,
         "media_original": null,
