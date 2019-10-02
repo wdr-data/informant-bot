@@ -222,4 +222,4 @@ Resources:
             Action:
               - "states:TagResource"
             Resource:
-              - "arn:aws:states:::stateMachine:*"
+              - "*"
