@@ -7,7 +7,7 @@ node_js:
 
 env:
   global:
-    - ENV_BUCKET_NAME=informant-bot-env
+    - ENV_BUCKET_NAME=wdraktuell-bot-fb-env
     - AWS_REGION=eu-central-1
 
 cache: yarn
