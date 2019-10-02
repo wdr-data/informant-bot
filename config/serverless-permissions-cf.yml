@@ -202,4 +202,4 @@ Resources:
               - dynamodb:DescribeLimits
               - dynamodb:UpdateTable
             Resource:
-              - !Sub "arn:aws:dynamodb:::table/informant-bot-*"
+              - !Sub "arn:aws:dynamodb:::table/${ServiceName}-*"
