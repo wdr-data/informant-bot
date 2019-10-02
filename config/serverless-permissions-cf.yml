@@ -193,17 +193,21 @@ Resources:
           - Effect: Allow
             Action:
               - dynamodb:CreateTable
-              - dynamodb:DescribeReservedCapacityOfferings
               - dynamodb:UpdateTimeToLive
               - dynamodb:DescribeTable
-              - dynamodb:DescribeReservedCapacity
-              - dynamodb:PurchaseReservedCapacityOfferings
-              - dynamodb:DescribeLimits
               - dynamodb:UpdateTable
             Resource:
-              - !Sub "arn:aws:dynamodb:::table/${ServiceName}-*"
+              - !Sub "arn:aws:dynamodb:*:*:table/${ServiceName}-*"
           - Effect: Allow
             Action:
               - dynamodb:ListTables
+            Resource:
+              - "*"
+          - Effect: Allow
+            Action:
+              - dynamodb:DescribeLimits
+              - dynamodb:DescribeReservedCapacity
+              - dynamodb:DescribeReservedCapacityOfferings
+              - dynamodb:PurchaseReservedCapacityOfferings
             Resource:
               - "*"
