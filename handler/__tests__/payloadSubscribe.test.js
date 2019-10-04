@@ -26,15 +26,16 @@ describe('payloadSubscribe.subscribe', () => {
                     evening: 0,
                     breaking: 1,
                 },
-                ConditionExpression: 'attribute_not_exists(psid)',
+                ConditionExpression: 'attribute_not_exists(#idName)',
+                ExpressionAttributeNames: {
+                    '#idName': 'psid',
+                },
             });
         });
     });
 });
 
 describe('payloadSubscribe.unsubscribe', () => {
-    // dynamodb.update: 67136336f73537cfd8a1fede6db932bd94d20423
-    // dynamodb.delete: 8779f7a74ed5e22f4aa569488b6779eb2bd1618f
     it('replies with the correct text', async () => {
         const chat = new facebook.Chat({ sender: { id: '1' } });
         await payloadSubscribe.unsubscribe(chat, { subscription: 'morning' });
@@ -46,16 +47,17 @@ describe('payloadSubscribe.unsubscribe', () => {
         const chat = new facebook.Chat({ sender: { id: '1' } });
         await payloadSubscribe.unsubscribe(chat, { subscription: 'morning' });
         new Expect().dynamoUpdate({
+            // 81ae49055beca345b054d6cbf447fa27ac0d47ff
             TableName: tableName,
             Key: {
                 psid: '1',
             },
-            UpdateExpression: 'SET #timing = :status',
+            UpdateExpression: 'SET #key = :value',
             ExpressionAttributeNames: {
-                '#timing': 'morning',
+                '#key': 'morning',
             },
             ExpressionAttributeValues: {
-                ':status': 0,
+                ':value': 0,
             },
             ReturnValues: 'ALL_NEW',
         }).dynamoDelete({
