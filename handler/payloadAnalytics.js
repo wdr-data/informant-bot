@@ -18,7 +18,7 @@ export async function accept(chat) {
 
     await chat.track.event('Analytics', 'Allowed', chat.language).send();
 
-    return chat.sendFragments(thanksAnalytics.fragments);
+    return chat.sendFullNewsBase(thanksAnalytics.fragments);
 }
 
 export async function decline(chat) {
@@ -35,7 +35,7 @@ export async function decline(chat) {
     }
 
     const noAnalytics = await getFaq('no_analytics');
-    return chat.sendFragments(noAnalytics.fragments);
+    return chat.sendFullNewsBase(noAnalytics);
 }
 
 export async function choose(chat) {
@@ -56,7 +56,7 @@ export async function choose(chat) {
         ),
     ];
 
-    return chat.sendFragmentsWithButtons(chooseAnalyics.fragments, buttons);
+    return chat.sendFullNewsBaseWithButtons(chooseAnalyics, buttons);
 }
 
 export async function policy(chat) {
@@ -66,7 +66,7 @@ export async function policy(chat) {
         await chat.track.event('Analytics', 'Read Data Policy', chat.language).send();
     }
 
-    await chat.sendFragments(dataPolicy.fragments);
+    await chat.sendFullNewsBase(dataPolicy);
 
     return choose(chat);
 }
