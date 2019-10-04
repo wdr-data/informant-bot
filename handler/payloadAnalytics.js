@@ -1,7 +1,7 @@
 import { buttonPostback } from '../lib/facebook';
 import DynamoDbCrud from '../lib/dynamodbCrud';
 
-import { getFaq } from './payloadFAQ';
+import { getFaq } from './payloadFaq';
 
 export async function accept(chat) {
     const tracking = new DynamoDbCrud(process.env.DYNAMODB_TRACKING);
@@ -12,7 +12,7 @@ export async function accept(chat) {
         await tracking.update(chat.psid, 'enabled', true);
     }
 
-    const thanksAnalytics = await getFaq(chat, 'thanksAnalytics');
+    const thanksAnalytics = await getFaq('thanksAnalytics');
 
     await chat.loadSettings();
 
@@ -34,12 +34,12 @@ export async function decline(chat) {
         await tracking.update(chat.psid, 'enabled', false);
     }
 
-    const noAnalytics = await getFaq(chat, 'noAnalytics');
+    const noAnalytics = await getFaq('noAnalytics');
     return chat.sendFragments(noAnalytics.fragments);
 }
 
 export async function choose(chat) {
-    const chooseAnalyics = await getFaq(chat, 'chooseAnalytics');
+    const chooseAnalyics = await getFaq('chooseAnalytics');
 
     const buttons = [
         buttonPostback(
@@ -60,7 +60,7 @@ export async function choose(chat) {
 }
 
 export async function policy(chat) {
-    const dataPolicy = await getFaq(chat, 'dataPolicy');
+    const dataPolicy = await getFaq('dataPolicy');
 
     if (chat.trackingEnabled) {
         await chat.track.event('Analytics', 'Read Data Policy', chat.language).send();
