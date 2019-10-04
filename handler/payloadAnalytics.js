@@ -12,7 +12,7 @@ export async function accept(chat) {
         await tracking.update(chat.psid, 'enabled', true);
     }
 
-    const thanksAnalytics = await getFaq('thanksAnalytics');
+    const thanksAnalytics = await getFaq('thanks_analytics');
 
     await chat.loadSettings();
 
@@ -34,12 +34,12 @@ export async function decline(chat) {
         await tracking.update(chat.psid, 'enabled', false);
     }
 
-    const noAnalytics = await getFaq('noAnalytics');
+    const noAnalytics = await getFaq('no_analytics');
     return chat.sendFragments(noAnalytics.fragments);
 }
 
 export async function choose(chat) {
-    const chooseAnalyics = await getFaq('chooseAnalytics');
+    const chooseAnalyics = await getFaq('choose_analytics');
 
     const buttons = [
         buttonPostback(
@@ -60,7 +60,7 @@ export async function choose(chat) {
 }
 
 export async function policy(chat) {
-    const dataPolicy = await getFaq('dataPolicy');
+    const dataPolicy = await getFaq('data_policy');
 
     if (chat.trackingEnabled) {
         await chat.track.event('Analytics', 'Read Data Policy', chat.language).send();
