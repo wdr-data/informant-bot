@@ -1,6 +1,6 @@
 import moment from 'moment-timezone';
 
-export default (chat) => {
+export default async (chat) => {
     if (chat.trackingEnabled) {
         await chat.track.event('Testing', 'Zeit').send();
     }

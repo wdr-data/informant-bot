@@ -1,17 +1,14 @@
-import {buttonPostback} from "../lib/facebook";
-import DynamoDbCrud from "../lib/dynamodbCrud";
+import { buttonPostback } from '../lib/facebook';
+import DynamoDbCrud from '../lib/dynamodbCrud';
 
-import translations from "../assets/translations";
-import videos from "../assets/videos";
-
-import {getFaq} from "./payloadFAQ";
+import { getFaq } from './payloadFAQ';
 
 export async function accept(chat) {
     const tracking = new DynamoDbCrud(process.env.DYNAMODB_TRACKING);
 
     try {
-        await tracking.create(chat.psid, {enabled: true});
-    } catch {
+        await tracking.create(chat.psid, { enabled: true });
+    } catch (e) {
         await tracking.update(chat.psid, 'enabled', true);
     }
 
@@ -32,8 +29,8 @@ export async function decline(chat) {
     const tracking = new DynamoDbCrud(process.env.DYNAMODB_TRACKING);
 
     try {
-        await tracking.create(chat.psid, {enabled: false});
-    } catch {
+        await tracking.create(chat.psid, { enabled: false });
+    } catch (e) {
         await tracking.update(chat.psid, 'enabled', false);
     }
 
@@ -47,15 +44,15 @@ export async function choose(chat) {
     const buttons = [
         buttonPostback(
             'Ja, ich stimme zu',
-            {action: 'analyticsAccept'},
+            { action: 'analyticsAccept' },
         ),
         buttonPostback(
             'Ohne Analytics',
-            {action: 'analyticsDecline'},
+            { action: 'analyticsDecline' },
         ),
         buttonPostback(
             'Datenschutz',
-            {action: 'analyticsPolicy'},
+            { action: 'analyticsPolicy' },
         ),
     ];
 
