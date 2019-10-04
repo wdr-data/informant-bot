@@ -23,6 +23,11 @@ export default async function(chat) {
             buttonPostback('Mehr', { action: 'faq', slug: 'datenschutz' })
         ),
         genericElement(
+            '📊 Analytics',
+            null,
+            buttonPostback('Mehr', { action: 'analyticsChoose' })
+        ),
+        genericElement(
             '📇 Impressum',
             null,
             buttonPostback('Mehr', { action: 'faq', slug: 'impressum' })

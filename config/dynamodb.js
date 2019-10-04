@@ -75,6 +75,20 @@ const tableProps = {
             },
         ],
     },
+    'tracking': {
+        AttributeDefinitions: [
+            {
+                AttributeName: 'psid',
+                AttributeType: 'S',
+            },
+        ],
+        KeySchema: [
+            {
+                AttributeName: 'psid',
+                KeyType: 'HASH',
+            },
+        ],
+    },
 };
 
 const tableNames = (stage) => {

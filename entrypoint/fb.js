@@ -46,6 +46,7 @@ export const message = async (event, context, callback) => {
 
         const msgEvent = payload.entry[0].messaging[0];
         chat = new Chat(msgEvent);
+        await chat.loadSettings();
 
         await handleMessage(event, context, chat, msgEvent);
     } catch (error) {

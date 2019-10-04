@@ -27,5 +27,9 @@ export default {
         'current_audio': require('./payloadCurrentAudio').default,
         'menu_details': require('./payloadMenu.js').default,
         'report_audio': require('./payloadAudio').default,
+        'analyticsAccept': require('./payloadAnalytics').accept,
+        'analyticsDecline': require('./payloadAnalytics').decline,
+        'analyticsPolicy': require('./payloadAnalytics').policy,
+        'analyticsChoose': require('./payloadAnalytics').choose,
     },
 };
