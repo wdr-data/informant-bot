@@ -65,7 +65,6 @@ export const message = async (event, context, callback) => {
 };
 
 const handleMessage = async (event, context, chat, msgEvent) => {
-    const psid = msgEvent.sender.id;
 
     let replyPayload;
     if (msgEvent.postback) {
@@ -122,7 +121,7 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         credentials: require('../.df_id.json') || {},
         /* eslint-enable */
     });
-    const sessionPath = sessionClient.sessionPath(process.env.DF_PROJECTID, psid);
+    const sessionPath = sessionClient.sessionPath(process.env.DF_PROJECTID, chat.psid);
 
     const request = {
         session: sessionPath,
