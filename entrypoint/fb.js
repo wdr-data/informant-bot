@@ -4,6 +4,7 @@ import dialogflow from 'dialogflow';
 import handler from '../handler';
 import Raven from 'raven';
 import RavenLambdaWrapper from 'serverless-sentry-lib';
+import payloadFaq from '../handler/payloadFaq';
 
 
 export const verify = RavenLambdaWrapper.handler(Raven, (event, context, callback) => {
@@ -14,8 +15,8 @@ export const verify = RavenLambdaWrapper.handler(Raven, (event, context, callbac
     const mode = params['hub.mode'];
 
     if (mode && token && challenge &&
-      mode === 'subscribe' &&
-      token === process.env.FB_VERIFYTOKEN
+        mode === 'subscribe' &&
+        token === process.env.FB_VERIFYTOKEN
     ) {
         callback(null, {
             statusCode: 200,
@@ -106,10 +107,16 @@ const handleMessage = async (event, context, chat, msgEvent) => {
     }
 
     switch (text) {
-    case '#psid':
-        return chat.sendText(`Deine Page-Specific ID ist \`${chat.psid}\``);
+        case '#psid':
+            return chat.sendText(`Deine Page-Specific ID ist \`${chat.psid}\``);
     }
+    // Filter if user send link
+    // TODO
 
+    // Ask user if intent to contact editorial board if true
+    if (text.length > 70) {
+        return payloadFaq(chat, { slug: 'contact' });
+    }
     const sessionClient = new dialogflow.SessionsClient({
         /* eslint-disable */
         credentials: require('../.df_id.json') || {},
