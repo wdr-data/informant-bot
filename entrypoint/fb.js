@@ -4,7 +4,7 @@ import dialogflow from 'dialogflow';
 import handler from '../handler';
 import Raven from 'raven';
 import RavenLambdaWrapper from 'serverless-sentry-lib';
-import payloadFaq from '../handler/payloadFaq';
+import { contact, feedbackMode, contactWithLink } from '../handler/actionContact';
 
 
 export const verify = RavenLambdaWrapper.handler(Raven, (event, context, callback) => {
@@ -65,7 +65,6 @@ export const message = async (event, context, callback) => {
 };
 
 const handleMessage = async (event, context, chat, msgEvent) => {
-
     let replyPayload;
     if (msgEvent.postback) {
         replyPayload = JSON.parse(msgEvent.postback.payload);
@@ -103,6 +102,10 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         'attachments' in msgEvent.message && msgEvent.message.attachments[0].type === 'audio'
     ) {
         text = '#thisisanaudio';
+    } else if (
+        'attachments' in msgEvent.message && msgEvent.message.attachment[0].type === 'fallback'
+    ) {
+        return contactWithLink(chat);
     }
 
     switch (text) {
@@ -112,10 +115,6 @@ const handleMessage = async (event, context, chat, msgEvent) => {
     // Filter if user send link
     // TODO
 
-    // Ask user if intent to contact editorial board if true
-    if (text.length > 70) {
-        return payloadFaq(chat, { slug: 'contact' });
-    }
     const sessionClient = new dialogflow.SessionsClient({
         /* eslint-disable */
         credentials: require('../.df_id.json') || {},
@@ -144,6 +143,12 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         console.log(`  Action: ${result.action}`);
         if (result.action in handler.actions) {
             return handler.actions[result.action](chat, result.parameters['fields']);
+        }
+        if (chat.feedbackMode) {
+            return feedbackMode(chat);
+        }
+        if (result.action === 'input.unknown' && text.length > 90) {
+            return contact(chat);
         }
         return chat.sendText(result.fulfillmentText);
     }
