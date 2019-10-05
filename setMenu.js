@@ -15,9 +15,9 @@ const MENU_ACTIONS = [
         payload: JSON.stringify({ action: 'current_news' }),
     },
     {
-        title: '💌 Teilen',
+        title: '🔧 An-/Abmelden',
         type: 'postback',
-        payload: JSON.stringify({ action: 'share' }),
+        payload: JSON.stringify({ action: 'subscriptions' }),
     },
     {
         title: '🤟 Mehr',
