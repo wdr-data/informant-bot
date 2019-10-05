@@ -44,6 +44,14 @@ const GET_STARTED_DATA = {
   },
 };
 
+const greetings = [{
+    locale: 'default',
+    text: 'Herzlich Willkommen beim Messenger-Service von WDRaktuell. Dein schneller Überblick zum Mitreden. Jederzeit und überall.',
+}];
+
+const GREETING_DATA = {
+    greeting: greetings,
+};
 
 if (FB_PAGETOKEN === undefined) {
     throw new Error("Please set 'FB_PAGETOKEN' environment variable.");
@@ -68,6 +76,18 @@ request.post({
         body: PERSISTENT_MENU_DATA,
     }).then(() => {
         console.log('Successfully set persistent menu');
+        request.post({
+            uri: MESSENGER_PROFILE_URL,
+            qs: {
+                'access_token': FB_PAGETOKEN,
+            },
+            json: true,
+            body: GREETING_DATA,
+        }).then(() => {
+            console.log('Successfully set greetings');
+        }).catch((error) => {
+            console.log('Setting greetings failed: ', error);
+        });
     }).catch((error) => {
         console.log('Setting persistent menu failed: ', error);
     });
