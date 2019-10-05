@@ -29,13 +29,13 @@ export async function feedbackStart(chat, payload) {
     const lastDefaultReplies = new DynamoDbCrud(process.env.DYNAMODB_LASTDEFAULTREPLIES, 'psid');
     const ttl = Math.floor(Date.now() / 1000) + 1*60*60;
     try {
-        await lastDefaultReplies.create(chat.psid, {ttl});
-        console.log('Enable feedback mode.')
+        await lastDefaultReplies.create(chat.psid, { ttl });
+        console.log('Enable feedback mode.');
     } catch (e) {
         await lastDefaultReplies.update(chat.psid, 'ttl', ttl);
     }
 
-    return payloadFaq(chat, {slug: 'feedback_start'});
+    return payloadFaq(chat, { slug: 'feedback_start' });
 }
 
 export async function feedbackMode(chat) {
@@ -44,7 +44,7 @@ export async function feedbackMode(chat) {
     const buttons = [
         buttonPostback(
             'Alles gesagt, danke!',
-            { action: 'feedback_done'},
+            { action: 'feedback_done' },
         ),
     ];
 
@@ -54,10 +54,10 @@ export async function feedbackMode(chat) {
 export async function feedbackDone(chat) {
     const lastDefaultReplies = new DynamoDbCrud(process.env.DYNAMODB_LASTDEFAULTREPLIES, 'psid');
     await lastDefaultReplies.remove(chat.psid);
-    console.log('Disable feedback mode.')
-    return payloadFaq(chat, {slug: 'feedback_done'});
+    console.log('Disable feedback mode.');
+    return payloadFaq(chat, { slug: 'feedback_done' });
 }
 
 export async function contactWithLink(chat) {
-    return payloadFaq(chat, {slug: 'feedback_msg_with_link'});
+    return payloadFaq(chat, { slug: 'feedback_msg_with_link' });
 }

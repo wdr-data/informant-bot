@@ -109,8 +109,8 @@ const handleMessage = async (event, context, chat, msgEvent) => {
     }
 
     switch (text) {
-        case '#psid':
-            return chat.sendText(`Deine Page-Specific ID ist \`${chat.psid}\``);
+    case '#psid':
+        return chat.sendText(`Deine Page-Specific ID ist \`${chat.psid}\``);
     }
     // Filter if user send link
     // TODO
