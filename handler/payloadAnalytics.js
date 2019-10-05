@@ -4,7 +4,7 @@ import DynamoDbCrud from '../lib/dynamodbCrud';
 import { getFaq } from './payloadFaq';
 
 export async function accept(chat) {
-    const tracking = new DynamoDbCrud(process.env.DYNAMODB_TRACKING);
+    const tracking = new DynamoDbCrud(process.env.DYNAMODB_TRACKING, 'psid');
 
     try {
         await tracking.create(chat.psid, { enabled: true });
@@ -26,7 +26,7 @@ export async function decline(chat) {
         await chat.track.event('Analytics', 'Denied', chat.language).send();
     }
 
-    const tracking = new DynamoDbCrud(process.env.DYNAMODB_TRACKING);
+    const tracking = new DynamoDbCrud(process.env.DYNAMODB_TRACKING, 'psid');
 
     try {
         await tracking.create(chat.psid, { enabled: false });
