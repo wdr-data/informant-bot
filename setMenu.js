@@ -29,25 +29,28 @@ const MENU_ACTIONS = [
 
 const PERSISTENT_MENU_DATA = {
     'persistent_menu':
-    [
-        {
-            locale: 'default',
-            'call_to_actions': MENU_ACTIONS,
-        },
-    ],
+        [
+            {
+                locale: 'default',
+                'call_to_actions': MENU_ACTIONS,
+            },
+        ],
 };
 
 const GET_STARTED_DATA = {
     'get_started':
-  {
-      payload: JSON.stringify(GET_STARTED_PAYLOAD),
-  },
+    {
+        payload: JSON.stringify(GET_STARTED_PAYLOAD),
+    },
 };
 
-const greetings = [{
-    locale: 'default',
-    text: 'Herzlich Willkommen beim Messenger-Service von WDRaktuell. Dein schneller Überblick zum Mitreden. Jederzeit und überall.',
-}];
+const greetings = [
+    {
+        locale: 'default',
+        text: `Herzlich Willkommen beim Messenger-Service von WDRaktuell.
+        Dein schneller Überblick zum Mitreden. Jederzeit und überall.`,
+    },
+];
 
 const GREETING_DATA = {
     greeting: greetings,
