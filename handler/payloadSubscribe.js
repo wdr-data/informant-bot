@@ -55,8 +55,8 @@ export const subscriptions = async function(chat) {
 
     elements.push(
         genericElement(
-            (sub.morning ? '✔' : '❌') + ' Deine Infos am Morgen',
-            "Um 7.30 Uhr gibt's Dein erstes Update.",
+            (sub.morning ? '✔' : '❌') + ' Deine Infos am Morgen ☕',
+            "Gegen 7.30 Uhr (9.00 Uhr Sa/So) gibt's Dein erstes Update.",
             buttonPostback(!sub.morning ? 'Anmelden' : 'Abmelden', {
                 action: !sub.morning ? 'subscribe' : 'unsubscribe',
                 subscription: 'morning',
@@ -66,8 +66,8 @@ export const subscriptions = async function(chat) {
 
     elements.push(
         genericElement(
-            (sub.evening ? '✔' : '❌') + ' Deine Infos am Abend',
-            'Um 18.30 Uhr kriegst Du das, was am Tag wichtig war.',
+            (sub.evening ? '✔' : '❌') + ' Deine Infos am Abend 🌙',
+            'Gegen 18.30 Uhr kriegst Du das, was am Tag wichtig war.',
             buttonPostback(!sub.evening ? 'Anmelden' : 'Abmelden', {
                 action: !sub.evening ? 'subscribe' : 'unsubscribe',
                 subscription: 'evening',
@@ -77,11 +77,21 @@ export const subscriptions = async function(chat) {
 
     elements.push(
         genericElement(
-            (sub.breaking ? '✔' : '❌') + ' Eilmeldungen',
+            (sub.breaking ? '✔' : '❌') + ' Eilmeldungen 🚨',
             'Bei großen Sachen sag ich dir auch zwischendurch Bescheid.',
             buttonPostback(!sub.breaking ? 'Anmelden' : 'Abmelden', {
                 action: !sub.breaking ? 'subscribe' : 'unsubscribe',
                 subscription: 'breaking',
+            })
+        )
+    );
+
+    elements.push(
+        genericElement(
+            (chat.trackingEnabled ? '✔' : '❌') + ' Analytics 📊',
+            'Erlaube uns deine Interaktion mit dem Service anonymisiert auszuwerten.',
+            buttonPostback(!chat.trackingEnabled ? 'Einschalten' : 'Ausschalten', {
+                action: !chat.trackingEnabled ? 'analyticsAccept' : 'analyticsDecline',
             })
         )
     );
