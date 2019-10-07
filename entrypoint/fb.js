@@ -112,8 +112,6 @@ const handleMessage = async (event, context, chat, msgEvent) => {
     case '#psid':
         return chat.sendText(`Deine Page-Specific ID ist \`${chat.psid}\``);
     }
-    // Filter if user send link
-    // TODO
 
     const sessionClient = new dialogflow.SessionsClient({
         /* eslint-disable */
