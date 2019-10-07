@@ -87,8 +87,8 @@ describe('payload_subscribe.subscriptions', () => {
                     )
                 ),
                 facebook.genericElement(
-                    '✔ Deine Infos am Morgen',
-                    'Um 7.30 Uhr gibt\'s Dein erstes Update.',
+                    '✔ Deine Infos am Morgen ☕',
+                    "Gegen 7.30 Uhr (9.00 Uhr Sa/So) gibt's Dein erstes Update.",
                     facebook.buttonPostback(
                         'Abmelden',
                         {
@@ -98,8 +98,8 @@ describe('payload_subscribe.subscriptions', () => {
                     )
                 ),
                 facebook.genericElement(
-                    '❌ Deine Infos am Abend',
-                    'Um 18.30 Uhr kriegst Du das, was am Tag wichtig war.',
+                    '❌ Deine Infos am Abend 🌙',
+                    'Gegen 18.30 Uhr kriegst Du das, was am Tag wichtig war.',
                     facebook.buttonPostback(
                         'Anmelden',
                         {
@@ -109,13 +109,23 @@ describe('payload_subscribe.subscriptions', () => {
                     )
                 ),
                 facebook.genericElement(
-                    '❌ Eilmeldungen',
+                    '❌ Eilmeldungen 🚨',
                     'Bei großen Sachen sag ich dir auch zwischendurch Bescheid.',
                     facebook.buttonPostback(
                         'Anmelden',
                         {
                             action: 'subscribe',
                             subscription: 'breaking',
+                        }
+                    )
+                ),
+                facebook.genericElement(
+                    '❌ Analytics 📊',
+                    'Erlaube uns deine Interaktion mit dem Service anonymisiert auszuwerten.',
+                    facebook.buttonPostback(
+                        'Ausschalten',
+                        {
+                            action: 'analyticsAccept',
                         }
                     )
                 ),
