@@ -147,7 +147,7 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         if (chat.feedbackMode) {
             return feedbackMode(chat);
         }
-        if (result.action === 'input.unknown' && text.length > 90) {
+        if (text.length > 90) {
             return contact(chat);
         }
         return chat.sendText(result.fulfillmentText);
