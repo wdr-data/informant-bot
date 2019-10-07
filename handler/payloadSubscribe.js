@@ -1,3 +1,5 @@
+import { onboardingBreaking } from './payloadGetStarted';
+import { choose } from './payloadAnalytics';
 import { buttonPostback, genericElement } from '../lib/facebook';
 import libSubscriptions from '../lib/subscriptions';
 
@@ -114,14 +116,22 @@ export const subscribe = function(chat, payload) {
     if (payload.subscription === 'breaking' || payload.subscription === 'all') {
         promises.push(enableSubscription(chat.event.sender.id, 'breaking'));
     }
-    return Promise.all(
-        promises.concat(
-            chat.sendText(
-                `Ich schick dir ab jetzt die Nachrichten, wie du sie bestellt hast. ` +
-                `Wenn du die letzte Ausgabe sehen willst, schreib einfach "Leg los"`
+
+    switch (payload.nextStep) {
+    case 'onboarding_breaking':
+        return onboardingBreaking(chat, payload);
+    case 'onboarding_analytics':
+        return choose(chat, payload);
+    default:
+        return Promise.all(
+            promises.concat(
+                chat.sendText(
+                    `Ich schick dir ab jetzt die Nachrichten, wie du sie bestellt hast. ` +
+                        `Wenn du die letzte Ausgabe sehen willst, schreib einfach "Leg los"`
+                )
             )
-        )
-    );
+        );
+    }
 };
 
 export const unsubscribe = async function(chat, payload) {
