@@ -97,6 +97,10 @@ export const subscribe = function(chat, payload) {
     if (payload.subscription === 'evening' || payload.subscription === 'all') {
         promises.push(enableSubscription(chat.event.sender.id, 'evening'));
     }
+    if (payload.subscription === 'morning_and_evening') {
+        promises.push(enableSubscription(chat.event.sender.id, 'morning'));
+        promises.push(enableSubscription(chat.event.sender.id, 'evening'));
+    }
     if (payload.subscription === 'breaking' || payload.subscription === 'all') {
         promises.push(enableSubscription(chat.event.sender.id, 'breaking'));
     }

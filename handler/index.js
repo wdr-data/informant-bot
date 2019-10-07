@@ -35,5 +35,6 @@ export default {
         'contact': require('./actionContact').contact,
         'feedback_start': require('./actionContact').feedbackStart,
         'feedback_done': require('./actionContact').feedbackDone,
+        'get_started': require('./payloadGetStarted').default,
     },
 };
