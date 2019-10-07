@@ -108,6 +108,13 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         return contactWithLink(chat);
     }
 
+    if (chat.feedbackMode) {
+        return feedbackMode(chat);
+    }
+    if (text.length > 90) {
+        return contact(chat);
+    }
+
     switch (text) {
     case '#psid':
         return chat.sendText(`Deine Page-Specific ID ist \`${chat.psid}\``);
@@ -141,12 +148,6 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         console.log(`  Action: ${result.action}`);
         if (result.action in handler.actions) {
             return handler.actions[result.action](chat, result.parameters['fields']);
-        }
-        if (chat.feedbackMode) {
-            return feedbackMode(chat);
-        }
-        if (text.length > 90) {
-            return contact(chat);
         }
         return chat.sendText(result.fulfillmentText);
     }
