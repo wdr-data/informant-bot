@@ -18,7 +18,7 @@ export async function accept(chat) {
 
     await chat.track.event('Analytics', 'Allowed', chat.language).send();
 
-    return chat.sendFullNewsBase(thanksAnalytics.fragments);
+    return chat.sendFullNewsBase(thanksAnalytics);
 }
 
 export async function decline(chat) {
