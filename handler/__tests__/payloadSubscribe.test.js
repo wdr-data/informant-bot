@@ -123,7 +123,7 @@ describe('payload_subscribe.subscriptions', () => {
                     '❌ Analytics 📊',
                     'Erlaube uns deine Interaktion mit dem Service anonymisiert auszuwerten.',
                     facebook.buttonPostback(
-                        'Ausschalten',
+                        'Einschalten',
                         {
                             action: 'analyticsAccept',
                         }
