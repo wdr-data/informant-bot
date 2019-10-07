@@ -106,6 +106,10 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         'attachments' in msgEvent.message && msgEvent.message.attachment[0].type === 'fallback'
     ) {
         return contactWithLink(chat);
+    } else if (
+        'attachments' in msgEvent.message && msgEvent.message.attachment[0].type === 'template'
+    ) {
+        text = '#lookslikecommercial';
     }
 
     if (chat.feedbackMode) {
