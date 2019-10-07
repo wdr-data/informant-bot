@@ -3,9 +3,14 @@ import { genericElement, buttonPostback } from '../lib/facebook';
 export default async function(chat) {
     const elements = [
         genericElement(
-            '🔧 An-/Abmelden',
-            'Verwalte deine Push-Einstellungen.',
-            buttonPostback('Mehr', { action: 'subscriptions' })
+            '💌 Teilen',
+            'Teile diesen Service mit deinen Freunden',
+            buttonPostback('Mehr', { action: 'share' })
+        ),
+        genericElement(
+            '💬 Feedback',
+            'Anregungen, Fragen, Kritik? Immer her damit',
+            buttonPostback('Mehr', { action: 'contact' })
         ),
         genericElement(
             '🕵 Informant?',

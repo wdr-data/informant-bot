@@ -4,6 +4,7 @@ import dialogflow from 'dialogflow';
 import handler from '../handler';
 import Raven from 'raven';
 import RavenLambdaWrapper from 'serverless-sentry-lib';
+import { contact, feedbackMode, contactWithLink } from '../handler/actionContact';
 
 
 export const verify = RavenLambdaWrapper.handler(Raven, (event, context, callback) => {
@@ -14,8 +15,8 @@ export const verify = RavenLambdaWrapper.handler(Raven, (event, context, callbac
     const mode = params['hub.mode'];
 
     if (mode && token && challenge &&
-      mode === 'subscribe' &&
-      token === process.env.FB_VERIFYTOKEN
+        mode === 'subscribe' &&
+        token === process.env.FB_VERIFYTOKEN
     ) {
         callback(null, {
             statusCode: 200,
@@ -64,8 +65,6 @@ export const message = async (event, context, callback) => {
 };
 
 const handleMessage = async (event, context, chat, msgEvent) => {
-    const psid = msgEvent.sender.id;
-
     let replyPayload;
     if (msgEvent.postback) {
         replyPayload = JSON.parse(msgEvent.postback.payload);
@@ -103,6 +102,21 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         'attachments' in msgEvent.message && msgEvent.message.attachments[0].type === 'audio'
     ) {
         text = '#thisisanaudio';
+    } else if (
+        'attachments' in msgEvent.message && msgEvent.message.attachment[0].type === 'fallback'
+    ) {
+        return contactWithLink(chat);
+    } else if (
+        'attachments' in msgEvent.message && msgEvent.message.attachment[0].type === 'template'
+    ) {
+        text = '#lookslikecommercial';
+    }
+
+    if (chat.feedbackMode) {
+        return feedbackMode(chat);
+    }
+    if (text.length > 90) {
+        return contact(chat);
     }
 
     switch (text) {
@@ -115,7 +129,7 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         credentials: require('../.df_id.json') || {},
         /* eslint-enable */
     });
-    const sessionPath = sessionClient.sessionPath(process.env.DF_PROJECTID, psid);
+    const sessionPath = sessionClient.sessionPath(process.env.DF_PROJECTID, chat.psid);
 
     const request = {
         session: sessionPath,
