@@ -107,7 +107,7 @@ export async function policy(chat, payload) {
         await chat.track.event('Analytics', 'Read Data Policy', chat.language).send();
     }
 
-    if (payload.lastStep == 'onboarding_analytics') {
+    if (payload.lastStep === 'onboarding_analytics') {
         payload['nextStep'] = payload.lastStep;
     }
 
