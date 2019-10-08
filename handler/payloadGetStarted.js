@@ -62,7 +62,3 @@ export async function onboardingBreaking(chat, payload) {
 
     chat.sendFullNewsBaseWithButtons(onboardingBreaking, buttons);
 }
-
-export async function onboardingDataPolicy(chat, payload) {
-    chat.sendText('hilfe ist unterwegs');
-}
