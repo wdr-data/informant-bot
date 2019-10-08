@@ -102,7 +102,7 @@ export const subscriptions = async function(chat) {
     return chat.sendGenericTemplate(elements);
 };
 
-export const subscribe = function(chat, payload) {
+export const subscribe = async function(chat, payload) {
     const promises = [];
     if (payload.subscription === 'morning' || payload.subscription === 'all') {
         promises.push(enableSubscription(chat.event.sender.id, 'morning'));
