@@ -2,14 +2,20 @@ import { getFaq } from './payloadFaq';
 import { buttonPostback } from '../lib/facebook';
 
 export default async (chat, payload) => {
-    let faq = undefined;
-    if (payload.ref && await getFaq(payload.ref)) {
-        faq = await getFaq(payload.ref, true);
+    let greeting;
+    if (payload.ref) {
+        try {
+            greeting = await getFaq(payload.ref, true);
+        } catch (e) {
+            console.error(`FAQ for referral ${payload.ref} not found!`);
+            console.error(e);
+            greeting = await getFaq('greeting_default', true);
+        }
     } else {
-        faq = await getFaq('greeting_default', true);
+        greeting = await getFaq('greeting_default', true);
     }
-    await chat.sendFullNewsBase(faq);
 
+    await chat.sendFullNewsBase(greeting);
 
     const onboarding = await getFaq('onboarding', true);
     const buttons = [
