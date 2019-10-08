@@ -90,6 +90,11 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         return chat.sendText(`Da ist was schief gelaufen.`);
     }
 
+    // Someone clicked a referral link but had already started the bot
+    if ('referral' in msgEvent && !('message' in msgEvent)) {
+        return;
+    }
+
     let text = '#dontknowwhatthisis';
     if ('text' in msgEvent.message) {
         text = msgEvent.message.text;
