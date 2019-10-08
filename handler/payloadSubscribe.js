@@ -1,6 +1,6 @@
 import { onboardingBreaking } from './payloadGetStarted';
 import { choose as analyticsChoose } from './payloadAnalytics';
-import { getFaq } from './payloadFaq';
+import payloadFaq from './payloadFaq';
 import { buttonPostback, genericElement } from '../lib/facebook';
 import libSubscriptions from '../lib/subscriptions';
 
@@ -126,8 +126,7 @@ export const subscribe = async function(chat, payload) {
     case 'onboarding_analytics':
         return analyticsChoose(chat, payload);
     }
-    const subscribed = await getFaq('subscribed', true);
-    return chat.sendFullNewsBase(subscribed);
+    return payloadFaq(chat, { slug: 'subscribed' });
 };
 
 export const unsubscribe = async function(chat, payload) {
@@ -141,8 +140,7 @@ export const unsubscribe = async function(chat, payload) {
     if (payload.subscription === 'breaking' || payload.subscription === 'all') {
         promises.push(disableSubscription(chat.event.sender.id, 'breaking'));
     }
-    const unsubscribed = await getFaq('unsubscribed');
     return Promise.all(
-        promises.concat(chat.sendFullNewsBase(unsubscribed))
+        promises.concat(payloadFaq(chat, { slug: 'unsubscribed' }))
     );
 };
