@@ -1,14 +1,17 @@
-import payloadFaq, { getFaq } from './payloadFaq';
+import { getFaq } from './payloadFaq';
 import { buttonPostback } from '../lib/facebook';
 
 export default async (chat, payload) => {
+    let faq = undefined;
     if (payload.ref && await getFaq(payload.ref)) {
-        await payloadFaq(chat, { action: 'faq', slug: payload.ref });
+        faq = await getFaq(payload.ref, true);
     } else {
-        await payloadFaq(chat, { action: 'faq', slug: 'greeting_default' });
+        faq = await getFaq('greeting_default', true);
     }
+    await chat.sendFullNewsBase(faq);
 
-    const onboarding = await getFaq('onboarding');
+
+    const onboarding = await getFaq('onboarding', true);
     const buttons = [
         buttonPostback(
             'Morgens ☕ & Abends 🌙',
@@ -40,7 +43,7 @@ export default async (chat, payload) => {
 };
 
 export async function onboardingBreaking(chat, payload) {
-    const onboardingBreaking = await getFaq(payload.replyFaq);
+    const onboardingBreaking = await getFaq(payload.replyFaq, true);
 
     const buttons = [
         buttonPostback(

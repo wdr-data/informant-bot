@@ -1,7 +1,7 @@
 import { buttonPostback } from '../lib/facebook';
 import DynamoDbCrud from '../lib/dynamodbCrud';
 
-import payloadFaq, { getFaq } from './payloadFaq';
+import { getFaq } from './payloadFaq';
 import actionCurrentNews from './actionCurrentNews';
 
 export async function accept(chat, payload) {
@@ -24,7 +24,7 @@ export async function accept(chat, payload) {
         faq = 'onboarding_thanks_analytics';
     }
 
-    const thanksAnalytics = await getFaq(faq);
+    const thanksAnalytics = await getFaq(faq, true);
     await chat.sendFullNewsBase(thanksAnalytics);
 
     if (payload.nextStep === 'show_news') {
@@ -50,7 +50,7 @@ export async function decline(chat, payload) {
         faq = 'onboarding_no_analytics';
     }
 
-    const noAnalytics = await getFaq(faq);
+    const noAnalytics = await getFaq(faq, true);
     await chat.sendFullNewsBase(noAnalytics);
 
     if (payload.nextStep === 'show_news') {
@@ -70,7 +70,7 @@ export async function choose(chat, payload) {
     if (payload.replyFaq) {
         faq = payload.replyFaq;
     }
-    const chooseAnalyics = await getFaq(faq);
+    const chooseAnalyics = await getFaq(faq, true);
 
     const buttons = [
         buttonPostback(
@@ -111,7 +111,8 @@ export async function policy(chat, payload) {
         payload['nextStep'] = payload.lastStep;
     }
 
-    await payloadFaq(chat, { slug: 'data_policy' });
+    const dataPolicy = await getFaq('data_policy', true)
+    await chat.sendFullNewsBase(dataPolicy);
 
     return choose(chat, payload);
 }

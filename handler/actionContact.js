@@ -4,7 +4,7 @@ import { getFaq } from './payloadFaq';
 import { buttonPostback } from '../lib/facebook';
 
 export async function contact(chat) {
-    const contact = await getFaq('contact');
+    const contact = await getFaq('contact', true);
 
     const buttons = [
         buttonPostback(
@@ -39,7 +39,7 @@ export async function feedbackStart(chat, payload) {
 }
 
 export async function feedbackMode(chat) {
-    const feedbackMode = await getFaq('feedback_mode');
+    const feedbackMode = await getFaq('feedback_mode', true);
 
     const buttons = [
         buttonPostback(
