@@ -4,8 +4,9 @@ import fragmentSender from '../lib/fragmentSender';
 
 export const FAQ_PREFIX = 'wdraktuell';
 
-export const getFaq = async function(slug) {
-    const url = `${urls.faqBySlug(`${FAQ_PREFIX}-${slug}`)}`;
+export const getFaq = async function(slug, full = false) {
+    const urlgen = full ? urls.fullFaqBySlug : urls.faqBySlug;
+    const url = urlgen(`${FAQ_PREFIX}-${slug}`);
     const faqs = await request({ uri: url, json: true });
 
     if (faqs.length === 0) {
