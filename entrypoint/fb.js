@@ -68,6 +68,9 @@ const handleMessage = async (event, context, chat, msgEvent) => {
     let replyPayload;
     if (msgEvent.postback) {
         replyPayload = JSON.parse(msgEvent.postback.payload);
+        if (msgEvent.postback.referral) {
+            replyPayload['ref'] = msgEvent.postback.referral.ref;
+        }
     }
 
     if ('message' in msgEvent && 'quick_reply' in msgEvent.message) {

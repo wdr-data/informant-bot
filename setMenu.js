@@ -4,8 +4,7 @@ const FB_PAGETOKEN = process.env.FB_PAGETOKEN;
 const MESSENGER_PROFILE_URL = 'https://graph.facebook.com/v4.0/me/messenger_profile';
 
 const GET_STARTED_PAYLOAD = {
-    action: 'faq',
-    slug: 'onboarding',
+    action: 'get_started',
 };
 
 const MENU_ACTIONS = [
