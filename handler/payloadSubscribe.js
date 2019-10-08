@@ -118,17 +118,16 @@ export const subscribe = async function(chat, payload) {
         promises.push(enableSubscription(chat.event.sender.id, 'breaking'));
     }
 
-    await Promise.all(promises)
+    await Promise.all(promises);
 
     switch (payload.nextStep) {
     case 'onboarding_breaking':
         return onboardingBreaking(chat, payload);
     case 'onboarding_analytics':
         return analyticsChoose(chat, payload);
-    default:
-        const subscribed = await getFaq('subscribed')
-        return chat.sendFullNewsBase(subscribed);
     }
+    const subscribed = await getFaq('subscribed', true);
+    return chat.sendFullNewsBase(subscribed);
 };
 
 export const unsubscribe = async function(chat, payload) {
@@ -142,7 +141,7 @@ export const unsubscribe = async function(chat, payload) {
     if (payload.subscription === 'breaking' || payload.subscription === 'all') {
         promises.push(disableSubscription(chat.event.sender.id, 'breaking'));
     }
-    const unsubscribed = await getFaq('unsubscribed')
+    const unsubscribed = await getFaq('unsubscribed');
     return Promise.all(
         promises.concat(chat.sendFullNewsBase(unsubscribed))
     );
