@@ -65,7 +65,7 @@ export async function choose(chat, payload) {
 
     if (payload.nextStep === 'onboarding_analytics') {
         lastStep = payload.nextStep;
-        nextStep = 'show_news';
+        nextStep = 'show_news_not';
     }
     if (payload.replyFaq) {
         faq = payload.replyFaq;
