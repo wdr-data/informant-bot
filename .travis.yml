@@ -22,12 +22,12 @@ before_script:
 deploy:
   - provider: script
     skip_cleanup: true
-    script: export SLS_STAGE=staging && yarn serverless create_domain && yarn serverless deploy
+    script: export SLS_STAGE=staging && yarn serverless create_domain && yarn serverless deploy && yarn set-menu
     on:
       branch: master
   - provider: script
     skip_cleanup: true
-    script: export SLS_STAGE=prod && yarn serverless create_domain && yarn serverless deploy
+    script: export SLS_STAGE=prod && yarn serverless create_domain && yarn serverless deploy && yarn set-menu
     on:
       branch: production
 

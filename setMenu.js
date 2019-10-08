@@ -1,11 +1,10 @@
 import request from 'request-promise-native';
 
 const FB_PAGETOKEN = process.env.FB_PAGETOKEN;
-const MESSENGER_PROFILE_URL = 'https://graph.facebook.com/v2.6/me/messenger_profile';
+const MESSENGER_PROFILE_URL = 'https://graph.facebook.com/v4.0/me/messenger_profile';
 
 const GET_STARTED_PAYLOAD = {
-    action: 'faq',
-    slug: 'onboarding',
+    action: 'get_started',
 };
 
 const MENU_ACTIONS = [
@@ -15,9 +14,9 @@ const MENU_ACTIONS = [
         payload: JSON.stringify({ action: 'current_news' }),
     },
     {
-        title: '💌 Teilen',
+        title: '🔧 An-/Abmelden',
         type: 'postback',
-        payload: JSON.stringify({ action: 'share' }),
+        payload: JSON.stringify({ action: 'subscriptions' }),
     },
     {
         title: '🤟 Mehr',
@@ -29,21 +28,32 @@ const MENU_ACTIONS = [
 
 const PERSISTENT_MENU_DATA = {
     'persistent_menu':
-    [
-        {
-            locale: 'default',
-            'call_to_actions': MENU_ACTIONS,
-        },
-    ],
+        [
+            {
+                locale: 'default',
+                'call_to_actions': MENU_ACTIONS,
+            },
+        ],
 };
 
 const GET_STARTED_DATA = {
     'get_started':
-  {
-      payload: JSON.stringify(GET_STARTED_PAYLOAD),
-  },
+    {
+        payload: JSON.stringify(GET_STARTED_PAYLOAD),
+    },
 };
 
+const greetings = [
+    {
+        locale: 'default',
+        text: `Herzlich Willkommen beim Messenger-Service von WDRaktuell.
+        Dein schneller Überblick zum Mitreden. Jederzeit und überall.`,
+    },
+];
+
+const GREETING_DATA = {
+    greeting: greetings,
+};
 
 if (FB_PAGETOKEN === undefined) {
     throw new Error("Please set 'FB_PAGETOKEN' environment variable.");
@@ -68,6 +78,18 @@ request.post({
         body: PERSISTENT_MENU_DATA,
     }).then(() => {
         console.log('Successfully set persistent menu');
+        request.post({
+            uri: MESSENGER_PROFILE_URL,
+            qs: {
+                'access_token': FB_PAGETOKEN,
+            },
+            json: true,
+            body: GREETING_DATA,
+        }).then(() => {
+            console.log('Successfully set greetings');
+        }).catch((error) => {
+            console.log('Setting greetings failed: ', error);
+        });
     }).catch((error) => {
         console.log('Setting persistent menu failed: ', error);
     });

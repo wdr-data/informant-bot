@@ -12,6 +12,7 @@ export default {
         'faq_about': require('./actionFaq').default('about'),
         'faq_onboarding': require('./actionFaq').default('onboarding'),
         'current_audio': require('./payloadCurrentAudio').default,
+        'contact': require('./actionContact').feedbackStart,
     },
     payloads: {
         'report_start': require('./payloadReportStart').default,
@@ -27,5 +28,13 @@ export default {
         'current_audio': require('./payloadCurrentAudio').default,
         'menu_details': require('./payloadMenu.js').default,
         'report_audio': require('./payloadAudio').default,
+        'analyticsAccept': require('./payloadAnalytics').accept,
+        'analyticsDecline': require('./payloadAnalytics').decline,
+        'analyticsPolicy': require('./payloadAnalytics').policy,
+        'analyticsChoose': require('./payloadAnalytics').choose,
+        'contact': require('./actionContact').contact,
+        'feedback_start': require('./actionContact').feedbackStart,
+        'feedback_done': require('./actionContact').feedbackDone,
+        'get_started': require('./payloadGetStarted').default,
     },
 };

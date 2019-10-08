@@ -4,15 +4,26 @@ import fragmentSender from '../lib/fragmentSender';
 
 export const FAQ_PREFIX = 'wdraktuell';
 
+export const getFaq = async function(slug, full = false) {
+    const urlgen = full ? urls.fullFaqBySlug : urls.faqBySlug;
+    const url = urlgen(`${FAQ_PREFIX}-${slug}`);
+    const faqs = await request({ uri: url, json: true });
+
+    if (faqs.length === 0) {
+        throw new Error(`Could not find FAQ with slug ${slug}`);
+    }
+
+    return faqs[0];
+};
+
 export default async function(chat, payload) {
-    const url = `${urls.faqBySlug(`${FAQ_PREFIX}-${payload.slug}`)}`;
-
-    const faq = await request({ uri: url, json: true });
-
-    if (faq[0] === undefined) {
+    let faq;
+    try {
+        faq = await getFaq(payload.slug);
+    } catch (e) {
         return chat.sendText(`Dazu habe ich noch keine Info...🤔`);
     }
 
     payload.type = payload.action;
-    return fragmentSender(chat, faq[0].next_fragments, payload, faq[0].text, faq[0].media);
+    return fragmentSender(chat, faq.next_fragments, payload, faq.text, faq.media);
 }

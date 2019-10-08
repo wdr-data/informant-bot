@@ -193,6 +193,7 @@ Resources:
           - Effect: Allow
             Action:
               - dynamodb:CreateTable
+              - dynamodb:DescribeTimeToLive
               - dynamodb:UpdateTimeToLive
               - dynamodb:DescribeTable
               - dynamodb:UpdateTable
