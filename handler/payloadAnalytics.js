@@ -111,7 +111,7 @@ export async function policy(chat, payload) {
         payload['nextStep'] = payload.lastStep;
     }
 
-    const dataPolicy = await getFaq('data_policy', true)
+    const dataPolicy = await getFaq('data_policy', true);
     await chat.sendFullNewsBase(dataPolicy);
 
     return choose(chat, payload);
