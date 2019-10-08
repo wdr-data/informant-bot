@@ -46,8 +46,9 @@ const GET_STARTED_DATA = {
 const greetings = [
     {
         locale: 'default',
-        text: `Herzlich Willkommen beim Messenger-Service von WDRaktuell.
-        Dein schneller Überblick zum Mitreden. Jederzeit und überall.`,
+        text: `Hier sind Deine Nachrichten von WDR aktuell.
+Die wichtigsten und spannendsten Themen aus und für Nordrhein-Westfalen, damit Du mitreden kannst.
+        `,
     },
 ];
 
