@@ -163,7 +163,8 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                 payload.audio = report.audio;
             }
 
-            const unsubscribeNote = 'Um Eilmeldungen abzubestellen, schau im Menü unter *🔧 An-/Abmelden*.';
+            const unsubscribeNote = 'Um Eilmeldungen abzubestellen, ' +
+                                    'schau im Menü unter *🔧 An-/Abmelden*.';
             let messageText;
             if (report.type === 'breaking') {
                 messageText = `🚨 ${report.text}\n\n${unsubscribeNote}`;
