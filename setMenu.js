@@ -11,17 +11,32 @@ const MENU_ACTIONS = [
     {
         title: '📰 Gib mir die Infos',
         type: 'postback',
-        payload: JSON.stringify({ action: 'current_news' }),
+        payload: JSON.stringify({
+            action: 'current_news',
+            category: 'payload',
+            event: 'menu',
+            label: 'Nachrichten',
+        }),
     },
     {
         title: '🔧 An-/Abmelden',
         type: 'postback',
-        payload: JSON.stringify({ action: 'subscriptions' }),
+        payload: JSON.stringify({
+            action: 'subscriptions',
+            category: 'payload',
+            event: 'menu',
+            label: 'An-/Abmelden',
+        }),
     },
     {
         title: 'ℹ️ Mehr',
         type: 'postback',
-        payload: JSON.stringify({ action: 'menu_details' }),
+        payload: JSON.stringify({
+            action: 'menu_details',
+            category: 'payload',
+            event: 'menu',
+            label: 'Mehr',
+        }),
     },
 ];
 

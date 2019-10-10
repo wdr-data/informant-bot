@@ -148,6 +148,9 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                 report: report.id,
                 type: 'report',
                 preview: event.preview,
+                category: `report`,
+                event: report.headline,
+                label: 'intro',
             };
 
             if (report.is_quiz) {

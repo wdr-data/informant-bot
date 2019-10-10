@@ -39,6 +39,9 @@ export default async (chat, payload) => {
                 report: r.id,
                 type: 'push',
                 before: [],
+                category: `push-${push.headline}`,
+                event: r.headline,
+                label: 0,
             },
         ));
 

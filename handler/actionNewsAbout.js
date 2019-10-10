@@ -36,6 +36,9 @@ export const newsAbout = async (chat, payload) => {
                     {
                         action: 'report_audio',
                         audioUrl: r.audio,
+                        category: 'news',
+                        event: r.headline,
+                        label: 'audio',
                     }
 
                 ));
@@ -46,6 +49,9 @@ export const newsAbout = async (chat, payload) => {
                     action: 'report_start',
                     report: r.id,
                     type: 'report',
+                    category: 'report',
+                    event: r.headline,
+                    label: 'intro',
                 }));
 
         elements.push(
