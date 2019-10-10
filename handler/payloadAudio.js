@@ -5,7 +5,7 @@ import fragmentSender from '../lib/fragmentSender';
 export default async (chat, payload) => {
     await chat.sendAttachment(payload.audioUrl);
 
-    if (payload.type === 'push' || payload.type === 'report') {
+    if (payload.type === 'push' || payload.type === 'report' || payload.type === 'breaking') {
         const params = {
             uri: `${urls.report(payload.report)}?withFragments=1`,
             json: true,
