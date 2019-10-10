@@ -4,7 +4,7 @@ export default async function(chat) {
     const elements = [
         genericElement(
             '💌 Teilen',
-            'Teile diesen Service mit deinen Freunden',
+            'Du findest den Service von WDRaktuell gut? Teile ihn mit deinen Freunden!',
             buttonPostback('Mehr', { action: 'share' })
         ),
         genericElement(
@@ -13,28 +13,28 @@ export default async function(chat) {
             buttonPostback('Mehr', { action: 'contact' })
         ),
         genericElement(
-            '🕵 Informant?',
-            'Was ist und macht der Informant, was kann er sonst noch und wo kommt er her?',
+            '🕵 WDR aktuell im Messenger.',
+            'Warum gibt es diesen Service.',
             buttonPostback('Mehr', { action: 'faq', slug: 'about' })
         ),
         genericElement(
             '📄 Wie funktioniert das hier?',
-            'Du bist ja schon im Menu, das ist viel wert. Aber es geht noch...',
+            'Das kleine Chatbot 1x1 und ein Blick unter die Haube.',
             buttonPostback('...mehr!', { action: 'faq', slug: 'how_to' })
         ),
         genericElement(
-            '🛡 Datenschutz',
-            'Ist mir wichtig. Und ja, es ist viel zum lesen.',
+            '🛡 Datenschutz (Teil 1)',
+            'Welche Daten speicher wir von Dir und wozu?',
             buttonPostback('Mehr', { action: 'faq', slug: 'datenschutz' })
         ),
         genericElement(
-            '📊 Analytics',
-            null,
-            buttonPostback('Mehr', { action: 'analyticsChoose' })
+            '📊 Datenschutz (Teil 2)',
+            `Ein-/Ausschalten von Google Analytics. Außerdem erklären wir, wie wir Analytics datenschutzkonform einsetzen.`,
+            buttonPostback('Mehr', { action: 'analyticsPolicy' })
         ),
         genericElement(
             '📇 Impressum',
-            null,
+            'Wer ist für die Inhalte verantwortlich.',
             buttonPostback('Mehr', { action: 'faq', slug: 'impressum' })
         ),
     ];
