@@ -82,7 +82,7 @@ export async function choose(chat, payload) {
             },
         ),
         buttonPostback(
-            'Ohne Analytics',
+            'Nein, für mich nicht',
             {
                 action: 'analyticsDecline',
                 nextStep,

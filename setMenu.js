@@ -19,7 +19,7 @@ const MENU_ACTIONS = [
         payload: JSON.stringify({ action: 'subscriptions' }),
     },
     {
-        title: '🤟 Mehr',
+        title: 'ℹ️ Mehr',
         type: 'postback',
         payload: JSON.stringify({ action: 'menu_details' }),
     },

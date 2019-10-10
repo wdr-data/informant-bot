@@ -53,7 +53,7 @@ export async function onboardingBreaking(chat, payload) {
 
     const buttons = [
         buttonPostback(
-            'Eilmeldungen 🚨',
+            'Ja, Eilmeldungen 🚨',
             {
                 action: 'subscribe',
                 subscription: 'breaking',
@@ -61,7 +61,7 @@ export async function onboardingBreaking(chat, payload) {
                 nextStep: 'onboarding_analytics',
             }),
         buttonPostback(
-            'Nein, Danke',
+            'Nein, Danke.',
             {
                 action: 'analyticsChoose',
                 replyFaq: 'onboarding_analytics',
