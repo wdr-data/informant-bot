@@ -21,28 +21,28 @@ export async function accept(chat, payload) {
                 `${process.env.SLS_STAGE}-${payload.category}`,
                 'subscribed',
                 'morning'
-                ).send();
+            ).send();
         }
         if (payload.evening) {
             await chat.track.event(
                 `${process.env.SLS_STAGE}-${payload.category}`,
                 'subscribed',
                 'evening'
-                ).send();
+            ).send();
         }
         if (payload.breaking) {
             await chat.track.event(
                 `${process.env.SLS_STAGE}-${payload.category}`,
                 'subscribed',
                 'breaking'
-                ).send();
+            ).send();
         }
         if (payload.referral) {
             await chat.track.event(
                 `${process.env.SLS_STAGE}-${payload.category}`,
                 'referral',
                 payload.referral
-                ).send();
+            ).send();
         }
     }
 
