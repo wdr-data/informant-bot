@@ -3,16 +3,20 @@ import { buttonPostback } from '../lib/facebook';
 
 export default async (chat, payload) => {
     let greeting;
+    let referral;
     if (payload.ref) {
         try {
             greeting = await getFaq(payload.ref, true);
+            referral = payload.ref;
         } catch (e) {
             console.error(`FAQ for referral ${payload.ref} not found!`);
             console.error(e);
             greeting = await getFaq('greeting_default', true);
+            referral = 'greeting_default';
         }
     } else {
         greeting = await getFaq('greeting_default', true);
+        referral = 'greeting_default';
     }
 
     await chat.sendFullNewsBase(greeting);
@@ -26,6 +30,9 @@ export default async (chat, payload) => {
                 subscription: 'morning_and_evening',
                 replyFaq: 'onboarding_breaking',
                 nextStep: 'onboarding_breaking',
+                evening: true,
+                morning: true,
+                referral,
             }),
         buttonPostback(
             'Nur Morgens ☕',
@@ -34,6 +41,8 @@ export default async (chat, payload) => {
                 subscription: 'morning',
                 replyFaq: 'onboarding_breaking',
                 nextStep: 'onboarding_breaking',
+                morning: true,
+                referral,
             }),
         buttonPostback(
             'Nur Abends 🌙',
@@ -42,6 +51,8 @@ export default async (chat, payload) => {
                 subscription: 'evening',
                 replyFaq: 'onboarding_breaking',
                 nextStep: 'onboarding_breaking',
+                evening: true,
+                referral,
             }),
     ];
 
@@ -59,6 +70,10 @@ export async function onboardingBreaking(chat, payload) {
                 subscription: 'breaking',
                 replyFaq: 'onboarding_analytics',
                 nextStep: 'onboarding_analytics',
+                morning: payload.morning,
+                evening: payload.evening,
+                referral: payload.referral,
+                breaking: true,
             }),
         buttonPostback(
             'Nein, Danke.',
@@ -66,6 +81,9 @@ export async function onboardingBreaking(chat, payload) {
                 action: 'analyticsChoose',
                 replyFaq: 'onboarding_analytics',
                 nextStep: 'onboarding_analytics',
+                morning: payload.morning,
+                evening: payload.evening,
+                referral: payload.referral,
             }),
     ];
 

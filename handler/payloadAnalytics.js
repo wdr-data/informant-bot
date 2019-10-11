@@ -13,11 +13,22 @@ export async function accept(chat, payload) {
         await tracking.update(chat.psid, 'enabled', true);
     }
 
-
     await chat.loadSettings();
 
-    await chat.track.event('Analytics', 'Allowed', chat.language).send();
-
+    if (chat.trackingEnabled) {
+        if (payload.morning) {
+            await chat.track.event(payload.category, 'subscribed', 'morning').send();
+        }
+        if (payload.evening) {
+            await chat.track.event(payload.category, 'subscribed', 'evening').send();
+        }
+        if (payload.breaking) {
+            await chat.track.event(payload.category, 'subscribed', 'breaking').send();
+        }
+        if (payload.referral) {
+            await chat.track.event(payload.category, 'referral', payload.referral).send();
+        }
+    }
 
     let faq = 'thanks_analytics';
     if (payload.lastStep === 'onboarding_analytics') {
@@ -62,10 +73,14 @@ export async function choose(chat, payload) {
     let faq = 'choose_analytics';
     let nextStep = undefined;
     let lastStep = undefined;
+    let category = 'payload';
+    let event = 'analytics';
 
     if (payload.nextStep === 'onboarding_analytics') {
         lastStep = payload.nextStep;
         nextStep = 'show_news_not';
+        category = 'onboarding',
+        event = 'analytics';
     }
     if (payload.replyFaq) {
         faq = payload.replyFaq;
@@ -79,6 +94,14 @@ export async function choose(chat, payload) {
                 action: 'analyticsAccept',
                 nextStep,
                 lastStep,
+                category,
+                event,
+                label: 'allowed',
+                morning: payload.morning,
+                evening: payload.evening,
+                breaking: payload.breaking,
+                referral: payload.referral,
+
             },
         ),
         buttonPostback(
@@ -87,6 +110,13 @@ export async function choose(chat, payload) {
                 action: 'analyticsDecline',
                 nextStep,
                 lastStep,
+                category,
+                event,
+                label: 'denied',
+                morning: payload.morning,
+                evening: payload.evening,
+                breaking: payload.breaking,
+                referral: payload.referral,
             },
         ),
         buttonPostback(
@@ -95,6 +125,13 @@ export async function choose(chat, payload) {
                 action: 'analyticsPolicy',
                 nextStep,
                 lastStep,
+                category,
+                event,
+                label: 'Datenschutz (Teil 2)',
+                morning: payload.morning,
+                evening: payload.evening,
+                breaking: payload.breaking,
+                referral: payload.referral,
             },
         ),
     ];
