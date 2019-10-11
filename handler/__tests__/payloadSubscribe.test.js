@@ -82,6 +82,9 @@ describe('payload_subscribe.subscriptions', () => {
                         'Anmelden',
                         {
                             action: 'subscribe',
+                            category: 'payload',
+                            event: 'subscribed',
+                            label: 'morning_and_evening_breaking',
                             subscription: 'all',
                         }
                     )
@@ -93,6 +96,9 @@ describe('payload_subscribe.subscriptions', () => {
                         'Abmelden',
                         {
                             action: 'unsubscribe',
+                            category: 'payload',
+                            event: 'unsubscribed',
+                            label: 'morning',
                             subscription: 'morning',
                         }
                     )
@@ -104,6 +110,9 @@ describe('payload_subscribe.subscriptions', () => {
                         'Anmelden',
                         {
                             action: 'subscribe',
+                            category: 'payload',
+                            event: 'subscribed',
+                            label: 'evening',
                             subscription: 'evening',
                         }
                     )
@@ -115,6 +124,9 @@ describe('payload_subscribe.subscriptions', () => {
                         'Anmelden',
                         {
                             action: 'subscribe',
+                            category: 'payload',
+                            event: 'subscribed',
+                            label: 'breaking',
                             subscription: 'breaking',
                         }
                     )
@@ -126,6 +138,9 @@ describe('payload_subscribe.subscriptions', () => {
                         'Einschalten',
                         {
                             action: 'analyticsAccept',
+                            category: 'payload',
+                            event: 'analytics',
+                            label: 'allowed',
                         }
                     )
                 ),
