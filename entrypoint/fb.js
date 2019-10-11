@@ -87,7 +87,7 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         if (replyPayload.action in handler.payloads) {
             if (chat.trackingEnabled && replyPayload.category && !replyPayload.preview) {
                 await chat.track.event(
-                    replyPayload.category,
+                    `${process.env.SLS_STAGE}-${replyPayload.category}`,
                     replyPayload.event,
                     replyPayload.label
                 ).send();
@@ -130,7 +130,7 @@ const handleMessage = async (event, context, chat, msgEvent) => {
     if (chat.feedbackMode) {
         if (chat.trackingEnabled) {
             await chat.track.event(
-                'chat',
+                `${process.env.SLS_STAGE}-chat`,
                 'Feedback',
                 'Feedback-Modus'
             ).send();
@@ -140,7 +140,7 @@ const handleMessage = async (event, context, chat, msgEvent) => {
     if (text.length > 90) {
         if (chat.trackingEnabled) {
             await chat.track.event(
-                'chat',
+                `${process.env.SLS_STAGE}-chat`,
                 'Feedback',
                 'Msg > 90 Zeichen'
             ).send();
@@ -182,9 +182,9 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         if (result.action in handler.actions) {
             if (chat.trackingEnabled) {
                 await chat.track.event(
-                    'chat',
+                    `${process.env.SLS_STAGE}-chat`,
                     result.intent.displayName,
-                    JSON.stringify(result.parameters)
+                    result.parameters
                 ).send();
             }
             return handler.actions[result.action](chat, result.parameters['fields']);

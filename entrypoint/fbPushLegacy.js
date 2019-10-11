@@ -149,7 +149,7 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                 type: 'report',
                 preview: event.preview,
                 category: `report`,
-                event: report.headline,
+                event: `report-${report.headline}`,
                 label: 'intro',
             };
 

@@ -40,7 +40,7 @@ export default async (chat, payload) => {
                 type: 'push',
                 before: [],
                 category: `push-${push.headline}`,
-                event: r.headline,
+                event: `report-${r.headline}`,
                 label: 0,
             },
         ));

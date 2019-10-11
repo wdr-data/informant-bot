@@ -36,8 +36,8 @@ export const newsAbout = async (chat, payload) => {
                     {
                         action: 'report_audio',
                         audioUrl: r.audio,
-                        category: 'news',
-                        event: r.headline,
+                        category: 'chat-report',
+                        event: `report-${r.headline}`,
                         label: 'audio',
                     }
 
@@ -49,8 +49,8 @@ export const newsAbout = async (chat, payload) => {
                     action: 'report_start',
                     report: r.id,
                     type: 'report',
-                    category: 'report',
-                    event: r.headline,
+                    category: 'chat-report',
+                    event: `report-${r.headline}`,
                     label: 'intro',
                 }));
 
@@ -62,6 +62,24 @@ export const newsAbout = async (chat, payload) => {
             )
         );
     });
+
+    if (chat.trackingEnabled) {
+        if (!payload.tags.stringValue === '') {
+            await chat.track.event(
+                `${process.env.SLS_STAGE}-chat-report`,
+                `report-${r.headline}`,
+                payload.tags.stringValue,
+            ).send();
+        }
+        if (!payload.genres.stringValue === '') {
+            await chat.track.event(
+                `${process.env.SLS_STAGE}-chat-report`,
+                `report-${r.headline}`,
+                payload.genres.stringValue,
+            ).send();
+        }
+    }
+
     return chat.sendGenericTemplate(elements.slice(0, 10));
 };
 
