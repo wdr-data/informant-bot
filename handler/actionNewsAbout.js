@@ -64,14 +64,14 @@ export const newsAbout = async (chat, payload) => {
     });
 
     if (chat.trackingEnabled) {
-        if (!payload.tags.stringValue === '') {
+        if (payload.tags.stringValue) {
             await chat.track.event(
                 `${process.env.SLS_STAGE}-chat-report`,
                 'tags',
                 payload.tags.stringValue,
             ).send();
         }
-        if (!payload.genres.stringValue === '') {
+        if (payload.genres.stringValue) {
             await chat.track.event(
                 `${process.env.SLS_STAGE}-chat-report`,
                 'genres',

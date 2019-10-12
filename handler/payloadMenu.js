@@ -26,7 +26,8 @@ export default async function(chat) {
             '🕵 WDR aktuell im Messenger.',
             'Warum gibt es diesen Service.',
             buttonPostback('Mehr', {
-                action: 'faq', slug: 'about',
+                action: 'faq',
+                slug: 'about',
                 category: 'payload',
                 event: 'menu',
                 label: 'WDR aktuell im Messenger',
@@ -36,7 +37,8 @@ export default async function(chat) {
             '📄 Wie funktioniert das hier?',
             'Das kleine Chatbot 1x1 und ein Blick unter die Haube.',
             buttonPostback('...mehr!', {
-                action: 'faq', slug: 'how_to',
+                action: 'faq',
+                slug: 'how_to',
                 category: 'payload',
                 event: 'menu',
                 label: 'Wie funktioniert',
@@ -46,7 +48,8 @@ export default async function(chat) {
             '🛡 Datenschutz (Teil 1)',
             'Welche Daten speicher wir von Dir und wozu?',
             buttonPostback('Mehr', {
-                action: 'faq', slug: 'datenschutz',
+                action: 'faq',
+                slug: 'datenschutz',
                 category: 'payload',
                 event: 'menu',
                 label: 'Datenschutz (Teil 1)',
@@ -67,7 +70,8 @@ export default async function(chat) {
             '📇 Impressum',
             'Wer ist für die Inhalte verantwortlich.',
             buttonPostback('Mehr', {
-                action: 'faq', slug: 'impressum',
+                action: 'faq',
+                slug: 'impressum',
                 category: 'payload',
                 event: 'menu',
                 label: 'Impressum',

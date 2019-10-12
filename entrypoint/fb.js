@@ -183,8 +183,8 @@ const handleMessage = async (event, context, chat, msgEvent) => {
             if (chat.trackingEnabled) {
                 await chat.track.event(
                     `${process.env.SLS_STAGE}-chat`,
-                    result.intent.displayName,
-                    result.parameters
+                    'dialogflow',
+                    result.intent.displayName
                 ).send();
             }
             return handler.actions[result.action](chat, result.parameters['fields']);
@@ -192,8 +192,8 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         if (chat.trackingEnabled) {
             await chat.track.event(
                 'chat',
-                result.intent.displayName,
-                JSON.stringify(result.parameters)
+                'dialogflow',
+                result.intent.displayName
             ).send();
         }
         return chat.sendText(result.fulfillmentText);
