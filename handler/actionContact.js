@@ -9,15 +9,32 @@ export async function contact(chat) {
     const buttons = [
         buttonPostback(
             'Feedback zum Service',
-            { action: 'feedback_start' },
+            {
+                action: 'feedback_start',
+                category: 'payload',
+                event: 'Feedback',
+                label: 'Kontakt aufnehmen',
+            },
         ),
         buttonPostback(
-            'Feedback zur Meldung',
-            { action: 'faq', slug: 'yes_to_contact' },
+            'Thema vorschlagen',
+            {
+                action: 'faq',
+                slug: 'yes_to_contact',
+                category: 'payload',
+                event: 'Feedback',
+                label: 'Thema vorschlagen',
+            },
         ),
         buttonPostback(
             'Einfach Danke sagen',
-            { action: 'faq', slug: 'no_to_contact' },
+            {
+                action: 'faq',
+                slug: 'no_to_contact',
+                category: 'payload',
+                event: 'Feedback',
+                label: 'Danke sagen',
+            },
         ),
     ];
 
@@ -44,7 +61,12 @@ export async function feedbackMode(chat) {
     const buttons = [
         buttonPostback(
             'Alles gesagt, danke!',
-            { action: 'feedback_done' },
+            {
+                action: 'feedback_done',
+                category: 'payload',
+                event: 'Feedback',
+                label: 'Beendet',
+            },
         ),
     ];
 

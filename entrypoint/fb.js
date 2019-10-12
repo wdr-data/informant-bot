@@ -85,6 +85,13 @@ const handleMessage = async (event, context, chat, msgEvent) => {
 
     if (replyPayload) {
         if (replyPayload.action in handler.payloads) {
+            if (chat.trackingEnabled && replyPayload.category && !replyPayload.preview) {
+                await chat.track.event(
+                    `${process.env.SLS_STAGE}-${replyPayload.category}`,
+                    replyPayload.event,
+                    replyPayload.label
+                ).send();
+            }
             return handler.payloads[replyPayload.action](chat, replyPayload);
         }
         return chat.sendText(`Da ist was schief gelaufen.`);
@@ -121,9 +128,23 @@ const handleMessage = async (event, context, chat, msgEvent) => {
     }
 
     if (chat.feedbackMode) {
+        if (chat.trackingEnabled) {
+            await chat.track.event(
+                `${process.env.SLS_STAGE}-chat`,
+                'Feedback',
+                'Feedback-Modus'
+            ).send();
+        }
         return feedbackMode(chat);
     }
     if (text.length > 90) {
+        if (chat.trackingEnabled) {
+            await chat.track.event(
+                `${process.env.SLS_STAGE}-chat`,
+                'Feedback',
+                'Msg > 90 Zeichen'
+            ).send();
+        }
         return contact(chat);
     }
 
@@ -159,7 +180,21 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         console.log(`  Parameters: ${JSON.stringify(result.parameters)}`);
         console.log(`  Action: ${result.action}`);
         if (result.action in handler.actions) {
+            if (chat.trackingEnabled) {
+                await chat.track.event(
+                    `${process.env.SLS_STAGE}-chat`,
+                    'dialogflow',
+                    result.intent.displayName
+                ).send();
+            }
             return handler.actions[result.action](chat, result.parameters['fields']);
+        }
+        if (chat.trackingEnabled) {
+            await chat.track.event(
+                'chat',
+                'dialogflow',
+                result.intent.displayName
+            ).send();
         }
         return chat.sendText(result.fulfillmentText);
     }
