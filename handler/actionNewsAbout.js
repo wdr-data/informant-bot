@@ -66,14 +66,14 @@ export const newsAbout = async (chat, payload) => {
     if (chat.trackingEnabled) {
         if (payload.tags.stringValue) {
             await chat.track.event(
-                `${process.env.SLS_STAGE}-chat-report`,
+                'chat-report',
                 'tags',
                 payload.tags.stringValue,
             ).send();
         }
         if (payload.genres.stringValue) {
             await chat.track.event(
-                `${process.env.SLS_STAGE}-chat-report`,
+                'chat-report',
                 'genres',
                 payload.genres.stringValue,
             ).send();

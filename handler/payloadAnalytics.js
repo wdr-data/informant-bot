@@ -18,28 +18,28 @@ export async function accept(chat, payload) {
     if (chat.trackingEnabled) {
         if (payload.morning) {
             await chat.track.event(
-                `${process.env.SLS_STAGE}-${payload.category}`,
+                payload.category,
                 'subscribed',
                 'morning'
             ).send();
         }
         if (payload.evening) {
             await chat.track.event(
-                `${process.env.SLS_STAGE}-${payload.category}`,
+                payload.category,
                 'subscribed',
                 'evening'
             ).send();
         }
         if (payload.breaking) {
             await chat.track.event(
-                `${process.env.SLS_STAGE}-${payload.category}`,
+                payload.category,
                 'subscribed',
                 'breaking'
             ).send();
         }
         if (payload.referral) {
             await chat.track.event(
-                `${process.env.SLS_STAGE}-${payload.category}`,
+                payload.category,
                 'referral',
                 payload.referral
             ).send();
