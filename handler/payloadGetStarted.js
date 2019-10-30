@@ -21,7 +21,7 @@ export default async (chat, payload) => {
 
     await chat.sendFullNewsBase(greeting);
 
-    const onboarding = await getFaq('onboarding', true);
+    const onboarding = await getFaq('onboarding_when', true);
     const buttons = [
         buttonPostback(
             'Morgens ☕ & Abends 🌙',
@@ -60,15 +60,18 @@ export default async (chat, payload) => {
 };
 
 export async function onboardingBreaking(chat, payload) {
-    const onboardingBreaking = await getFaq(payload.replyFaq, true);
+    const faq = await getFaq(payload.replyFaq, true);
+    await chat.sendFullNewsBase(faq);
+
+    const onboardingBreaking = await getFaq('onboarding_breaking', true);
 
     const buttons = [
         buttonPostback(
-            'Ja, Eilmeldungen 🚨',
+            'Ja, gerne 🚨',
             {
                 action: 'subscribe',
                 subscription: 'breaking',
-                replyFaq: 'onboarding_analytics',
+                replyFaq: 'onboarding_breaking_yes',
                 nextStep: 'onboarding_analytics',
                 morning: payload.morning,
                 evening: payload.evening,
@@ -76,10 +79,10 @@ export async function onboardingBreaking(chat, payload) {
                 breaking: true,
             }),
         buttonPostback(
-            'Nein, Danke.',
+            'Nein, danke.',
             {
                 action: 'analyticsChoose',
-                replyFaq: 'onboarding_analytics',
+                replyFaq: 'onboarding_breaking_no',
                 nextStep: 'onboarding_analytics',
                 morning: payload.morning,
                 evening: payload.evening,

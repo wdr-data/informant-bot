@@ -48,15 +48,11 @@ export async function accept(chat, payload) {
 
     let faq = 'thanks_analytics';
     if (payload.lastStep === 'onboarding_analytics') {
-        faq = 'onboarding_thanks_analytics';
+        faq = 'onboarding_analytics_accepted';
     }
 
     const thanksAnalytics = await getFaq(faq, true);
     await chat.sendFullNewsBase(thanksAnalytics);
-
-    if (payload.nextStep === 'show_news') {
-        return actionCurrentNews(chat);
-    }
 }
 
 export async function decline(chat, payload) {
@@ -74,7 +70,7 @@ export async function decline(chat, payload) {
 
     let faq = 'no_analytics';
     if (payload.lastStep === 'onboarding_analytics') {
-        faq = 'onboarding_no_analytics';
+        faq = 'onboarding_analytics_declined';
     }
 
     const noAnalytics = await getFaq(faq, true);
@@ -86,6 +82,10 @@ export async function decline(chat, payload) {
 }
 
 export async function choose(chat, payload) {
+    if (payload.replyFaq) {
+        await chat.sendFullNewsBase(await getFaq(payload.replyFaq, true));
+    }
+
     let faq = 'choose_analytics';
     let nextStep = undefined;
     let lastStep = undefined;
@@ -93,14 +93,13 @@ export async function choose(chat, payload) {
     let event = 'analytics';
 
     if (payload.nextStep === 'onboarding_analytics') {
+        faq = 'onboarding_analytics';
         lastStep = payload.nextStep;
-        nextStep = 'show_news_not';
-        category = 'onboarding',
+        nextStep = payload.nextStep;
+        category = 'onboarding';
         event = 'analytics';
     }
-    if (payload.replyFaq) {
-        faq = payload.replyFaq;
-    }
+
     const chooseAnalyics = await getFaq(faq, true);
 
     const buttons = [
@@ -156,6 +155,80 @@ export async function choose(chat, payload) {
 }
 
 export async function policy(chat, payload) {
+    let nextStep = undefined;
+    let lastStep = undefined;
+    let category = 'payload';
+    let event = 'analytics';
+
+    if (chat.trackingEnabled) {
+        await chat.track.event('Analytics', 'Asked for Data Policy', chat.language).send();
+    }
+
+    if (payload.nextStep === 'onboarding_analytics') {
+        lastStep = payload.nextStep;
+        nextStep = payload.nextStep;
+        category = 'onboarding',
+        event = 'analytics';
+    }
+
+    if (payload.lastStep === 'onboarding_analytics') {
+        payload['nextStep'] = payload.lastStep;
+    }
+
+    const dataPolicy = await getFaq('analytics_policy', true);
+
+    const buttons = [
+        buttonPostback(
+            'Ja, ich stimme zu',
+            {
+                action: 'analyticsAccept',
+                nextStep,
+                lastStep,
+                category,
+                event,
+                label: 'allowed',
+                morning: payload.morning,
+                evening: payload.evening,
+                breaking: payload.breaking,
+                referral: payload.referral,
+            },
+        ),
+        buttonPostback(
+            'Nein, für mich nicht',
+            {
+                action: 'analyticsDecline',
+                nextStep,
+                lastStep,
+                category,
+                event,
+                label: 'denied',
+                morning: payload.morning,
+                evening: payload.evening,
+                breaking: payload.breaking,
+                referral: payload.referral,
+            },
+        ),
+        buttonPostback(
+            'Alles lesen',
+            {
+                action: 'analyticsPolicyFull',
+                nextStep,
+                lastStep,
+                category,
+                event,
+                label: 'Datenschutz (Vollständig)',
+                morning: payload.morning,
+                evening: payload.evening,
+                breaking: payload.breaking,
+                referral: payload.referral,
+            },
+        ),
+    ];
+
+    await chat.sendFullNewsBaseWithButtons(dataPolicy, buttons);
+}
+
+export async function policyFull(chat, payload) {
     if (chat.trackingEnabled) {
         await chat.track.event('Analytics', 'Read Data Policy', chat.language).send();
     }
@@ -164,8 +237,8 @@ export async function policy(chat, payload) {
         payload['nextStep'] = payload.lastStep;
     }
 
-    const dataPolicy = await getFaq('data_policy', true);
-    await chat.sendFullNewsBase(dataPolicy);
+    const dataPolicyFull = await getFaq('analytics_policy_full', true);
+    await chat.sendFullNewsBase(dataPolicyFull);
 
     return choose(chat, payload);
 }
