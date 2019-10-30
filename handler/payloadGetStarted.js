@@ -28,7 +28,7 @@ export default async (chat, payload) => {
             {
                 action: 'subscribe',
                 subscription: 'morning_and_evening',
-                replyFaq: 'onboarding_breaking',
+                replyFaq: 'onboarding_morning_evening',
                 nextStep: 'onboarding_breaking',
                 evening: true,
                 morning: true,
@@ -39,7 +39,7 @@ export default async (chat, payload) => {
             {
                 action: 'subscribe',
                 subscription: 'morning',
-                replyFaq: 'onboarding_breaking',
+                replyFaq: 'onboarding_morning',
                 nextStep: 'onboarding_breaking',
                 morning: true,
                 referral,
@@ -49,7 +49,7 @@ export default async (chat, payload) => {
             {
                 action: 'subscribe',
                 subscription: 'evening',
-                replyFaq: 'onboarding_breaking',
+                replyFaq: 'onboarding_evening',
                 nextStep: 'onboarding_breaking',
                 evening: true,
                 referral,
