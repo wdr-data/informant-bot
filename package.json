@@ -57,6 +57,7 @@
   "scripts": {
     "deploy": "yarn && sls deploy",
     "lint": "eslint .",
+    "fix": "yarn lint --fix",
     "test": "yarn lint && jest",
     "set-menu": "babel-node setMenu.js"
   },
