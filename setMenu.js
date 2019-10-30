@@ -9,7 +9,7 @@ const GET_STARTED_PAYLOAD = {
 
 const MENU_ACTIONS = [
     {
-        title: '📰 Gib mir die Infos',
+        title: '📰 Welche Infos habt ihr?',
         type: 'postback',
         payload: JSON.stringify({
             action: 'current_news',
