@@ -6,17 +6,17 @@ export default async (chat, payload) => {
     let referral;
     if (payload.ref) {
         try {
-            greeting = await getFaq(payload.ref, true);
+            greeting = await getFaq(`greeting_${payload.ref}`, true);
             referral = payload.ref;
         } catch (e) {
             console.error(`FAQ for referral ${payload.ref} not found!`);
             console.error(e);
             greeting = await getFaq('greeting_default', true);
-            referral = 'greeting_default';
+            referral = 'default';
         }
     } else {
         greeting = await getFaq('greeting_default', true);
-        referral = 'greeting_default';
+        referral = 'default';
     }
 
     await chat.sendFullNewsBase(greeting);
