@@ -31,6 +31,7 @@ export default {
         'analyticsAccept': require('./payloadAnalytics').accept,
         'analyticsDecline': require('./payloadAnalytics').decline,
         'analyticsPolicy': require('./payloadAnalytics').policy,
+        'analyticsPolicyFull': require('./payloadAnalytics').policyFull,
         'analyticsChoose': require('./payloadAnalytics').choose,
         'contact': require('./actionContact').contact,
         'feedback_start': require('./actionContact').feedbackStart,

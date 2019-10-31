@@ -34,19 +34,8 @@ export default async function(chat) {
             })
         ),
         genericElement(
-            '📄 Wie funktioniert das hier?',
-            'Das kleine Chatbot 1x1 und ein Blick unter die Haube.',
-            buttonPostback('...mehr!', {
-                action: 'faq',
-                slug: 'how_to',
-                category: 'payload',
-                event: 'menu',
-                label: 'Wie funktioniert',
-            })
-        ),
-        genericElement(
             '🛡 Datenschutz (Teil 1)',
-            'Welche Daten speicher wir von Dir und wozu?',
+            'Welche Daten speichern wir von Dir und wozu?',
             buttonPostback('Mehr', {
                 action: 'faq',
                 slug: 'datenschutz',

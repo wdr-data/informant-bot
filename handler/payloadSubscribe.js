@@ -47,7 +47,7 @@ export const subscriptions = async function(chat) {
 
     elements.push(
         genericElement(
-            (subbedAll ? '✔' : '❌') + ' Alles',
+            (subbedAll ? '✔' : '❌') + ' Alle Infos',
             'Deine Infos morgens, abends und bei Eilmeldungen.',
             buttonPostback(!subbedAll ? 'Anmelden' : 'Abmelden', {
                 action: !subbedAll ? 'subscribe' : 'unsubscribe',
