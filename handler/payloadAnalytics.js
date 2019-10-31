@@ -104,7 +104,7 @@ export async function choose(chat, payload) {
 
     const buttons = [
         buttonPostback(
-            'Ja, ich stimme zu',
+            'Ja, ist okay',
             {
                 action: 'analyticsAccept',
                 nextStep,
