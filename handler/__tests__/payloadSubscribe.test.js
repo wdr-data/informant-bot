@@ -76,7 +76,7 @@ describe('payload_subscribe.subscriptions', () => {
         new Expect(chat)
             .genericTemplate([
                 facebook.genericElement(
-                    '❌ Alles',
+                    '❌ Alle Infos',
                     'Deine Infos morgens, abends und bei Eilmeldungen.',
                     facebook.buttonPostback(
                         'Anmelden',
