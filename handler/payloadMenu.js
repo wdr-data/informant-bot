@@ -35,7 +35,7 @@ export default async function(chat) {
         ),
         genericElement(
             '🛡 Datenschutz (Teil 1)',
-            'Welche Daten speicher wir von Dir und wozu?',
+            'Welche Daten speichern wir von Dir und wozu?',
             buttonPostback('Mehr', {
                 action: 'faq',
                 slug: 'datenschutz',

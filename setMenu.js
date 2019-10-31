@@ -61,9 +61,8 @@ const GET_STARTED_DATA = {
 const greetings = [
     {
         locale: 'default',
-        text: `Hier sind Deine Nachrichten von WDR aktuell.
-Die wichtigsten und spannendsten Themen aus und für Nordrhein-Westfalen, damit Du mitreden kannst.
-        `,
+        text: `Willkommen bei WDR aktuell!
+Hier bekommst du die wichtigsten und spannendsten Infos aus und für NRW. Interessiert dich ein Thema besonders, kannst du mehr darüber erfahren und uns auch danach fragen.`,
     },
 ];
 

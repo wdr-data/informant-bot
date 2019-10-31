@@ -179,7 +179,7 @@ export async function policy(chat, payload) {
 
     const buttons = [
         buttonPostback(
-            'Ja, ich stimme zu',
+            'Ja, ist okay',
             {
                 action: 'analyticsAccept',
                 nextStep,

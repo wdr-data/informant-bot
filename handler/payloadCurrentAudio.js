@@ -16,7 +16,7 @@ export default async (chat, payload) => {
         }
     }
 
-    await chat.sendText(`Deine ` + item.title + `.`);
+    await chat.sendText(`${item.title}.`);
     return chat.sendAttachment(item.url);
 };
 
