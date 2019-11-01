@@ -61,10 +61,10 @@ const GET_STARTED_DATA = {
 const greetings = [
     {
         locale: 'default',
-        text: `Willkommen bei WDR aktuell!\n` +
-        `Hier bekommst du die wichtigsten und spannendsten Infos aus und für NRW. ` +
-        `Interessiert dich ein Thema besonders, kannst du mehr darüber erfahren und ` +
-        `uns auch danach fragen.`,
+        text: `Willkommen beim WDR aktuell Bot!\n` +
+            `Hier bekommst du die wichtigsten und spannendsten Infos aus und für NRW. ` +
+            `Interessiert dich ein Thema besonders, kannst du mehr darüber erfahren und ` +
+            `den Bot auch danach fragen.`,
     },
 ];
 
