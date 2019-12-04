@@ -69,6 +69,13 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
             // Authorize so we can access unpublished items
             params.headers = { Authorization: 'Token ' + process.env.CMS_API_TOKEN };
             push = await request(params);
+        } else if (event.manual) {
+            const params = {
+                uri: urls.push(event.push),
+                json: true,
+            };
+            push = await request(params);
+            timing = push.timing;
         } else {
             try {
                 timing = getTiming(event);
