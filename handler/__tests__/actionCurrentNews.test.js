@@ -36,7 +36,7 @@ describe('actionCurrentNews', () => {
                         payload: {
                             action: 'report_start',
                             before: [],
-                            category: 'push-Abendpush 21.03.',
+                            category: 'push-evening-2018-03-20',
                             event: 'report-Luft in einigen NRW-Städten ist besser geworden',
                             label: 0,
                             push: 4,
@@ -50,7 +50,7 @@ describe('actionCurrentNews', () => {
                         payload: {
                             action: 'report_start',
                             before: [],
-                            category: 'push-Abendpush 21.03.',
+                            category: 'push-evening-2018-03-20',
                             event: 'report-Unfall löst Diskussion über selbstfahrende Autos aus',
                             label: 0,
                             push: 4,
@@ -64,7 +64,7 @@ describe('actionCurrentNews', () => {
                         payload: {
                             action: 'report_start',
                             before: [],
-                            category: 'push-Abendpush 21.03.',
+                            category: 'push-evening-2018-03-20',
                             event: 'report-Public Viewing wird auch nach 22 Uhr erlaubt',
                             label: 0,
                             push: 4,
@@ -78,7 +78,7 @@ describe('actionCurrentNews', () => {
                         payload: {
                             action: 'report_start',
                             before: [],
-                            category: 'push-Abendpush 21.03.',
+                            category: 'push-evening-2018-03-20',
                             event: 'report-Das Letzte: Deine Songs zum Glücklichsein',
                             label: 0,
                             push: 4,
