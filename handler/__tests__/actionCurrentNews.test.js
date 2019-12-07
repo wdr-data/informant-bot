@@ -25,6 +25,9 @@ describe('actionCurrentNews', () => {
                         'Aktuelle Infos 🎧',
                         {
                             action: 'current_audio',
+                            category: 'push-evening-2018-03-20',
+                            event: 'current audio',
+                            label: 'wdr aktuell',
                         }),
                 ],
                 [

@@ -30,6 +30,9 @@ export default async (chat, payload) => {
         'Aktuelle Infos 🎧',
         {
             action: 'current_audio',
+            category: `push-${push.timing}-${push.pub_date}`,
+            event: 'current audio',
+            label: 'wdr aktuell',
         });
     const quickReplies = push.reports.map((r) =>
         quickReply(r.short_headline ? '➡ ' + r.short_headline : '➡ ' + r.headline,
@@ -39,7 +42,7 @@ export default async (chat, payload) => {
                 report: r.id,
                 type: 'push',
                 before: [],
-                category: `push-${push.headline}`,
+                category: `push-${push.timing}-${push.pub_date}`,
                 event: `report-${r.headline}`,
                 label: 0,
             },
