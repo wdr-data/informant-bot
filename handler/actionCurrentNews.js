@@ -25,6 +25,10 @@ export default async (chat, payload) => {
             push: push.id,
             report: firstReport.id,
             type: 'push',
+            category: `push-classic-${push.timing}-${push.pub_date}`,
+            event: `report-${firstReport.headline}`,
+            label: 'intro',
+
         });
     const buttonAudio = buttonPostback(
         'Aktuelle Infos 🎧',
@@ -44,7 +48,7 @@ export default async (chat, payload) => {
                 before: [],
                 category: `push-${push.timing}-${push.pub_date}`,
                 event: `report-${r.headline}`,
-                label: 0,
+                label: 'intro',
             },
         ));
 
