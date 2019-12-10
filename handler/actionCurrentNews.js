@@ -25,11 +25,18 @@ export default async (chat, payload) => {
             push: push.id,
             report: firstReport.id,
             type: 'push',
+            category: `push-classic-${push.timing}-${push.pub_date}`,
+            event: `report-${firstReport.headline}`,
+            label: 'intro',
+
         });
     const buttonAudio = buttonPostback(
         'Aktuelle Infos 🎧',
         {
             action: 'current_audio',
+            category: `push-${push.timing}-${push.pub_date}`,
+            event: 'current audio',
+            label: 'wdr aktuell',
         });
     const quickReplies = push.reports.map((r) =>
         quickReply(r.short_headline ? '➡ ' + r.short_headline : '➡ ' + r.headline,
@@ -39,9 +46,9 @@ export default async (chat, payload) => {
                 report: r.id,
                 type: 'push',
                 before: [],
-                category: `push-${push.headline}`,
+                category: `push-${push.timing}-${push.pub_date}`,
                 event: `report-${r.headline}`,
-                label: 0,
+                label: 'intro',
             },
         ));
 
