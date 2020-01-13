@@ -5,10 +5,15 @@ import urls from '../lib/urls';
 import { buttonPostback, genericElement } from '../lib/facebook';
 
 export const newsAbout = async (chat, payload) => {
-    let id;
+    const baseParams = {
+        withFragments: 1,
+        limit: 10,
+    };
+
+    let qs;
 
     try {
-        id = await searchId(payload);
+        qs = { ...baseParams, ...await searchId(payload) };
     } catch (e) {
         return chat.sendText(`Dazu habe ich leider keine Info...🤔`);
     }
@@ -16,7 +21,7 @@ export const newsAbout = async (chat, payload) => {
     const report = await request({
         uri: urls.reports,
         json: true,
-        qs: id,
+        qs,
     });
 
     if (report.length === 0) {
@@ -84,7 +89,8 @@ export const newsAbout = async (chat, payload) => {
 };
 
 export const searchId = async (payload) => {
-    const searchParameter = [ 'genres', 'tags' ];
+    /* Resolves a tag or genre from dialogflow-result string to ID, with priority to genres */
+    const searchParameter = ['genres', 'tags'];
     const map = {
         genres: 'genres',
         tags: 'tags',
