@@ -52,7 +52,7 @@
     "universal-analytics": "^0.4.20"
   },
   "engines": {
-    "node": ">=8.10.0"
+    "node": ">=12"
   },
   "scripts": {
     "deploy": "yarn && sls deploy",
