@@ -1,13 +1,21 @@
 {
-  "plugins": ["node", "jest", "import"],
-  "extends": ["eslint:recommended", "plugin:node/recommended", "plugin:jest/recommended"],
+  "plugins": [
+    "node",
+    "jest",
+    "import"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:node/recommended",
+    "plugin:jest/recommended"
+  ],
   "env": {
     "node": true,
     "es6": true,
     "jest/globals": true
   },
   "parserOptions": {
-    "ecmaVersion": 2017,
+    "ecmaVersion": 2018,
     "sourceType": "module"
   },
   "rules": {
@@ -57,13 +65,19 @@
     ],
     "brace-style": "error",
     "camelcase": "error",
-    "comma-dangle": ["error", "always-multiline"],
+    "comma-dangle": [
+      "error",
+      "always-multiline"
+    ],
     "comma-spacing": "error",
     "comma-style": "error",
     "computed-property-spacing": "error",
     "eol-last": "error",
     "func-call-spacing": "error",
-    "indent": ["error", 4],
+    "indent": [
+      "error",
+      4
+    ],
     "key-spacing": "error",
     "keyword-spacing": "error",
     "max-len": [
@@ -86,7 +100,10 @@
     "no-new-object": "error",
     "no-tabs": "error",
     "no-trailing-spaces": "error",
-    "object-curly-spacing": ["error", "always"],
+    "object-curly-spacing": [
+      "error",
+      "always"
+    ],
     "padded-blocks": [
       "error",
       "never"
@@ -125,11 +142,18 @@
     "rest-spread-spacing": "error",
     "yield-star-spacing": "error",
     "eqeqeq": "error",
-    "node/exports-style": ["error", "module.exports"],
+    "node/exports-style": [
+      "error",
+      "module.exports"
+    ],
     "node/no-unpublished-require": [
       "error",
       {
-        "allowModules": ["js-yaml", "extend", "object-hash"]
+        "allowModules": [
+          "js-yaml",
+          "extend",
+          "object-hash"
+        ]
       }
     ],
     "node/no-unsupported-features": 0,
