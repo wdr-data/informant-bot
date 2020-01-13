@@ -106,6 +106,7 @@ Resources:
               - "apigateway:PUT"
               - "apigateway:DELETE"
               - "apigateway:PATCH"
+              - "apigateway:UpdateRestApiPolicy"
             Resource:
               - !Sub "arn:aws:apigateway:${AWS::Region}::/restapis"
               - !Sub "arn:aws:apigateway:${AWS::Region}::/restapis/*"
