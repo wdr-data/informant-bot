@@ -90,7 +90,7 @@ export const newsAbout = async (chat, payload) => {
 
 export const searchId = async (payload) => {
     /* Resolves a tag or genre from dialogflow-result string to ID, with priority to genres */
-    const searchParameter = ['genres', 'tags'];
+    const searchParameter = [ 'genres', 'tags' ];
     const map = {
         genres: 'genres',
         tags: 'tags',
