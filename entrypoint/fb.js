@@ -99,6 +99,9 @@ const handleMessage = async (event, context, chat, msgEvent) => {
 
     // Someone clicked a referral link but had already started the bot
     if ('referral' in msgEvent && !('message' in msgEvent)) {
+        if (msgEvent.referral.ref === 'psid') {
+            return chat.sendText(`Deine Page-Specific ID ist \`${chat.psid}\``);
+        }
         return;
     }
 
