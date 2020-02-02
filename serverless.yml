@@ -214,7 +214,7 @@ custom:
         - aws-sdk
     packagerOptions:
       scripts:
-        - npm rebuild grpc --target_arch=x64 --target_platform=linux --target_libc=glibc
+        - npm rebuild grpc --target=12.0.0 --target_arch=x64 --target_platform=linux --target_libc=glibc
   sentry:
     dsn: ${file(config/env.js):env.SENTRY_DSN}
 
