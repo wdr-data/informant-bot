@@ -95,12 +95,13 @@ functions:
 
   fbPushLegacyFetch:
     handler: entrypoint/fbPushLegacy.fetch
-    timeout: 30
+    timeout: 300
   fbPushLegacySend:
     handler: entrypoint/fbPushLegacy.send
-    timeout: 30
+    timeout: 300
   fbPushLegacyFinish:
     handler: entrypoint/fbPushLegacy.finish
+    timeout: 300
 
   metrics:
     handler: entrypoint/metrics.prometheus
