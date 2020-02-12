@@ -9,7 +9,7 @@ export default async (chat, payload) => {
         json: true,
         qs: {
             limit: 1,
-            delivered: true,
+            'delivered_fb': 'sent',
         },
     });
 
