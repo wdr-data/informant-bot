@@ -112,7 +112,7 @@ functions:
 
   audio:
     handler: entrypoint/audio.scrape
-    timeout: 30
+    timeout: 300
     events:
       - schedule:
           name: ${self:service}-${self:provider.stage}-audio
