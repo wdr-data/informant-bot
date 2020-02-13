@@ -17,8 +17,20 @@ export default async (chat, payload) => {
     if (report.is_quiz) {
         payload.quiz = true;
     }
-    if (report.link) {
-        payload.link = trackLink(report);
+    if (!payload.link && report.link) {
+        let push = undefined;
+        if (payload.push) {
+            const params = {
+                uri: `${urls.push(payload.push)}`,
+                json: true,
+            };
+            // Authorize so we can access unpublished items
+            if (payload.preview) {
+                params.headers = { Authorization: 'Token ' + process.env.CMS_API_TOKEN };
+            }
+            push = await request(params);
+        }
+        payload.link = trackLink(report, push);
     }
     if (report.audio) {
         payload.audio = report.audio;
