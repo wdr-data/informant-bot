@@ -6,7 +6,7 @@ import * as aws from 'aws-sdk';
 import getTiming from '../lib/timing';
 import urls from '../lib/urls';
 import fragmentSender from '../lib/fragmentSender';
-import { assemblePush, getLatestPush, markSent } from '../lib/pushData';
+import { assemblePush, getLatestPush, markSent, markSending } from '../lib/pushData';
 import { Chat } from '../lib/facebook';
 import ddb from '../lib/dynamodb';
 import subscriptions from '../lib/subscriptions';
@@ -46,6 +46,7 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
             }
             const report = await request(params);
             console.log('Starting to send report with id:', report.id);
+            await markSending(report.id, 'report');
             return {
                 state: 'nextChunk',
                 timing: 'breaking',
@@ -83,9 +84,10 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
                 console.log(e);
                 return { state: 'finished' };
             }
-            push = await getLatestPush(timing, { delivered: 0 });
+            push = await getLatestPush(timing, { 'delivered_fb': 'not_sent' });
         }
         console.log('Starting to send push with id:', push.id);
+        await markSending(push.id, 'push');
         return {
             state: 'nextChunk',
             timing,
