@@ -6,10 +6,11 @@ import * as aws from 'aws-sdk';
 import getTiming from '../lib/timing';
 import urls from '../lib/urls';
 import fragmentSender from '../lib/fragmentSender';
-import { assemblePush, getLatestPush, markSent } from '../lib/pushData';
+import { assemblePush, getLatestPush, markSent, markSending } from '../lib/pushData';
 import { Chat } from '../lib/facebook';
 import ddb from '../lib/dynamodb';
 import subscriptions from '../lib/subscriptions';
+import { trackLink } from '../lib/utils';
 
 export const proxy = RavenLambdaWrapper.handler(Raven, async (event) => {
     const params = {
@@ -46,6 +47,9 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
             }
             const report = await request(params);
             console.log('Starting to send report with id:', report.id);
+            if (!event.preview) {
+                await markSending(report.id, 'report');
+            }
             return {
                 state: 'nextChunk',
                 timing: 'breaking',
@@ -83,9 +87,12 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
                 console.log(e);
                 return { state: 'finished' };
             }
-            push = await getLatestPush(timing, { delivered: 0 });
+            push = await getLatestPush(timing, { 'delivered_fb': 'not_sent' });
         }
         console.log('Starting to send push with id:', push.id);
+        if (!event.preview) {
+            await markSending(push.id, 'push');
+        }
         return {
             state: 'nextChunk',
             timing,
@@ -164,17 +171,15 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                 payload.quiz = true;
             }
             if (report.link) {
-                payload.link = report.link;
+                payload.link = trackLink(report);
             }
             if (report.audio) {
                 payload.audio = report.audio;
             }
 
-            const unsubscribeNote = 'Um Eilmeldungen abzubestellen, ' +
-                                    'schau im Menü unter *🔧 An-/Abmelden*.';
             let messageText;
             if (report.type === 'breaking') {
-                messageText = `🚨 ${report.text}\n\n${unsubscribeNote}`;
+                messageText = `🚨 ${report.text}`;
             } else {
                 messageText = report.text;
             }
@@ -190,11 +195,11 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                 ).catch((err) => Raven.captureException(err));
             }));
         } else if (event.type === 'push') {
-            const { intro, buttons, quickReplies } = assemblePush(event.data, event.preview);
+            const { messageText, buttons, quickReplies } = assemblePush(event.data, event.preview);
             await Promise.all(users.map((user) => {
                 const chat = new Chat({ sender: { id: user.psid } });
                 return chat.sendButtons(
-                    intro,
+                    messageText,
                     buttons,
                     quickReplies,
                     { timeout: 20000, messagingType: 'NON_PROMOTIONAL_SUBSCRIPTION' }

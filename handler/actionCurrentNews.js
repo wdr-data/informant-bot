@@ -9,20 +9,32 @@ export default async (chat, payload) => {
         json: true,
         qs: {
             limit: 1,
-            delivered: true,
+            'delivered_fb': 'sent',
         },
     });
 
     const push = data.results[0];
 
-    const introHeadlines = push.intro.concat('\n')
-        .concat(push.reports.map((r) => '➡ '.concat(r.headline)).join('\n'));
+    const headlines = push.reports
+        .filter((r) => r.type === 'regular')
+        .map((r) => `➡ ${r.headline}`)
+        .join('\n');
+
+    const lastHeadline = push.reports
+        .filter((r) => r.type === 'last')
+        .map((r) => `Zum Schluss:\n🙈 ${r.headline}`)[0];
+
+    const parts = [ push.intro, headlines, lastHeadline ].filter((p) => !!p);
+
+    const messageText = parts.join('\n\n');
+
     const firstReport = push.reports[0];
     const buttonAll = buttonPostback(
         'Alle Infos',
         {
             action: 'report_start',
             push: push.id,
+            timing: push.timing,
             report: firstReport.id,
             type: 'push',
             category: `push-classic-${push.timing}-${push.pub_date}`,
@@ -43,6 +55,7 @@ export default async (chat, payload) => {
             {
                 action: 'report_start',
                 push: push.id,
+                timing: push.timing,
                 report: r.id,
                 type: 'push',
                 before: [],
@@ -52,5 +65,5 @@ export default async (chat, payload) => {
             },
         ));
 
-    return chat.sendButtons(introHeadlines, [ buttonAll, buttonAudio ], quickReplies);
+    return chat.sendButtons(messageText, [ buttonAll, buttonAudio ], quickReplies);
 };

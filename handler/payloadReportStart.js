@@ -1,6 +1,7 @@
 import request from 'request-promise-native';
 import urls from '../lib/urls';
 import fragmentSender from '../lib/fragmentSender';
+import { trackLink } from '../lib/utils';
 
 export default async (chat, payload) => {
     const params = {
@@ -17,7 +18,7 @@ export default async (chat, payload) => {
         payload.quiz = true;
     }
     if (report.link) {
-        payload.link = report.link;
+        payload.link = trackLink(report, payload.timing);
     }
     if (report.audio) {
         payload.audio = report.audio;
