@@ -47,7 +47,9 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
             }
             const report = await request(params);
             console.log('Starting to send report with id:', report.id);
-            await markSending(report.id, 'report');
+            if (!event.preview) {
+                await markSending(report.id, 'report');
+            }
             return {
                 state: 'nextChunk',
                 timing: 'breaking',
@@ -88,7 +90,9 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
             push = await getLatestPush(timing, { 'delivered_fb': 'not_sent' });
         }
         console.log('Starting to send push with id:', push.id);
-        await markSending(push.id, 'push');
+        if (!event.preview) {
+            await markSending(push.id, 'push');
+        }
         return {
             state: 'nextChunk',
             timing,
