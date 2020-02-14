@@ -24,7 +24,7 @@ export default async (chat, payload) => {
         .filter((r) => r.type === 'last')
         .map((r) => `Zum Schluss:\n🙈 ${r.headline}`)[0];
 
-    const parts = [push.intro, headlines, lastHeadline].filter((p) => !!p);
+    const parts = [ push.intro, headlines, lastHeadline ].filter((p) => !!p);
 
     const messageText = parts.join('\n\n');
 
