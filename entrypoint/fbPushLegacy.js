@@ -195,11 +195,11 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                 ).catch((err) => Raven.captureException(err));
             }));
         } else if (event.type === 'push') {
-            const { intro, buttons, quickReplies } = assemblePush(event.data, event.preview);
+            const { messageText, buttons, quickReplies } = assemblePush(event.data, event.preview);
             await Promise.all(users.map((user) => {
                 const chat = new Chat({ sender: { id: user.psid } });
                 return chat.sendButtons(
-                    intro,
+                    messageText,
                     buttons,
                     quickReplies,
                     { timeout: 20000, messagingType: 'NON_PROMOTIONAL_SUBSCRIPTION' }
