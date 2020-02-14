@@ -15,8 +15,19 @@ export default async (chat, payload) => {
 
     const push = data.results[0];
 
-    const introHeadlines = push.intro.concat('\n')
-        .concat(push.reports.map((r) => '➡ '.concat(r.headline)).join('\n'));
+    const headlines = push.reports
+        .filter((r) => r.type === 'regular')
+        .map((r) => `➡ ${r.headline}`)
+        .join('\n');
+
+    const lastHeadline = push.reports
+        .filter((r) => r.type === 'last')
+        .map((r) => `Zum Schluss:\n🙈 ${r.headline}`)[0];
+
+    const parts = [push.intro, headlines, lastHeadline].filter((p) => !!p);
+
+    const messageText = parts.join('\n\n');
+
     const firstReport = push.reports[0];
     const buttonAll = buttonPostback(
         'Alle Infos',
@@ -52,5 +63,5 @@ export default async (chat, payload) => {
             },
         ));
 
-    return chat.sendButtons(introHeadlines, [ buttonAll, buttonAudio ], quickReplies);
+    return chat.sendButtons(messageText, [ buttonAll, buttonAudio ], quickReplies);
 };
