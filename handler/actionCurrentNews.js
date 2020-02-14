@@ -23,6 +23,7 @@ export default async (chat, payload) => {
         {
             action: 'report_start',
             push: push.id,
+            timing: push.timing,
             report: firstReport.id,
             type: 'push',
             category: `push-classic-${push.timing}-${push.pub_date}`,
@@ -43,6 +44,7 @@ export default async (chat, payload) => {
             {
                 action: 'report_start',
                 push: push.id,
+                timing: push.timing,
                 report: r.id,
                 type: 'push',
                 before: [],

@@ -10,6 +10,7 @@ import { assemblePush, getLatestPush, markSent, markSending } from '../lib/pushD
 import { Chat } from '../lib/facebook';
 import ddb from '../lib/dynamodb';
 import subscriptions from '../lib/subscriptions';
+import { trackLink } from '../lib/utils';
 
 export const proxy = RavenLambdaWrapper.handler(Raven, async (event) => {
     const params = {
@@ -166,17 +167,15 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                 payload.quiz = true;
             }
             if (report.link) {
-                payload.link = report.link;
+                payload.link = trackLink(report);
             }
             if (report.audio) {
                 payload.audio = report.audio;
             }
 
-            const unsubscribeNote = 'Um Eilmeldungen abzubestellen, ' +
-                                    'schau im Menü unter *🔧 An-/Abmelden*.';
             let messageText;
             if (report.type === 'breaking') {
-                messageText = `🚨 ${report.text}\n\n${unsubscribeNote}`;
+                messageText = `🚨 ${report.text}`;
             } else {
                 messageText = report.text;
             }
