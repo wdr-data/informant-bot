@@ -22,7 +22,7 @@ export default async (chat, payload) => {
 
     const lastHeadline = push.reports
         .filter((r) => r.type === 'last')
-        .map((r) => `Zum Schluss:\n🙈 ${r.headline}`)[0];
+        .map((r) => `🙈 Zum Schluss: ${r.headline}`)[0];
 
     const parts = [ push.intro, headlines, lastHeadline ].filter((p) => !!p);
 
