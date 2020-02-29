@@ -171,7 +171,11 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                 payload.quiz = true;
             }
             if (report.link) {
-                payload.link = trackLink(report);
+                if (report.type === 'breaking') {
+                    payload.link = trackLink(report, 'breaking_push');
+                } else {
+                    payload.link = report.link;
+                }
             }
             if (report.audio) {
                 payload.audio = report.audio;

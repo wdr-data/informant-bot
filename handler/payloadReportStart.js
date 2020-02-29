@@ -18,8 +18,17 @@ export default async (chat, payload) => {
         payload.quiz = true;
     }
     if (report.link) {
-        payload.link = trackLink(report, payload.timing);
+        let campaignType = 'themen_feature';
+        switch (payload.timting) {
+        case 'morning':
+            campaignType = 'morgen_push';
+            break;
+        case 'evening':
+            campaignType = 'abend_push';
+        }
+        payload.link = trackLink(report, campaignType);
     }
+
     if (report.audio) {
         payload.audio = report.audio;
     }
