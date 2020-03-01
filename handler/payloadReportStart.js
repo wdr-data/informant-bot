@@ -19,7 +19,7 @@ export default async (chat, payload) => {
     }
     if (report.link) {
         let campaignType = 'themen_feature';
-        switch (payload.timting) {
+        switch (payload.timing) {
         case 'morning':
             campaignType = 'morgen_push';
             break;
