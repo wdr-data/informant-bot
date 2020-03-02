@@ -70,18 +70,18 @@ export const newsAbout = async (chat, payload) => {
 
     if (chat.trackingEnabled) {
         if (payload.tags.stringValue) {
-            await chat.track.event(
+            await chat.track(
                 'chat-report',
                 'tags',
                 payload.tags.stringValue,
-            ).send();
+            );
         }
         if (payload.genres.stringValue) {
-            await chat.track.event(
+            await chat.track(
                 'chat-report',
                 'genres',
                 payload.genres.stringValue,
-            ).send();
+            );
         }
     }
 

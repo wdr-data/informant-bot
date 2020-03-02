@@ -17,32 +17,32 @@ export async function accept(chat, payload) {
 
     if (chat.trackingEnabled) {
         if (payload.morning) {
-            await chat.track.event(
+            await chat.track(
                 payload.category,
                 'subscribed',
                 'morning'
-            ).send();
+            );
         }
         if (payload.evening) {
-            await chat.track.event(
+            await chat.track(
                 payload.category,
                 'subscribed',
                 'evening'
-            ).send();
+            );
         }
         if (payload.breaking) {
-            await chat.track.event(
+            await chat.track(
                 payload.category,
                 'subscribed',
                 'breaking'
-            ).send();
+            );
         }
         if (payload.referral) {
-            await chat.track.event(
+            await chat.track(
                 payload.category,
                 'referral',
                 payload.referral
-            ).send();
+            );
         }
     }
 
@@ -57,7 +57,7 @@ export async function accept(chat, payload) {
 
 export async function decline(chat, payload) {
     if (chat.trackingEnabled) {
-        await chat.track.event('Analytics', 'Denied', chat.language).send();
+        await chat.track('Analytics', 'Denied', chat.language);
     }
 
     const tracking = new DynamoDbCrud(process.env.DYNAMODB_TRACKING, 'psid');
@@ -161,7 +161,7 @@ export async function policy(chat, payload) {
     let event = 'analytics';
 
     if (chat.trackingEnabled) {
-        await chat.track.event('Analytics', 'Asked for Data Policy', chat.language).send();
+        await chat.track('Analytics', 'Asked for Data Policy', chat.language);
     }
 
     if (payload.nextStep === 'onboarding_analytics') {
@@ -230,7 +230,7 @@ export async function policy(chat, payload) {
 
 export async function policyFull(chat, payload) {
     if (chat.trackingEnabled) {
-        await chat.track.event('Analytics', 'Read Data Policy', chat.language).send();
+        await chat.track('Analytics', 'Read Data Policy', chat.language);
     }
 
     if (payload.lastStep === 'onboarding_analytics') {
