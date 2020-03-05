@@ -1,7 +1,7 @@
 import request from 'request-promise-native';
 
 const FB_PAGETOKEN = process.env.FB_PAGETOKEN;
-const MESSENGER_PROFILE_URL = 'https://graph.facebook.com/v4.0/me/messenger_profile';
+const MESSENGER_PROFILE_URL = 'https://graph.facebook.com/v6.0/me/messenger_profile';
 
 const GET_STARTED_PAYLOAD = {
     action: 'get_started',
