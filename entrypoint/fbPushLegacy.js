@@ -171,7 +171,11 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                 payload.quiz = true;
             }
             if (report.link) {
-                payload.link = trackLink(report);
+                if (report.type === 'breaking') {
+                    payload.link = trackLink(report, 'breaking_push');
+                } else {
+                    payload.link = report.link;
+                }
             }
             if (report.audio) {
                 payload.audio = report.audio;
@@ -192,6 +196,13 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                     payload,
                     messageText,
                     report.media,
+                    {
+                        timeout: 20000,
+                        extra: {
+                            'messaging_type': 'MESSAGE_TAG',
+                            tag: 'NON_PROMOTIONAL_SUBSCRIPTION',
+                        },
+                    }
                 ).catch((err) => Raven.captureException(err));
             }));
         } else if (event.type === 'push') {
@@ -202,7 +213,13 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                     messageText,
                     buttons,
                     quickReplies,
-                    { timeout: 20000, messagingType: 'NON_PROMOTIONAL_SUBSCRIPTION' }
+                    {
+                        timeout: 20000,
+                        extra: {
+                            'messaging_type': 'MESSAGE_TAG',
+                            tag: 'NON_PROMOTIONAL_SUBSCRIPTION',
+                        },
+                    },
                 ).catch((err) => handlePushFailed(chat, err));
             }));
         }
