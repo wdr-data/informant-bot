@@ -7,9 +7,11 @@ export default async function(chat) {
             'Du findest den Service von WDRaktuell gut? Teile ihn mit deinen Freunden!',
             buttonPostback('Mehr', {
                 action: 'share',
-                category: 'payload',
-                event: 'menu',
-                label: 'Teilen',
+                track: {
+                    category: 'payload',
+                    event: 'menu',
+                    label: 'Teilen',
+                },
             })
         ),
         genericElement(
@@ -17,9 +19,11 @@ export default async function(chat) {
             'Anregungen, Fragen, Kritik? Immer her damit',
             buttonPostback('Mehr', {
                 action: 'contact',
-                category: 'payload',
-                event: 'menu',
-                label: 'Feedback',
+                track: {
+                    category: 'payload',
+                    event: 'menu',
+                    label: 'Feedback',
+                },
             })
         ),
         genericElement(
@@ -28,9 +32,11 @@ export default async function(chat) {
             buttonPostback('Mehr', {
                 action: 'faq',
                 slug: 'about',
-                category: 'payload',
-                event: 'menu',
-                label: 'WDR aktuell im Messenger',
+                track: {
+                    category: 'payload',
+                    event: 'menu',
+                    label: 'WDR aktuell im Messenger',
+                },
             })
         ),
         genericElement(
@@ -39,9 +45,11 @@ export default async function(chat) {
             buttonPostback('Mehr', {
                 action: 'faq',
                 slug: 'datenschutz',
-                category: 'payload',
-                event: 'menu',
-                label: 'Datenschutz (Teil 1)',
+                track: {
+                    category: 'payload',
+                    event: 'menu',
+                    label: 'Datenschutz (Teil 1)',
+                },
             })
         ),
         genericElement(
@@ -50,9 +58,11 @@ export default async function(chat) {
             'wie wir Analytics datenschutzkonform einsetzen.',
             buttonPostback('Mehr', {
                 action: 'analyticsPolicy',
-                category: 'payload',
-                event: 'menu',
-                label: 'Datenschutz (Teil 2)',
+                track: {
+                    category: 'payload',
+                    event: 'menu',
+                    label: 'Datenschutz (Teil 2)',
+                },
             })
         ),
         genericElement(
@@ -61,9 +71,11 @@ export default async function(chat) {
             buttonPostback('Mehr', {
                 action: 'faq',
                 slug: 'impressum',
-                category: 'payload',
-                event: 'menu',
-                label: 'Impressum',
+                track: {
+                    category: 'payload',
+                    event: 'menu',
+                    label: 'Impressum',
+                },
             })
         ),
     ];

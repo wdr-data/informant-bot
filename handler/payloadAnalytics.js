@@ -17,32 +17,32 @@ export async function accept(chat, payload) {
 
     if (chat.trackingEnabled) {
         if (payload.morning) {
-            await chat.track(
-                payload.category,
-                'subscribed',
-                'morning'
-            );
+            await chat.track({
+                category: payload.category,
+                event: 'subscribed',
+                label: 'morning',
+            });
         }
         if (payload.evening) {
-            await chat.track(
-                payload.category,
-                'subscribed',
-                'evening'
-            );
+            await chat.track({
+                category: payload.category,
+                event: 'subscribed',
+                label: 'evening',
+            });
         }
         if (payload.breaking) {
-            await chat.track(
-                payload.category,
-                'subscribed',
-                'breaking'
-            );
+            await chat.track({
+                category: payload.category,
+                event: 'subscribed',
+                label: 'breaking',
+            });
         }
         if (payload.referral) {
-            await chat.track(
-                payload.category,
-                'referral',
-                payload.referral
-            );
+            await chat.track({
+                category: payload.category,
+                event: 'referral',
+                label: payload.referral,
+            });
         }
     }
 
@@ -57,7 +57,11 @@ export async function accept(chat, payload) {
 
 export async function decline(chat, payload) {
     if (chat.trackingEnabled) {
-        await chat.track('Analytics', 'Denied', chat.language);
+        await chat.track({
+            category: 'Analytics',
+            event: 'Denied',
+            label: chat.language,
+        });
     }
 
     const tracking = new DynamoDbCrud(process.env.DYNAMODB_TRACKING, 'psid');
@@ -109,9 +113,11 @@ export async function choose(chat, payload) {
                 action: 'analyticsAccept',
                 nextStep,
                 lastStep,
-                category,
-                event,
-                label: 'allowed',
+                track: {
+                    category,
+                    event,
+                    label: 'allowed',
+                },
                 morning: payload.morning,
                 evening: payload.evening,
                 breaking: payload.breaking,
@@ -125,9 +131,11 @@ export async function choose(chat, payload) {
                 action: 'analyticsDecline',
                 nextStep,
                 lastStep,
-                category,
-                event,
-                label: 'denied',
+                track: {
+                    category,
+                    event,
+                    label: 'denied',
+                },
                 morning: payload.morning,
                 evening: payload.evening,
                 breaking: payload.breaking,
@@ -140,9 +148,11 @@ export async function choose(chat, payload) {
                 action: 'analyticsPolicy',
                 nextStep,
                 lastStep,
-                category,
-                event,
-                label: 'Datenschutz (Teil 2)',
+                track: {
+                    category,
+                    event,
+                    label: 'Datenschutz (Teil 2)',
+                },
                 morning: payload.morning,
                 evening: payload.evening,
                 breaking: payload.breaking,
@@ -161,7 +171,11 @@ export async function policy(chat, payload) {
     let event = 'analytics';
 
     if (chat.trackingEnabled) {
-        await chat.track('Analytics', 'Asked for Data Policy', chat.language);
+        await chat.track({
+            category: 'Analytics',
+            event: 'Asked for Data Policy',
+            label: chat.language,
+        });
     }
 
     if (payload.nextStep === 'onboarding_analytics') {
@@ -184,9 +198,11 @@ export async function policy(chat, payload) {
                 action: 'analyticsAccept',
                 nextStep,
                 lastStep,
-                category,
-                event,
-                label: 'allowed',
+                track: {
+                    category,
+                    event,
+                    label: 'allowed',
+                },
                 morning: payload.morning,
                 evening: payload.evening,
                 breaking: payload.breaking,
@@ -199,9 +215,11 @@ export async function policy(chat, payload) {
                 action: 'analyticsDecline',
                 nextStep,
                 lastStep,
-                category,
-                event,
-                label: 'denied',
+                track: {
+                    category,
+                    event,
+                    label: 'denied',
+                },
                 morning: payload.morning,
                 evening: payload.evening,
                 breaking: payload.breaking,
@@ -214,9 +232,11 @@ export async function policy(chat, payload) {
                 action: 'analyticsPolicyFull',
                 nextStep,
                 lastStep,
-                category,
-                event,
-                label: 'Datenschutz (Vollständig)',
+                track: {
+                    category,
+                    event,
+                    label: 'Datenschutz (Vollständig)',
+                },
                 morning: payload.morning,
                 evening: payload.evening,
                 breaking: payload.breaking,
@@ -230,7 +250,11 @@ export async function policy(chat, payload) {
 
 export async function policyFull(chat, payload) {
     if (chat.trackingEnabled) {
-        await chat.track('Analytics', 'Read Data Policy', chat.language);
+        await chat.track({
+            category: 'Analytics',
+            event: 'Read Data Policy',
+            label: chat.language,
+        });
     }
 
     if (payload.lastStep === 'onboarding_analytics') {

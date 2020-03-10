@@ -82,10 +82,12 @@ describe('payload_subscribe.subscriptions', () => {
                         'Anmelden',
                         {
                             action: 'subscribe',
-                            category: 'payload',
-                            event: 'subscribed',
-                            label: 'morning_and_evening_breaking',
                             subscription: 'all',
+                            track: {
+                                category: 'payload',
+                                event: 'subscribed',
+                                label: 'morning_and_evening_breaking',
+                            },
                         }
                     )
                 ),
@@ -96,10 +98,12 @@ describe('payload_subscribe.subscriptions', () => {
                         'Abmelden',
                         {
                             action: 'unsubscribe',
-                            category: 'payload',
-                            event: 'unsubscribed',
-                            label: 'morning',
                             subscription: 'morning',
+                            track: {
+                                category: 'payload',
+                                event: 'unsubscribed',
+                                label: 'morning',
+                            },
                         }
                     )
                 ),
@@ -110,10 +114,12 @@ describe('payload_subscribe.subscriptions', () => {
                         'Anmelden',
                         {
                             action: 'subscribe',
-                            category: 'payload',
-                            event: 'subscribed',
-                            label: 'evening',
                             subscription: 'evening',
+                            track: {
+                                category: 'payload',
+                                event: 'subscribed',
+                                label: 'evening',
+                            },
                         }
                     )
                 ),
@@ -124,10 +130,12 @@ describe('payload_subscribe.subscriptions', () => {
                         'Anmelden',
                         {
                             action: 'subscribe',
-                            category: 'payload',
-                            event: 'subscribed',
-                            label: 'breaking',
                             subscription: 'breaking',
+                            track: {
+                                category: 'payload',
+                                event: 'subscribed',
+                                label: 'breaking',
+                            },
                         }
                     )
                 ),
@@ -138,9 +146,11 @@ describe('payload_subscribe.subscriptions', () => {
                         'Einschalten',
                         {
                             action: 'analyticsAccept',
-                            category: 'payload',
-                            event: 'analytics',
-                            label: 'allowed',
+                            track: {
+                                category: 'payload',
+                                event: 'analytics',
+                                label: 'allowed',
+                            },
                         }
                     )
                 ),

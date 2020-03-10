@@ -86,11 +86,11 @@ const handleMessage = async (event, context, chat, msgEvent) => {
     if (replyPayload) {
         if (replyPayload.action in handler.payloads) {
             if (chat.trackingEnabled && replyPayload.category && !replyPayload.preview) {
-                await chat.track(
-                    replyPayload.category,
-                    replyPayload.event,
-                    replyPayload.label
-                );
+                await chat.track({
+                    category: replyPayload.category,
+                    event: replyPayload.event,
+                    label: replyPayload.label,
+                });
             }
             return handler.payloads[replyPayload.action](chat, replyPayload);
         }
@@ -132,21 +132,21 @@ const handleMessage = async (event, context, chat, msgEvent) => {
 
     if (chat.feedbackMode) {
         if (chat.trackingEnabled) {
-            await chat.track(
-                'chat',
-                'Feedback',
-                'Feedback-Modus'
-            );
+            await chat.track({
+                category: 'chat',
+                event: 'Feedback',
+                label: 'Feedback-Modus',
+            });
         }
         return feedbackMode(chat);
     }
     if (text.length > 90) {
         if (chat.trackingEnabled) {
-            await chat.track(
-                'chat',
-                'Feedback',
-                'Msg > 90 Zeichen'
-            );
+            await chat.track({
+                category: 'chat',
+                event: 'Feedback',
+                label: 'Msg > 90 Zeichen',
+            });
         }
         return contact(chat);
     }
@@ -184,20 +184,20 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         console.log(`  Action: ${result.action}`);
         if (result.action in handler.actions) {
             if (chat.trackingEnabled) {
-                await chat.track(
-                    'chat',
-                    'dialogflow',
-                    result.intent.displayName
-                );
+                await chat.track({
+                    category: 'chat',
+                    event: 'dialogflow',
+                    label: result.intent.displayName,
+                });
             }
             return handler.actions[result.action](chat, result.parameters['fields']);
         }
         if (chat.trackingEnabled) {
-            await chat.track(
-                'chat',
-                'dialogflow',
-                result.intent.displayName
-            );
+            await chat.track({
+                category: 'chat',
+                event: 'dialogflow',
+                label: result.intent.displayName,
+            });
         }
         return chat.sendText(result.fulfillmentText);
     }

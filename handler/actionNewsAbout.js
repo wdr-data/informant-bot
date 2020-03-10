@@ -41,9 +41,11 @@ export const newsAbout = async (chat, payload) => {
                     {
                         action: 'report_audio',
                         audioUrl: r.audio,
-                        category: 'chat-report',
-                        event: `report-${r.headline}`,
-                        label: 'audio',
+                        track: {
+                            category: 'chat-report',
+                            event: `report-${r.headline}`,
+                            label: 'audio',
+                        },
                     }
 
                 ));
@@ -54,9 +56,11 @@ export const newsAbout = async (chat, payload) => {
                     action: 'report_start',
                     report: r.id,
                     type: 'report',
-                    category: 'chat-report',
-                    event: `report-${r.headline}`,
-                    label: 'intro',
+                    track: {
+                        category: 'chat-report',
+                        event: `report-${r.headline}`,
+                        label: 'intro',
+                    },
                 }));
 
         elements.push(
@@ -70,18 +74,18 @@ export const newsAbout = async (chat, payload) => {
 
     if (chat.trackingEnabled) {
         if (payload.tags.stringValue) {
-            await chat.track(
-                'chat-report',
-                'tags',
-                payload.tags.stringValue,
-            );
+            await chat.track({
+                category: 'chat-report',
+                event: 'tags',
+                label: payload.tags.stringValue,
+            });
         }
         if (payload.genres.stringValue) {
-            await chat.track(
-                'chat-report',
-                'genres',
-                payload.genres.stringValue,
-            );
+            await chat.track({
+                category: 'chat-report',
+                event: 'genres',
+                label: payload.genres.stringValue,
+            });
         }
     }
 

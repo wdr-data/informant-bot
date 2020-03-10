@@ -52,9 +52,11 @@ export const subscriptions = async function(chat) {
             buttonPostback(!subbedAll ? 'Anmelden' : 'Abmelden', {
                 action: !subbedAll ? 'subscribe' : 'unsubscribe',
                 subscription: 'all',
-                category: 'payload',
-                event: !subbedAll ? 'subscribed' : 'unsubscribed',
-                label: 'morning_and_evening_breaking',
+                track: {
+                    category: 'payload',
+                    event: !subbedAll ? 'subscribed' : 'unsubscribed',
+                    label: 'morning_and_evening_breaking',
+                },
             })
         )
     );
@@ -66,9 +68,11 @@ export const subscriptions = async function(chat) {
             buttonPostback(!sub.morning ? 'Anmelden' : 'Abmelden', {
                 action: !sub.morning ? 'subscribe' : 'unsubscribe',
                 subscription: 'morning',
-                category: 'payload',
-                event: !sub.morning ? 'subscribed' : 'unsubscribed',
-                label: 'morning',
+                track: {
+                    category: 'payload',
+                    event: !sub.morning ? 'subscribed' : 'unsubscribed',
+                    label: 'morning',
+                },
             })
         )
     );
@@ -80,9 +84,11 @@ export const subscriptions = async function(chat) {
             buttonPostback(!sub.evening ? 'Anmelden' : 'Abmelden', {
                 action: !sub.evening ? 'subscribe' : 'unsubscribe',
                 subscription: 'evening',
-                category: 'payload',
-                event: !sub.evening ? 'subscribed' : 'unsubscribed',
-                label: 'evening',
+                track: {
+                    category: 'payload',
+                    event: !sub.evening ? 'subscribed' : 'unsubscribed',
+                    label: 'evening',
+                },
             })
         )
     );
@@ -94,9 +100,11 @@ export const subscriptions = async function(chat) {
             buttonPostback(!sub.breaking ? 'Anmelden' : 'Abmelden', {
                 action: !sub.breaking ? 'subscribe' : 'unsubscribe',
                 subscription: 'breaking',
-                category: 'payload',
-                event: !sub.breaking ? 'subscribed' : 'unsubscribed',
-                label: 'breaking',
+                track: {
+                    category: 'payload',
+                    event: !sub.breaking ? 'subscribed' : 'unsubscribed',
+                    label: 'breaking',
+                },
             })
         )
     );
@@ -107,9 +115,11 @@ export const subscriptions = async function(chat) {
             'Erlaube uns deine Interaktion mit dem Service anonymisiert auszuwerten.',
             buttonPostback(!chat.trackingEnabled ? 'Einschalten' : 'Ausschalten', {
                 action: !chat.trackingEnabled ? 'analyticsAccept' : 'analyticsDecline',
-                category: 'payload',
-                event: 'analytics',
-                label: !chat.trackingEnabled ? 'allowed' : 'denied',
+                track: {
+                    category: 'payload',
+                    event: 'analytics',
+                    label: !chat.trackingEnabled ? 'allowed' : 'denied',
+                },
             })
         )
     );
