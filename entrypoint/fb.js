@@ -85,7 +85,7 @@ const handleMessage = async (event, context, chat, msgEvent) => {
 
     if (replyPayload) {
         if (replyPayload.action in handler.payloads) {
-            if (chat.trackingEnabled && replyPayload.category && !replyPayload.preview) {
+            if (chat.trackingEnabled && replyPayload.track && !replyPayload.preview) {
                 await chat.track(replyPayload.track);
             }
             return handler.payloads[replyPayload.action](chat, replyPayload);
