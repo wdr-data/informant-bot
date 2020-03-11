@@ -25,5 +25,5 @@ export default async function(chat, payload) {
     }
 
     payload.type = payload.action;
-    return fragmentSender(chat, faq.next_fragments, payload, faq.text, faq.media);
+    return fragmentSender(chat, faq.next_fragments, payload, faq.text, faq.attachment);
 }

@@ -23,6 +23,6 @@ export default async (chat, payload) => {
         }
 
         return fragmentSender(
-            chat, fragment.next_fragments, payload, fragment.text, fragment.media);
+            chat, fragment.next_fragments, payload, fragment.text, fragment.attachment);
     }
 };

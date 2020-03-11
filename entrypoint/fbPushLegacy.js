@@ -195,7 +195,7 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                     report.next_fragments,
                     payload,
                     messageText,
-                    report.media,
+                    report.attachment,
                     {
                         timeout: 20000,
                         extra: {

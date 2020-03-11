@@ -18,6 +18,6 @@ export default async (chat, payload) => {
         const chosenOption = options[options.findIndex((o) => o.id === payload.option)];
         payload.quiz = false;
         return fragmentSender(
-            chat, undefined, payload, chosenOption.quiz_text, chosenOption.media);
+            chat, undefined, payload, chosenOption.quiz_text, chosenOption.attachment);
     }
 };
