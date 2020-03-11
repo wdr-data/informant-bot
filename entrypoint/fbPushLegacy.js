@@ -11,6 +11,7 @@ import { Chat } from '../lib/facebook';
 import ddb from '../lib/dynamodb';
 import subscriptions from '../lib/subscriptions';
 import { trackLink } from '../lib/utils';
+import Webtrekk from '../lib/webtrekk';
 
 export const proxy = RavenLambdaWrapper.handler(Raven, async (event) => {
     const params = {
@@ -46,6 +47,7 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
                 params.headers = { Authorization: 'Token ' + process.env.CMS_API_TOKEN };
             }
             const report = await request(params);
+            report['pub_date'] = report.publicationDate;
             console.log('Starting to send report with id:', report.id);
             if (!event.preview) {
                 await markSending(report.id, 'report');
@@ -99,6 +101,7 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
             type: 'push',
             data: push,
             preview: event.preview,
+            recipients: 0,
         };
     } catch (error) {
         console.log('Sending push failed: ', JSON.stringify(error, null, 2));
@@ -152,6 +155,9 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                 id: event.data.id,
                 type: event.type,
                 preview: event.preview,
+                timing: event.timing,
+                data: event.data,
+                recipients: event.recipients,
             };
         }
 
@@ -194,6 +200,7 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
 
             await Promise.all(users.map((user) => {
                 const chat = new Chat({ sender: { id: user.psid } });
+                event.recipients++;
                 return fragmentSender(
                     chat,
                     report.next_fragments,
@@ -204,6 +211,7 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
             }));
         } else if (event.type === 'push') {
             const { messageText, buttons, quickReplies } = assemblePush(event.data, event.preview);
+            event.recipients++;
             await Promise.all(users.map((user) => {
                 const chat = new Chat({ sender: { id: user.psid } });
                 return chat.sendButtons(
@@ -223,6 +231,9 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                 id: event.data.id,
                 type: event.type,
                 preview: event.preview,
+                timing: event.timing,
+                data: event.data,
+                recipients: event.recipients,
             };
         }
 
@@ -233,6 +244,7 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
             data: event.data,
             start: last,
             preview: event.preview,
+            recipients: event.recipients,
         };
     } catch (err) {
         console.error('Sending failed:', err);
@@ -272,6 +284,27 @@ export const finish = RavenLambdaWrapper.handler(Raven, function(event, context,
     if (!event.id) {
         return callback(null, {});
     }
+
+    const webtrekk = new Webtrekk(12345);
+    let trackCategory = 'Preview';
+    switch (event.timing) {
+    case 'morning':
+        trackCategory = 'Morgen-Push';
+        break;
+    case 'evening':
+        trackCategory = 'Abend-Push';
+        break;
+    case 'breaking':
+        trackCategory = 'Breaking-Push';
+    }
+    webtrekk.track({
+        category: trackCategory,
+        event: 'Zugestellt',
+        label: event.data.headline,
+        publicationDate: event.data.pub_date,
+        anonym: true,
+        recipients: event.recipients,
+    });
 
     markSent(event.id, event.type)
         .then(() => callback(null, {}))
