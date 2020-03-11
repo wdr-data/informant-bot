@@ -84,9 +84,11 @@ describe('payload_subscribe.subscriptions', () => {
                             action: 'subscribe',
                             subscription: 'all',
                             track: {
-                                category: 'payload',
-                                event: 'subscribed',
-                                label: 'morning_and_evening_breaking',
+                                category: 'Menüpunkt',
+                                event: 'Einstellungen',
+                                label: 'Alle Infos',
+                                subType: 'Anmelden',
+                                actionSwitch: 'on',
                             },
                         }
                     )
@@ -100,9 +102,11 @@ describe('payload_subscribe.subscriptions', () => {
                             action: 'unsubscribe',
                             subscription: 'morning',
                             track: {
-                                category: 'payload',
-                                event: 'unsubscribed',
-                                label: 'morning',
+                                category: 'Menüpunkt',
+                                event: 'Einstellungen',
+                                label: 'Morgen-Push',
+                                subType: 'Abmelden',
+                                actionSwitch: 'off',
                             },
                         }
                     )
@@ -116,9 +120,11 @@ describe('payload_subscribe.subscriptions', () => {
                             action: 'subscribe',
                             subscription: 'evening',
                             track: {
-                                category: 'payload',
-                                event: 'subscribed',
-                                label: 'evening',
+                                category: 'Menüpunkt',
+                                event: 'Einstellungen',
+                                label: 'Abend-Push',
+                                subType: 'Anmelden',
+                                actionSwitch: 'on',
                             },
                         }
                     )
@@ -132,9 +138,11 @@ describe('payload_subscribe.subscriptions', () => {
                             action: 'subscribe',
                             subscription: 'breaking',
                             track: {
-                                category: 'payload',
-                                event: 'subscribed',
-                                label: 'breaking',
+                                category: 'Menüpunkt',
+                                event: 'Einstellungen',
+                                label: 'Eilmeldungen',
+                                subType: 'Anmelden',
+                                actionSwitch: 'on',
                             },
                         }
                     )
@@ -147,9 +155,11 @@ describe('payload_subscribe.subscriptions', () => {
                         {
                             action: 'analyticsAccept',
                             track: {
-                                category: 'payload',
-                                event: 'analytics',
-                                label: 'allowed',
+                                category: 'Menüpunkt',
+                                event: 'Einstellungen',
+                                label: 'Tracking',
+                                subType: 'Aktiviert',
+                                actionSwitch: 'on',
                             },
                         }
                     )
