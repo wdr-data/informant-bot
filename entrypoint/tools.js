@@ -139,7 +139,7 @@ export const getWebtrekkConsent = async (event) => {
     console.log('Cleared table.');
 
     // Message users
-    for (const item of trackingItems) {
+    for (const item of trackingItems.filter((item) => item.enabled)) {
         const chat = new Chat({ sender: { id: item.psid } });
         await choose(chat);
     }
