@@ -41,7 +41,7 @@ export default async (chat, payload) => {
                 category: push.timing === 'morning' ? 'Morgen-Push-Klassik' : 'Abend-Push-Klassik',
                 event: `Meldung`,
                 label: firstReport.headline,
-                publicationDate: push.pub_date,
+                publicationDate: firstReport.published_date,
                 subType: '1.Bubble',
             },
         });
@@ -70,7 +70,7 @@ export default async (chat, payload) => {
                     event: `Meldung`,
                     label: r.headline,
                     subType: '1.Bubble',
-                    publicationDate: r.publicationDate,
+                    publicationDate: r.published_date,
                 },
             },
         ));
