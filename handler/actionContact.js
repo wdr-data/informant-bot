@@ -12,8 +12,8 @@ export async function contact(chat) {
             {
                 action: 'feedback_start',
                 track: {
-                    category: 'payload',
-                    event: 'Feedback',
+                    category: 'Menüpunkt',
+                    event: 'Feebdack-Menü',
                     label: 'Kontakt aufnehmen',
                 },
             },
@@ -24,8 +24,8 @@ export async function contact(chat) {
                 action: 'faq',
                 slug: 'yes_to_contact',
                 track: {
-                    category: 'payload',
-                    event: 'Feedback',
+                    category: 'Menüpunkt',
+                    event: 'Feedback-Menü',
                     label: 'Thema vorschlagen',
                 },
             },
@@ -36,8 +36,8 @@ export async function contact(chat) {
                 action: 'faq',
                 slug: 'no_to_contact',
                 track: {
-                    category: 'payload',
-                    event: 'Feedback',
+                    category: 'Menüpunkt',
+                    event: 'Feedback-Menü',
                     label: 'Danke sagen',
                 },
             },
@@ -70,9 +70,9 @@ export async function feedbackMode(chat) {
             {
                 action: 'feedback_done',
                 track: {
-                    category: 'payload',
-                    event: 'Feedback',
-                    label: 'Beendet',
+                    category: 'Menüpunkt',
+                    event: 'Feedback-Menü',
+                    label: 'Feedback-Beendet',
                 },
             },
         ),

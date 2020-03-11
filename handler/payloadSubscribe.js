@@ -53,9 +53,11 @@ export const subscriptions = async function(chat) {
                 action: !subbedAll ? 'subscribe' : 'unsubscribe',
                 subscription: 'all',
                 track: {
-                    category: 'payload',
-                    event: !subbedAll ? 'subscribed' : 'unsubscribed',
-                    label: 'morning_and_evening_breaking',
+                    category: 'Menüpunkt',
+                    event: 'Einstellungen',
+                    label: 'Alle Infos',
+                    subType: !subbedAll ? 'Anmelden' : 'Abmelden',
+                    actionSwitch: !subbedAll ? 'on' : 'off',
                 },
             })
         )
@@ -69,9 +71,11 @@ export const subscriptions = async function(chat) {
                 action: !sub.morning ? 'subscribe' : 'unsubscribe',
                 subscription: 'morning',
                 track: {
-                    category: 'payload',
-                    event: !sub.morning ? 'subscribed' : 'unsubscribed',
-                    label: 'morning',
+                    category: 'Menüpunkt',
+                    event: 'Einstellungen',
+                    label: 'Morgen-Push',
+                    subType: !sub.morning ? 'Anmelden' : 'Abmelden',
+                    actionSwitch: !sub.morning ? 'on' : 'off',
                 },
             })
         )
@@ -85,9 +89,11 @@ export const subscriptions = async function(chat) {
                 action: !sub.evening ? 'subscribe' : 'unsubscribe',
                 subscription: 'evening',
                 track: {
-                    category: 'payload',
-                    event: !sub.evening ? 'subscribed' : 'unsubscribed',
-                    label: 'evening',
+                    category: 'Menüpunkt',
+                    event: 'Einstellungen',
+                    label: 'Abend-Push',
+                    subType: !sub.evening ? 'Anmelden' : 'Abmelden',
+                    actionSwitch: !sub.evening ? 'on' : 'off',
                 },
             })
         )
@@ -101,9 +107,11 @@ export const subscriptions = async function(chat) {
                 action: !sub.breaking ? 'subscribe' : 'unsubscribe',
                 subscription: 'breaking',
                 track: {
-                    category: 'payload',
-                    event: !sub.breaking ? 'subscribed' : 'unsubscribed',
-                    label: 'breaking',
+                    category: 'Menüpunkt',
+                    event: 'Einstellungen',
+                    label: 'Eilmeldungen',
+                    subType: !sub.breaking ? 'Anmelden' : 'Abmelden',
+                    actionSwitch: !sub.breaking ? 'on' : 'off',
                 },
             })
         )
@@ -116,9 +124,11 @@ export const subscriptions = async function(chat) {
             buttonPostback(!chat.trackingEnabled ? 'Einschalten' : 'Ausschalten', {
                 action: !chat.trackingEnabled ? 'analyticsAccept' : 'analyticsDecline',
                 track: {
-                    category: 'payload',
-                    event: 'analytics',
-                    label: !chat.trackingEnabled ? 'allowed' : 'denied',
+                    category: 'Menüpunkt',
+                    event: 'Einstellungen',
+                    label: 'Tracking',
+                    subType: !chat.trackingEnabled ? 'Aktiviert' : 'Deaktiviert',
+                    actionSwitch: !chat.trackingEnabled ? 'on' : 'off',
                 },
             })
         )

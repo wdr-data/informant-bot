@@ -38,9 +38,11 @@ export default async (chat, payload) => {
             report: firstReport.id,
             type: 'push',
             track: {
-                category: `push-classic-${push.timing}-${push.pub_date}`,
-                event: `report-${firstReport.headline}`,
-                label: 'intro',
+                category: push.timing === 'morning' ? 'Morgen-Push-Klassik' : 'Abend-Push-Klassik',
+                event: `Meldung`,
+                label: firstReport.headline,
+                publicationDate: push.pub_date,
+                subType: '1.Bubble',
             },
         });
     const buttonAudio = buttonPostback(
@@ -48,9 +50,10 @@ export default async (chat, payload) => {
         {
             action: 'current_audio',
             track: {
-                category: `push-${push.timing}-${push.pub_date}`,
-                event: 'current audio',
-                label: 'wdr aktuell',
+                category: push.timing === 'morning' ? 'Morgen-Push' : 'Abend-Push',
+                event: 'Hörfunknachrichten',
+                label: 'WDR Aktuell',
+                subType: 'Audio',
             },
         });
     const quickReplies = push.reports.map((r) =>
@@ -63,9 +66,11 @@ export default async (chat, payload) => {
                 type: 'push',
                 before: [],
                 track: {
-                    category: `push-${push.timing}-${push.pub_date}`,
-                    event: `report-${r.headline}`,
-                    label: 'intro',
+                    category: push.timing === 'morning' ? 'Morgen-Push' : 'Abend-Push',
+                    event: `Meldung`,
+                    label: r.headline,
+                    subType: '1.Bubble',
+                    publicationDate: r.publicationDate,
                 },
             },
         ));

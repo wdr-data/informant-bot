@@ -14,9 +14,9 @@ const MENU_ACTIONS = [
         payload: JSON.stringify({
             action: 'current_news',
             track: {
-                category: 'payload',
-                event: 'menu',
-                label: 'Nachrichten',
+                category: 'Menüpunkt',
+                event: 'Messenger-Menü',
+                label: 'Letzter Push',
             },
         }),
     },
@@ -26,8 +26,8 @@ const MENU_ACTIONS = [
         payload: JSON.stringify({
             action: 'subscriptions',
             track: {
-                category: 'payload',
-                event: 'menu',
+                category: 'Menüpunkt',
+                event: 'Messenger-Menü',
                 label: 'An-/Abmelden',
             },
         }),
@@ -38,8 +38,8 @@ const MENU_ACTIONS = [
         payload: JSON.stringify({
             action: 'menu_details',
             track: {
-                category: 'payload',
-                event: 'menu',
+                category: 'Menüpunkt',
+                event: 'Messenger-Menü',
                 label: 'Mehr',
             },
         }),

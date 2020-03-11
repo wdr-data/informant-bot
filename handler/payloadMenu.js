@@ -8,21 +8,21 @@ export default async function(chat) {
             buttonPostback('Mehr', {
                 action: 'share',
                 track: {
-                    category: 'payload',
-                    event: 'menu',
+                    category: 'Menü-Punkt',
+                    event: 'Messenger-Menü',
                     label: 'Teilen',
                 },
             })
         ),
         genericElement(
-            '💬 Feedback',
+            '💬 Kontakt/Feedback',
             'Anregungen, Fragen, Kritik? Immer her damit',
             buttonPostback('Mehr', {
                 action: 'contact',
                 track: {
-                    category: 'payload',
-                    event: 'menu',
-                    label: 'Feedback',
+                    category: 'Menüpunkt',
+                    event: 'Messenger-Menü',
+                    label: 'Kontakt/Feedback',
                 },
             })
         ),
@@ -33,8 +33,8 @@ export default async function(chat) {
                 action: 'faq',
                 slug: 'about',
                 track: {
-                    category: 'payload',
-                    event: 'menu',
+                    category: 'Menüpunkt',
+                    event: 'Messenger-Menü',
                     label: 'WDR aktuell im Messenger',
                 },
             })
@@ -46,8 +46,8 @@ export default async function(chat) {
                 action: 'faq',
                 slug: 'datenschutz',
                 track: {
-                    category: 'payload',
-                    event: 'menu',
+                    category: 'Menüpunkt',
+                    event: 'Messenger-Menü',
                     label: 'Datenschutz (Teil 1)',
                 },
             })
@@ -59,8 +59,8 @@ export default async function(chat) {
             buttonPostback('Mehr', {
                 action: 'analyticsPolicy',
                 track: {
-                    category: 'payload',
-                    event: 'menu',
+                    category: 'Menüpunkt',
+                    event: 'Messenger-Menü',
                     label: 'Datenschutz (Teil 2)',
                 },
             })
@@ -72,8 +72,8 @@ export default async function(chat) {
                 action: 'faq',
                 slug: 'impressum',
                 track: {
-                    category: 'payload',
-                    event: 'menu',
+                    category: 'Menüpunkt',
+                    event: 'Messenger-Menü',
                     label: 'Impressum',
                 },
             })

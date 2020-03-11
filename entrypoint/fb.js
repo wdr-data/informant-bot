@@ -129,19 +129,19 @@ const handleMessage = async (event, context, chat, msgEvent) => {
     if (chat.feedbackMode) {
         if (chat.trackingEnabled) {
             await chat.track({
-                category: 'chat',
-                event: 'Feedback',
-                label: 'Feedback-Modus',
+                category: 'Unterhaltung',
+                event: 'Feedback-Modus',
+                label: '60 Min Zeitfenster',
             });
         }
         return feedbackMode(chat);
     }
-    if (text.length > 90) {
+    if (text.length > 70) {
         if (chat.trackingEnabled) {
             await chat.track({
-                category: 'chat',
-                event: 'Feedback',
-                label: 'Msg > 90 Zeichen',
+                category: 'Unterhaltung',
+                event: 'Feedback-Modus',
+                label: '70 Zeichen',
             });
         }
         return contact(chat);
@@ -181,8 +181,8 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         if (result.action in handler.actions) {
             if (chat.trackingEnabled) {
                 await chat.track({
-                    category: 'chat',
-                    event: 'dialogflow',
+                    category: 'Unterhaltung',
+                    event: 'Dialogflow',
                     label: result.intent.displayName,
                 });
             }
@@ -190,8 +190,8 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         }
         if (chat.trackingEnabled) {
             await chat.track({
-                category: 'chat',
-                event: 'dialogflow',
+                category: 'Unterhaltung',
+                event: 'Dialogflow',
                 label: result.intent.displayName,
             });
         }

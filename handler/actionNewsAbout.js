@@ -42,9 +42,10 @@ export const newsAbout = async (chat, payload) => {
                         action: 'report_audio',
                         audioUrl: r.audio,
                         track: {
-                            category: 'chat-report',
-                            event: `report-${r.headline}`,
-                            label: 'audio',
+                            category: 'Unterhaltung',
+                            event: `Meldung`,
+                            label: r.headline,
+                            subType: 'Audio',
                         },
                     }
 
@@ -57,9 +58,10 @@ export const newsAbout = async (chat, payload) => {
                     report: r.id,
                     type: 'report',
                     track: {
-                        category: 'chat-report',
-                        event: `report-${r.headline}`,
-                        label: 'intro',
+                        category: 'Unterhaltung',
+                        event: `Meldung`,
+                        label: r.headline,
+                        subType: '1.Bubble',
                     },
                 }));
 
@@ -75,16 +77,22 @@ export const newsAbout = async (chat, payload) => {
     if (chat.trackingEnabled) {
         if (payload.tags.stringValue) {
             await chat.track({
-                category: 'chat-report',
-                event: 'tags',
-                label: payload.tags.stringValue,
+                category: 'Unterhaltung',
+                event: 'Dialogflow',
+                label: 'Themen-Suche',
+                subType: 'Tag',
+                tags: payload.tags.stringValue,
+                anonym: true,
             });
         }
         if (payload.genres.stringValue) {
             await chat.track({
-                category: 'chat-report',
-                event: 'genres',
-                label: payload.genres.stringValue,
+                category: 'Unterhaltung',
+                event: 'Dialogflow',
+                label: 'Themen-Suche',
+                subType: 'Genre',
+                tags: payload.genres.stringValue,
+                anonym: true,
             });
         }
     }
