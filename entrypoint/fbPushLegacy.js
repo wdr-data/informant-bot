@@ -47,7 +47,6 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
                 params.headers = { Authorization: 'Token ' + process.env.CMS_API_TOKEN };
             }
             const report = await request(params);
-            report['pub_date'] = report.publicationDate;
             console.log('Starting to send report with id:', report.id);
             if (!event.preview) {
                 await markSending(report.id, 'report');
@@ -211,9 +210,9 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
             }));
         } else if (event.type === 'push') {
             const { messageText, buttons, quickReplies } = assemblePush(event.data, event.preview);
-            event.recipients++;
             await Promise.all(users.map((user) => {
                 const chat = new Chat({ sender: { id: user.psid } });
+                event.recipients++;
                 return chat.sendButtons(
                     messageText,
                     buttons,
@@ -301,8 +300,7 @@ export const finish = RavenLambdaWrapper.handler(Raven, function(event, context,
         category: trackCategory,
         event: 'Zugestellt',
         label: event.data.headline,
-        publicationDate: event.data.pub_date,
-        anonym: true,
+        publicationDate: event.data.pub_date || event.data.published_date,
         recipients: event.recipients,
     });
 

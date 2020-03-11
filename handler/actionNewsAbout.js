@@ -74,27 +74,23 @@ export const newsAbout = async (chat, payload) => {
         );
     });
 
-    if (chat.trackingEnabled) {
-        if (payload.tags.stringValue) {
-            await chat.track({
-                category: 'Unterhaltung',
-                event: 'Dialogflow',
-                label: 'Themen-Suche',
-                subType: 'Tag',
-                tags: payload.tags.stringValue,
-                anonym: true,
-            });
-        }
-        if (payload.genres.stringValue) {
-            await chat.track({
-                category: 'Unterhaltung',
-                event: 'Dialogflow',
-                label: 'Themen-Suche',
-                subType: 'Genre',
-                tags: payload.genres.stringValue,
-                anonym: true,
-            });
-        }
+    if (payload.tags.stringValue) {
+        await chat.track({
+            category: 'Unterhaltung',
+            event: 'Dialogflow',
+            label: 'Themen-Suche',
+            subType: 'Tag',
+            tags: payload.tags.stringValue,
+        });
+    }
+    if (payload.genres.stringValue) {
+        await chat.track({
+            category: 'Unterhaltung',
+            event: 'Dialogflow',
+            label: 'Themen-Suche',
+            subType: 'Genre',
+            tags: payload.genres.stringValue,
+        });
     }
 
     return chat.sendGenericTemplate(elements.slice(0, 10));
