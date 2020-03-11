@@ -150,6 +150,8 @@ const handleMessage = async (event, context, chat, msgEvent) => {
     switch (text) {
     case '#psid':
         return chat.sendText(`Deine Page-Specific ID ist \`${chat.psid}\``);
+    case '#uuid':
+        return chat.sendText(`Deine UUID ist \`${chat.uuid}\``);
     }
 
     const sessionClient = new dialogflow.SessionsClient({
@@ -157,7 +159,7 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         credentials: require('../.df_id.json') || {},
         /* eslint-enable */
     });
-    const sessionPath = sessionClient.sessionPath(process.env.DF_PROJECTID, chat.psid);
+    const sessionPath = sessionClient.sessionPath(process.env.DF_PROJECTID, chat.uuid);
 
     const request = {
         session: sessionPath,

@@ -1,6 +1,41 @@
 const { loadConfig } = require('./util');
 
 const tableProps = {
+    'users': {
+        AttributeDefinitions: [
+            {
+                AttributeName: 'psid',
+                AttributeType: 'S',
+            },
+            {
+                AttributeName: 'uuid',
+                AttributeType: 'S',
+            },
+        ],
+        KeySchema: [
+            {
+                AttributeName: 'psid',
+                KeyType: 'HASH',
+            },
+
+        ],
+        GlobalSecondaryIndexes: [
+            {
+                IndexName: 'uuid_to_psid',
+                KeySchema: [
+                    {
+                        AttributeName: 'uuid',
+                        KeyType: 'HASH',
+                    },
+                ],
+                Projection: { ProjectionType: 'ALL' },
+                ProvisionedThroughput: {
+                    ReadCapacityUnits: 3,
+                    WriteCapacityUnits: 3,
+                },
+            },
+        ],
+    },
     'attachments': {
         AttributeDefinitions: [
             {
