@@ -146,6 +146,8 @@ const handleMessage = async (event, context, chat, msgEvent) => {
     switch (text) {
     case '#psid':
         return chat.sendText(`Deine Page-Specific ID ist \`${chat.psid}\``);
+    case '#ich':
+        return chat.sendText(`Deine Facebook-ID ist \`${chat.psid}\``);
     case '#uuid':
         return chat.sendText(`Deine UUID ist \`${chat.uuid}\``);
     }
