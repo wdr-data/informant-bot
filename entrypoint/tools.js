@@ -2,6 +2,7 @@ import ddb from '../lib/dynamodb';
 import subscriptions from '../lib/subscriptions';
 import DynamoDbCrud from '../lib/dynamodbCrud';
 import { Chat, buttonPostback } from '../lib/facebook';
+import { getFaq } from '../handler/payloadFaq';
 
 function getSubs(start = null, limit = 25) {
     const params = {
@@ -111,7 +112,8 @@ async function choose(chat) {
         ),
     ];
 
-    return chat.sendButtons('Nachricht an den Nutzer', buttons);
+    const faq = await getFaq('webtrekk', true);
+    return chat.sendFullNewsBaseWithButtons(faq, buttons);
 }
 
 export const getWebtrekkConsent = async (event) => {
