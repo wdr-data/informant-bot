@@ -54,8 +54,8 @@ export default async function(chat) {
         ),
         genericElement(
             '📊 Datenschutz (Teil 2)',
-            'Ein-/Ausschalten von Google Analytics. Außerdem erklären wir, ' +
-            'wie wir Analytics datenschutzkonform einsetzen.',
+            'Ein-/Ausschalten von von Mapp Intelligence (Webtrekk). Außerdem erklären wir, ' +
+            'wie wir Tracking datenschutzkonform einsetzen.',
             buttonPostback('Mehr', {
                 action: 'analyticsPolicy',
                 track: {
