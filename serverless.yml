@@ -167,6 +167,9 @@ functions:
           enabled: true
           input:
             timing: evening
+  getWebtrekkConsent:
+    handler: entrypoint/tools.getWebtrekkConsent
+    timeout: 900
 
 stepFunctions:
   stateMachines:

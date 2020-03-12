@@ -41,8 +41,9 @@
             "credit": null
           },
           "published": true,
-          "delivered": false
-          },
+          "delivered": false,
+          "published_date": "2018-03-20"
+        },
         {
           "id": 253,
           "created": "2018-03-20T16:51:09+01:00",
@@ -66,12 +67,13 @@
               "name": "Uber"
             }
           ],
-          "headline": "Unfall löst Diskussion über selbstfahrende Autos aus",
+          "headline": "Unfall löst Diskussion aus",
           "short_headline": "Unfall",
           "text": "Der tödliche Unfall mit einem selbstfahrenden Auto 🚗 in den USA hat ziemlich viel Wirbel ausgelöst. Es geht darum, wie sicher Roboter-Autos sind.",
           "attachment": null,
           "published": true,
-          "delivered": false
+          "delivered": false,
+          "published_date": "2018-03-20"
         },
         {
           "id": 251,
@@ -97,7 +99,8 @@
             "credit": null
           },
           "published": true,
-          "delivered": false
+          "delivered": false,
+          "published_date": "2018-03-20"
         },
         {
           "id": 254,
@@ -118,7 +121,8 @@
           "text": "Heute ist Weltglückstag 🍀🍀🍀 Meine Kollegen aus der 1LIVE-Musikredaktion haben deshalb mal drei Gute-Laune-Songs für dich rausgesucht.",
           "attachment": null,
           "published": true,
-          "delivered": false
+          "delivered": false,
+          "published_date": "2018-03-20"
         }
       ],
       "outro": "Das war's von mir. Hab' einen schönen Abend. Ich melde mich morgen früh wieder bei dir.",

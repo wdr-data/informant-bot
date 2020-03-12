@@ -1000,6 +1000,16 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.17.13.tgz#ccebcdb990bd6139cd16e84c39dc2fb1023ca90c"
   integrity sha512-pMCcqU2zT4TjqYFrWtYHKal7Sl30Ims6ulZ4UFXxI4xbtQqK/qqKwkDoBFCfooRqqmRu9vY3xaJRwxSh673aYg==
 
+"@wdr-data/s3-env-config@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@wdr-data/s3-env-config/-/s3-env-config-0.0.3.tgz#f6b8a2b10a0b418ff96e69c53aeddd3968c10891"
+  integrity sha512-V8ujDzjBSYURI8yyOdiRUhZqAZpDlkPg1DI/+4OpbCeIWuIBjPs78Lyr/HmyPUAmSz54XgK1qpZBGsjwB6lysw==
+  dependencies:
+    aws-sdk "^2.277.1"
+    minimist "^1.2.0"
+    request "^2.87.0"
+    request-promise-native "^1.0.5"
+
 "@webassemblyjs/ast@1.8.5":
   version "1.8.5"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.8.5.tgz#51b1c5fe6576a34953bf4b253df9f0d490d9e359"
@@ -1579,6 +1589,21 @@ aws-sdk@^2.177.0, aws-sdk@^2.206.0, aws-sdk@^2.282.1, aws-sdk@^2.597.0:
   version "2.601.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.601.0.tgz#7210e4e1edcffbe76e9b2a7181617966c9cfc731"
   integrity sha512-i8ND3Hn0zjuwyau47io8Uyvbeb6dnOYbC6k34u3DvqH3I/kFDgDAme6L58LUzSHAPDWhUDjNXpScmMsGZVDWrw==
+  dependencies:
+    buffer "4.9.1"
+    events "1.1.1"
+    ieee754 "1.1.13"
+    jmespath "0.15.0"
+    querystring "0.2.0"
+    sax "1.2.1"
+    url "0.10.3"
+    uuid "3.3.2"
+    xml2js "0.4.19"
+
+aws-sdk@^2.277.1:
+  version "2.637.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.637.0.tgz#810e25e53acf2250d35fc74498f9d4492e154217"
+  integrity sha512-e7EYX5rNtQyEaleQylUtLSNKXOmvOwfifQ4bYkfF80mFsVI3DSydczLHXrqPzXoEJaS/GI/9HqVnlQcPs6Q3ew==
   dependencies:
     buffer "4.9.1"
     events "1.1.1"
@@ -9641,6 +9666,11 @@ uuid@^3.0.0, uuid@^3.3.2, uuid@^3.3.3:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.3.tgz#4568f0216e78760ee1dbf3a4d2cf53e224112866"
   integrity sha512-pW0No1RGHgzlpHJO1nsVrHKpOEIxkGg1xB+v0ZmdNH5OAeAwzAVrCnI2/6Mtx+Uys6iaylxa+D3g4j63IKKjSQ==
+
+uuid@^7.0.2:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-7.0.2.tgz#7ff5c203467e91f5e0d85cfcbaaf7d2ebbca9be6"
+  integrity sha512-vy9V/+pKG+5ZTYKf+VcphF5Oc6EFiu3W8Nv3P3zIh0EqVI80ZxOzuPfe9EHjkFNvf8+xuTHVeei4Drydlx4zjw==
 
 v8flags@^3.0.0, v8flags@^3.1.1:
   version "3.1.3"

@@ -11,9 +11,11 @@ export async function contact(chat) {
             'Feedback zum Service',
             {
                 action: 'feedback_start',
-                category: 'payload',
-                event: 'Feedback',
-                label: 'Kontakt aufnehmen',
+                track: {
+                    category: 'Menüpunkt',
+                    event: 'Feebdack-Menü',
+                    label: 'Kontakt aufnehmen',
+                },
             },
         ),
         buttonPostback(
@@ -21,9 +23,11 @@ export async function contact(chat) {
             {
                 action: 'faq',
                 slug: 'yes_to_contact',
-                category: 'payload',
-                event: 'Feedback',
-                label: 'Thema vorschlagen',
+                track: {
+                    category: 'Menüpunkt',
+                    event: 'Feedback-Menü',
+                    label: 'Thema vorschlagen',
+                },
             },
         ),
         buttonPostback(
@@ -31,9 +35,11 @@ export async function contact(chat) {
             {
                 action: 'faq',
                 slug: 'no_to_contact',
-                category: 'payload',
-                event: 'Feedback',
-                label: 'Danke sagen',
+                track: {
+                    category: 'Menüpunkt',
+                    event: 'Feedback-Menü',
+                    label: 'Danke sagen',
+                },
             },
         ),
     ];
@@ -63,9 +69,11 @@ export async function feedbackMode(chat) {
             'Alles gesagt, danke!',
             {
                 action: 'feedback_done',
-                category: 'payload',
-                event: 'Feedback',
-                label: 'Beendet',
+                track: {
+                    category: 'Menüpunkt',
+                    event: 'Feedback-Menü',
+                    label: 'Feedback-Beendet',
+                },
             },
         ),
     ];
