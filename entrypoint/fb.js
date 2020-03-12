@@ -56,7 +56,8 @@ export const message = async (event, context, callback) => {
 
         try {
             if (chat) {
-                await chat.sendText('Da ist was schief gelaufen.');
+                await chat.sendText('🐞 Da ist was schief gelaufen. ' +
+                    'Die Crew ist bereits im Maschinenraum und sucht nach dem Bug!');
             }
         } catch (e) {
             console.error('Reporting error to user failed with:', e);
@@ -90,7 +91,8 @@ const handleMessage = async (event, context, chat, msgEvent) => {
             }
             return handler.payloads[replyPayload.action](chat, replyPayload);
         }
-        return chat.sendText(`Da ist was schief gelaufen.`);
+        return chat.sendText('🐞 Da ist was schief gelaufen. ' +
+            'Die Crew ist bereits im Maschinenraum und sucht nach dem Bug!');
     }
 
     // Someone clicked a referral link but had already started the bot
