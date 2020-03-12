@@ -142,8 +142,12 @@ export const getWebtrekkConsent = async (event) => {
 
     // Message users
     for (const item of trackingItems.filter((item) => item.enabled)) {
-        const chat = new Chat({ sender: { id: item.psid } });
-        await choose(chat);
+        try {
+            const chat = new Chat({ sender: { id: item.psid } });
+            await choose(chat);
+        } catch (e) {
+            console.log(`Failed to send to user with id ${item.psid}`, e);
+        }
     }
     console.log('Notified users.');
 
