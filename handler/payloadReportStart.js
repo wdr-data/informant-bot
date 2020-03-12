@@ -19,7 +19,7 @@ export default async (chat, payload) => {
     }
     if (report.link) {
         let campaignType = 'themen_feature';
-        switch (payload.timting) {
+        switch (payload.timing) {
         case 'morning':
             campaignType = 'morgen_push';
             break;
@@ -33,5 +33,5 @@ export default async (chat, payload) => {
         payload.audio = report.audio;
     }
 
-    return fragmentSender(chat, report.next_fragments, payload, report.text, report.media);
+    return fragmentSender(chat, report.next_fragments, payload, report.text, report.attachment);
 };

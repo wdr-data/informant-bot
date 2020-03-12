@@ -14,7 +14,7 @@ export default async (chat, payload) => {
 
     await chat.sendText(push.outro);
 
-    if (push.media) {
-        return chat.sendAttachment(push.media);
+    if (push.attachment) {
+        return chat.sendAttachment(push.attachment.processed);
     }
 };

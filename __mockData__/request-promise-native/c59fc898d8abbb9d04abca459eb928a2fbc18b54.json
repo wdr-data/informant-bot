@@ -4,9 +4,7 @@
         "name": "wdraktuell-foo",
         "slug": "wdraktuell-foo",
         "text": "Foo",
-        "media": null,
-        "media_original": null,
-        "media_note": null,
+        "attachment": null,
         "next_fragments": []
     }
 ]
