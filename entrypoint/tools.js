@@ -141,15 +141,18 @@ export const getWebtrekkConsent = async (event) => {
 
     // Message users
     const faq = await getFaq('webtrekk', true);
+    const failed = [];
     for (const item of trackingItems.filter((item) => item.enabled)) {
         try {
             const chat = new Chat({ sender: { id: item.psid } });
             await choose(chat, faq);
         } catch (e) {
             console.log(`Failed to send to user with id ${item.psid}`, e);
+            failed.push(item.psid);
         }
     }
-    console.log('Notified users.');
+    console.log(`Notified users. Failed for ${failed.length} PSIDs:`);
+    console.log(failed);
 
     return `Done.`;
 };
