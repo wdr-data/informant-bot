@@ -85,12 +85,8 @@ const handleMessage = async (event, context, chat, msgEvent) => {
 
     if (replyPayload) {
         if (replyPayload.action in handler.payloads) {
-            if (chat.trackingEnabled && replyPayload.category && !replyPayload.preview) {
-                await chat.track.event(
-                    replyPayload.category,
-                    replyPayload.event,
-                    replyPayload.label
-                ).send();
+            if (replyPayload.track && !replyPayload.preview) {
+                chat.track(replyPayload.track);
             }
             return handler.payloads[replyPayload.action](chat, replyPayload);
         }
@@ -131,29 +127,27 @@ const handleMessage = async (event, context, chat, msgEvent) => {
     }
 
     if (chat.feedbackMode) {
-        if (chat.trackingEnabled) {
-            await chat.track.event(
-                'chat',
-                'Feedback',
-                'Feedback-Modus'
-            ).send();
-        }
+        chat.track({
+            category: 'Unterhaltung',
+            event: 'Feedback-Modus',
+            label: '60 Min Zeitfenster',
+        });
         return feedbackMode(chat);
     }
-    if (text.length > 90) {
-        if (chat.trackingEnabled) {
-            await chat.track.event(
-                'chat',
-                'Feedback',
-                'Msg > 90 Zeichen'
-            ).send();
-        }
+    if (text.length > 70) {
+        chat.track({
+            category: 'Unterhaltung',
+            event: 'Feedback-Modus',
+            label: '70 Zeichen',
+        });
         return contact(chat);
     }
 
     switch (text) {
     case '#psid':
         return chat.sendText(`Deine Page-Specific ID ist \`${chat.psid}\``);
+    case '#uuid':
+        return chat.sendText(`Deine UUID ist \`${chat.uuid}\``);
     }
 
     const sessionClient = new dialogflow.SessionsClient({
@@ -161,7 +155,7 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         credentials: require('../.df_id.json') || {},
         /* eslint-enable */
     });
-    const sessionPath = sessionClient.sessionPath(process.env.DF_PROJECTID, chat.psid);
+    const sessionPath = sessionClient.sessionPath(process.env.DF_PROJECTID, chat.uuid);
 
     const request = {
         session: sessionPath,
@@ -183,22 +177,18 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         console.log(`  Parameters: ${JSON.stringify(result.parameters)}`);
         console.log(`  Action: ${result.action}`);
         if (result.action in handler.actions) {
-            if (chat.trackingEnabled) {
-                await chat.track.event(
-                    'chat',
-                    'dialogflow',
-                    result.intent.displayName
-                ).send();
-            }
+            chat.track({
+                category: 'Unterhaltung',
+                event: 'Dialogflow',
+                label: result.intent.displayName,
+            });
             return handler.actions[result.action](chat, result.parameters['fields']);
         }
-        if (chat.trackingEnabled) {
-            await chat.track.event(
-                'chat',
-                'dialogflow',
-                result.intent.displayName
-            ).send();
-        }
+        chat.track({
+            category: 'Unterhaltung',
+            event: 'Dialogflow',
+            label: result.intent.displayName,
+        });
         return chat.sendText(result.fulfillmentText);
     }
 

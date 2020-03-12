@@ -34,11 +34,15 @@
           "headline": "Luft in einigen NRW-Städten ist besser geworden",
           "short_headline": "Bessere Luft",
           "text": "Aufatmen! Die Luft in NRW ist letztes Jahr ein bisschen sauberer geworden! Die schlechte Nachricht: Es hängt immer noch ziemlich viel Dreck in der Luft 😷",
-          "media": "6ee31209-04e9-4cbd-ac3d-c24beb58c993.gif",
-          "media_original": "6ee31209-04e9-4cbd-ac3d-c24beb58c993.gif",
-          "media_note": null,
+          "attachment": {
+            "processed": "6ee31209-04e9-4cbd-ac3d-c24beb58c993.gif",
+            "original": "6ee31209-04e9-4cbd-ac3d-c24beb58c993.gif",
+            "title": "Luftbild",
+            "credit": null
+          },
           "published": true,
-          "delivered": false
+          "delivered": false,
+          "published_date": "2018-03-20"
         },
         {
           "id": 253,
@@ -63,14 +67,13 @@
               "name": "Uber"
             }
           ],
-          "headline": "Unfall löst Diskussion über selbstfahrende Autos aus",
+          "headline": "Unfall löst Diskussion aus",
           "short_headline": "Unfall",
           "text": "Der tödliche Unfall mit einem selbstfahrenden Auto 🚗 in den USA hat ziemlich viel Wirbel ausgelöst. Es geht darum, wie sicher Roboter-Autos sind.",
-          "media": null,
-          "media_original": null,
-          "media_note": null,
+          "attachment": null,
           "published": true,
-          "delivered": false
+          "delivered": false,
+          "published_date": "2018-03-20"
         },
         {
           "id": 251,
@@ -89,11 +92,15 @@
           "headline": "Public Viewing wird auch nach 22 Uhr erlaubt",
           "short_headline": "Public Viewing",
           "text": "Bald gibt's hoffentlich wieder ordentlich Grund zum Jubeln. ⚽ Genau, bei der Fußball-WM im Sommer! Und feiern darfst du mit deinen Freunden auch, wenn die Mannschaft erst spät auf den Platz muss.",
-          "media": "4522857d-9f8a-4128-898a-2bbd0475fb0e.jpg",
-          "media_original": "f7fcffa7-3920-4f17-abc7-4653407cccec.jpg",
-          "media_note": "picture alliance",
+          "attachment": {
+            "processed": "4522857d-9f8a-4128-898a-2bbd0475fb0e.jpg",
+            "original": "f7fcffa7-3920-4f17-abc7-4653407cccec.jpg",
+            "title": "Fußball",
+            "credit": null
+          },
           "published": true,
-          "delivered": false
+          "delivered": false,
+          "published_date": "2018-03-20"
         },
         {
           "id": 254,
@@ -112,17 +119,14 @@
           "headline": "Das Letzte: Deine Songs zum Glücklichsein",
           "short_headline": "Das Letzte",
           "text": "Heute ist Weltglückstag 🍀🍀🍀 Meine Kollegen aus der 1LIVE-Musikredaktion haben deshalb mal drei Gute-Laune-Songs für dich rausgesucht.",
-          "media": null,
-          "media_original": null,
-          "media_note": null,
+          "attachment": null,
           "published": true,
-          "delivered": false
+          "delivered": false,
+          "published_date": "2018-03-20"
         }
       ],
       "outro": "Das war's von mir. Hab' einen schönen Abend. Ich melde mich morgen früh wieder bei dir.",
-      "media": null,
-      "media_original": null,
-      "media_note": null
+      "attachment": null
     }
   ]
 }

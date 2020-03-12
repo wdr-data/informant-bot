@@ -41,9 +41,12 @@ export const newsAbout = async (chat, payload) => {
                     {
                         action: 'report_audio',
                         audioUrl: r.audio,
-                        category: 'chat-report',
-                        event: `report-${r.headline}`,
-                        label: 'audio',
+                        track: {
+                            category: 'Unterhaltung',
+                            event: `Meldung`,
+                            label: r.headline,
+                            subType: 'Audio',
+                        },
                     }
 
                 ));
@@ -54,9 +57,12 @@ export const newsAbout = async (chat, payload) => {
                     action: 'report_start',
                     report: r.id,
                     type: 'report',
-                    category: 'chat-report',
-                    event: `report-${r.headline}`,
-                    label: 'intro',
+                    track: {
+                        category: 'Unterhaltung',
+                        event: `Meldung`,
+                        label: r.headline,
+                        subType: '1.Bubble',
+                    },
                 }));
 
         elements.push(
@@ -68,21 +74,23 @@ export const newsAbout = async (chat, payload) => {
         );
     });
 
-    if (chat.trackingEnabled) {
-        if (payload.tags.stringValue) {
-            await chat.track.event(
-                'chat-report',
-                'tags',
-                payload.tags.stringValue,
-            ).send();
-        }
-        if (payload.genres.stringValue) {
-            await chat.track.event(
-                'chat-report',
-                'genres',
-                payload.genres.stringValue,
-            ).send();
-        }
+    if (payload.tags.stringValue) {
+        await chat.track({
+            category: 'Unterhaltung',
+            event: 'Dialogflow',
+            label: 'Themen-Suche',
+            subType: 'Tag',
+            tags: payload.tags.stringValue,
+        });
+    }
+    if (payload.genres.stringValue) {
+        await chat.track({
+            category: 'Unterhaltung',
+            event: 'Dialogflow',
+            label: 'Themen-Suche',
+            subType: 'Genre',
+            tags: payload.genres.stringValue,
+        });
     }
 
     return chat.sendGenericTemplate(elements.slice(0, 10));

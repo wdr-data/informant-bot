@@ -33,5 +33,5 @@ export default async (chat, payload) => {
         payload.audio = report.audio;
     }
 
-    return fragmentSender(chat, report.next_fragments, payload, report.text, report.media);
+    return fragmentSender(chat, report.next_fragments, payload, report.text, report.attachment);
 };

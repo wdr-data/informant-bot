@@ -13,9 +13,11 @@ const MENU_ACTIONS = [
         type: 'postback',
         payload: JSON.stringify({
             action: 'current_news',
-            category: 'payload',
-            event: 'menu',
-            label: 'Nachrichten',
+            track: {
+                category: 'Menüpunkt',
+                event: 'Messenger-Menü',
+                label: 'Letzter Push',
+            },
         }),
     },
     {
@@ -23,9 +25,11 @@ const MENU_ACTIONS = [
         type: 'postback',
         payload: JSON.stringify({
             action: 'subscriptions',
-            category: 'payload',
-            event: 'menu',
-            label: 'An-/Abmelden',
+            track: {
+                category: 'Menüpunkt',
+                event: 'Messenger-Menü',
+                label: 'An-/Abmelden',
+            },
         }),
     },
     {
@@ -33,9 +37,11 @@ const MENU_ACTIONS = [
         type: 'postback',
         payload: JSON.stringify({
             action: 'menu_details',
-            category: 'payload',
-            event: 'menu',
-            label: 'Mehr',
+            track: {
+                category: 'Menüpunkt',
+                event: 'Messenger-Menü',
+                label: 'Mehr',
+            },
         }),
     },
 ];

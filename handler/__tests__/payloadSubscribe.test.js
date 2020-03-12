@@ -82,10 +82,14 @@ describe('payload_subscribe.subscriptions', () => {
                         'Anmelden',
                         {
                             action: 'subscribe',
-                            category: 'payload',
-                            event: 'subscribed',
-                            label: 'morning_and_evening_breaking',
                             subscription: 'all',
+                            track: {
+                                category: 'Menüpunkt',
+                                event: 'Einstellungen',
+                                label: 'Alle Infos',
+                                subType: 'Anmelden',
+                                actionSwitch: 'on',
+                            },
                         }
                     )
                 ),
@@ -96,10 +100,14 @@ describe('payload_subscribe.subscriptions', () => {
                         'Abmelden',
                         {
                             action: 'unsubscribe',
-                            category: 'payload',
-                            event: 'unsubscribed',
-                            label: 'morning',
                             subscription: 'morning',
+                            track: {
+                                category: 'Menüpunkt',
+                                event: 'Einstellungen',
+                                label: 'Morgen-Push',
+                                subType: 'Abmelden',
+                                actionSwitch: 'off',
+                            },
                         }
                     )
                 ),
@@ -110,10 +118,14 @@ describe('payload_subscribe.subscriptions', () => {
                         'Anmelden',
                         {
                             action: 'subscribe',
-                            category: 'payload',
-                            event: 'subscribed',
-                            label: 'evening',
                             subscription: 'evening',
+                            track: {
+                                category: 'Menüpunkt',
+                                event: 'Einstellungen',
+                                label: 'Abend-Push',
+                                subType: 'Anmelden',
+                                actionSwitch: 'on',
+                            },
                         }
                     )
                 ),
@@ -124,10 +136,14 @@ describe('payload_subscribe.subscriptions', () => {
                         'Anmelden',
                         {
                             action: 'subscribe',
-                            category: 'payload',
-                            event: 'subscribed',
-                            label: 'breaking',
                             subscription: 'breaking',
+                            track: {
+                                category: 'Menüpunkt',
+                                event: 'Einstellungen',
+                                label: 'Eilmeldungen',
+                                subType: 'Anmelden',
+                                actionSwitch: 'on',
+                            },
                         }
                     )
                 ),
@@ -138,9 +154,13 @@ describe('payload_subscribe.subscriptions', () => {
                         'Einschalten',
                         {
                             action: 'analyticsAccept',
-                            category: 'payload',
-                            event: 'analytics',
-                            label: 'allowed',
+                            track: {
+                                category: 'Menüpunkt',
+                                event: 'Einstellungen',
+                                label: 'Tracking',
+                                subType: 'Aktiviert',
+                                actionSwitch: 'on',
+                            },
                         }
                     )
                 ),

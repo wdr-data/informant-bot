@@ -32,6 +32,7 @@ export default async (chat, payload) => {
                 nextStep: 'onboarding_breaking',
                 evening: true,
                 morning: true,
+                category: 'Onboarding',
                 referral,
             }),
         buttonPostback(
@@ -42,6 +43,7 @@ export default async (chat, payload) => {
                 replyFaq: 'onboarding_morning',
                 nextStep: 'onboarding_breaking',
                 morning: true,
+                category: 'Onboarding',
                 referral,
             }),
         buttonPostback(
@@ -52,6 +54,7 @@ export default async (chat, payload) => {
                 replyFaq: 'onboarding_evening',
                 nextStep: 'onboarding_breaking',
                 evening: true,
+                category: 'Onboarding',
                 referral,
             }),
     ];
@@ -76,6 +79,7 @@ export async function onboardingBreaking(chat, payload) {
                 morning: payload.morning,
                 evening: payload.evening,
                 referral: payload.referral,
+                category: 'Onboarding',
                 breaking: true,
             }),
         buttonPostback(
@@ -86,6 +90,7 @@ export async function onboardingBreaking(chat, payload) {
                 nextStep: 'onboarding_analytics',
                 morning: payload.morning,
                 evening: payload.evening,
+                cateogory: 'Onboarding',
                 referral: payload.referral,
             }),
     ];

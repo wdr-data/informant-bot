@@ -7,19 +7,23 @@ export default async function(chat) {
             'Du findest den Service von WDRaktuell gut? Teile ihn mit deinen Freunden!',
             buttonPostback('Mehr', {
                 action: 'share',
-                category: 'payload',
-                event: 'menu',
-                label: 'Teilen',
+                track: {
+                    category: 'Menü-Punkt',
+                    event: 'Messenger-Menü',
+                    label: 'Teilen',
+                },
             })
         ),
         genericElement(
-            '💬 Feedback',
+            '💬 Kontakt/Feedback',
             'Anregungen, Fragen, Kritik? Immer her damit',
             buttonPostback('Mehr', {
                 action: 'contact',
-                category: 'payload',
-                event: 'menu',
-                label: 'Feedback',
+                track: {
+                    category: 'Menüpunkt',
+                    event: 'Messenger-Menü',
+                    label: 'Kontakt/Feedback',
+                },
             })
         ),
         genericElement(
@@ -28,9 +32,11 @@ export default async function(chat) {
             buttonPostback('Mehr', {
                 action: 'faq',
                 slug: 'about',
-                category: 'payload',
-                event: 'menu',
-                label: 'WDR aktuell im Messenger',
+                track: {
+                    category: 'Menüpunkt',
+                    event: 'Messenger-Menü',
+                    label: 'WDR aktuell im Messenger',
+                },
             })
         ),
         genericElement(
@@ -39,20 +45,24 @@ export default async function(chat) {
             buttonPostback('Mehr', {
                 action: 'faq',
                 slug: 'datenschutz',
-                category: 'payload',
-                event: 'menu',
-                label: 'Datenschutz (Teil 1)',
+                track: {
+                    category: 'Menüpunkt',
+                    event: 'Messenger-Menü',
+                    label: 'Datenschutz (Teil 1)',
+                },
             })
         ),
         genericElement(
             '📊 Datenschutz (Teil 2)',
-            'Ein-/Ausschalten von Google Analytics. Außerdem erklären wir, ' +
-            'wie wir Analytics datenschutzkonform einsetzen.',
+            'Ein-/Ausschalten von von Mapp Intelligence (Webtrekk). Außerdem erklären wir, ' +
+            'wie wir Tracking datenschutzkonform einsetzen.',
             buttonPostback('Mehr', {
                 action: 'analyticsPolicy',
-                category: 'payload',
-                event: 'menu',
-                label: 'Datenschutz (Teil 2)',
+                track: {
+                    category: 'Menüpunkt',
+                    event: 'Messenger-Menü',
+                    label: 'Datenschutz (Teil 2)',
+                },
             })
         ),
         genericElement(
@@ -61,9 +71,11 @@ export default async function(chat) {
             buttonPostback('Mehr', {
                 action: 'faq',
                 slug: 'impressum',
-                category: 'payload',
-                event: 'menu',
-                label: 'Impressum',
+                track: {
+                    category: 'Menüpunkt',
+                    event: 'Messenger-Menü',
+                    label: 'Impressum',
+                },
             })
         ),
     ];
