@@ -57,6 +57,7 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
                 type: 'report',
                 data: report,
                 preview: event.preview,
+                recipients: 0,
             };
         } catch (error) {
             console.log('Sending report failed: ', JSON.stringify(error, null, 2));
