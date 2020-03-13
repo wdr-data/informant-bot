@@ -112,7 +112,18 @@ async function choose(chat, faq) {
         ),
     ];
 
-    return chat.sendFullNewsBaseWithButtons(faq, buttons);
+    return chat.sendFullNewsBaseWithButtons(
+        faq,
+        buttons,
+        null,
+        {
+            timeout: 20000,
+            extra: {
+                'messaging_type': 'MESSAGE_TAG',
+                tag: 'NON_PROMOTIONAL_SUBSCRIPTION',
+            },
+        },
+    );
 }
 
 export const getWebtrekkConsent = async (event) => {
