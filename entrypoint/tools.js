@@ -1,6 +1,5 @@
 import ddb from '../lib/dynamodb';
 import subscriptions from '../lib/subscriptions';
-import DynamoDbCrud from '../lib/dynamodbCrud';
 import { Chat, buttonPostback } from '../lib/facebook';
 import { getFaq } from '../handler/payloadFaq';
 
@@ -50,11 +49,29 @@ export const updateBreakingSubscriptions = async (event) => {
     return `Done. Updated ${count} subscriptions.`;
 };
 
-function scanTracking(start = null, limit = 25) {
+function splitArray(input, spacing) {
+    const output = [];
+
+    for (let i = 0; i < input.length; i += spacing) {
+        output[output.length] = input.slice(i, i + spacing);
+    }
+
+    return output;
+}
+
+function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function scanTracking(start = null, limit = 25, old = false) {
     const params = {
         Limit: limit,
-        TableName: process.env.DYNAMODB_TRACKING,
     };
+    if (old) {
+        params.TableName = process.env.DYNAMODB_TRACKING + '-old';
+    } else {
+        params.TableName = process.env.DYNAMODB_TRACKING;
+    }
 
     if (start) {
         params.ExclusiveStartKey = start;
@@ -127,10 +144,25 @@ async function choose(chat, faq) {
 }
 
 export const getWebtrekkConsent = async (event) => {
-    const trackingItems = [];
+    const trackingItemsOld = [];
 
     // Scan table
     let start;
+    do {
+        const { subs: items, last } = await scanTracking(start, 25, true);
+        start = last;
+
+        if (!items || !items.length) {
+            break;
+        }
+
+        trackingItemsOld.push(...items);
+    } while (start);
+    console.log(`Scanned old table, found ${trackingItemsOld.length} items...`);
+
+    // Scan table
+    const trackingItemsNew = [];
+    start = undefined;
     do {
         const { subs: items, last } = await scanTracking(start);
         start = last;
@@ -139,28 +171,32 @@ export const getWebtrekkConsent = async (event) => {
             break;
         }
 
-        trackingItems.push(...items);
+        trackingItemsNew.push(...items);
     } while (start);
-    console.log(`Scanned table, found ${trackingItems.length} items...`);
+    console.log(`Scanned new table, found ${trackingItemsNew.length} items...`);
 
-    // Clear table
-    const tracking = new DynamoDbCrud(process.env.DYNAMODB_TRACKING, 'psid');
-    for (const item of trackingItems) {
-        await tracking.remove(item.psid);
-    }
-    console.log('Cleared table.');
+    // Filter table
+    const newPsids = trackingItemsNew.map((item) => item.psid);
+    const trackingItems = trackingItemsOld.filter(
+        (item) => item.enabled && !newPsids.includes(item.psid)
+    );
+    console.log(`Found ${trackingItems.length} targets.`);
+    console.log(trackingItems);
 
     // Message users
     const faq = await getFaq('webtrekk', true);
     const failed = [];
-    for (const item of trackingItems.filter((item) => item.enabled)) {
-        try {
-            const chat = new Chat({ sender: { id: item.psid } });
-            await choose(chat, faq);
-        } catch (e) {
-            console.log(`Failed to send to user with id ${item.psid}`, e);
-            failed.push(item.psid);
-        }
+    for (const chunk of splitArray(trackingItems, 10)) {
+        await Promise.all(chunk.map(async (item) => {
+            try {
+                const chat = new Chat({ sender: { id: item.psid } });
+                await choose(chat, faq);
+            } catch (e) {
+                console.log(`Failed to send to user with id ${item.psid}`, e);
+                failed.push(item.psid);
+            }
+        }));
+        await sleep(1000);
     }
     console.log(`Notified users. Failed for ${failed.length} PSIDs:`);
     console.log(failed);
