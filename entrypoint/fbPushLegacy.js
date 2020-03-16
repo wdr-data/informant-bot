@@ -298,7 +298,7 @@ export const finish = RavenLambdaWrapper.handler(Raven, function(event, context,
         return callback(null, {});
     }
 
-    const webtrekk = new Webtrekk(12345);
+    const webtrekk = new Webtrekk('FB12345');
     let trackCategory = 'Preview';
     switch (event.timing) {
     case 'morning':
