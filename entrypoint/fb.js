@@ -119,11 +119,11 @@ const handleMessage = async (event, context, chat, msgEvent) => {
     ) {
         text = '#thisisanaudio';
     } else if (
-        'attachments' in msgEvent.message && msgEvent.message.attachment[0].type === 'fallback'
+        'attachments' in msgEvent.message && msgEvent.message.attachments[0].type === 'fallback'
     ) {
         return contactWithLink(chat);
     } else if (
-        'attachments' in msgEvent.message && msgEvent.message.attachment[0].type === 'template'
+        'attachments' in msgEvent.message && msgEvent.message.attachments[0].type === 'template'
     ) {
         text = '#lookslikecommercial';
     }
