@@ -23,7 +23,7 @@ export default async (chat, payload) => {
                 buttonUrl( `🔗 ${push.link_name}`, trackLink(
                     push.link, {
                         campaignType: 'push_outro',
-                        campaignName: regexSlug(push.link_name),
+                        campaignName: regexSlug(`outro: ${push.link_name}`),
                         campaignId: push.id,
                     }),
                 ),
