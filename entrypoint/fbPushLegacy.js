@@ -10,7 +10,7 @@ import { assemblePush, getLatestPush, markSent, markSending } from '../lib/pushD
 import { Chat } from '../lib/facebook';
 import ddb from '../lib/dynamodb';
 import subscriptions from '../lib/subscriptions';
-import { trackLink } from '../lib/utils';
+import { trackLink, regexSlug } from '../lib/utils';
 import Webtrekk from '../lib/webtrekk';
 
 export const proxy = RavenLambdaWrapper.handler(Raven, async (event) => {
@@ -173,7 +173,7 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                     event: `Meldung`,
                     label: report.headline,
                     subType: '1.Bubble',
-                    publicationDate: report.pub_date,
+                    publicationDate: report.published_date,
                 },
             };
 
@@ -182,7 +182,12 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
             }
             if (report.link) {
                 if (report.type === 'breaking') {
-                    payload.link = trackLink(report, 'breaking_push');
+                    payload.link = trackLink(
+                        report.link, {
+                            campaignType: 'breaking_push',
+                            campaignName: regexSlug(report.headline),
+                            campaignId: report.id,
+                        });
                 } else {
                     payload.link = report.link;
                 }

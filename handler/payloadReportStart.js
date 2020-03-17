@@ -1,7 +1,7 @@
 import request from 'request-promise-native';
 import urls from '../lib/urls';
 import fragmentSender from '../lib/fragmentSender';
-import { trackLink } from '../lib/utils';
+import { trackLink, regexSlug } from '../lib/utils';
 
 export default async (chat, payload) => {
     const params = {
@@ -26,7 +26,13 @@ export default async (chat, payload) => {
         case 'evening':
             campaignType = 'abend_push';
         }
-        payload.link = trackLink(report, campaignType);
+        payload.link = trackLink(
+            report.link, {
+                campaignType,
+                campaignName: regexSlug(report.headline),
+                campaignId: report.id,
+            }
+        );
     }
 
     if (report.audio) {

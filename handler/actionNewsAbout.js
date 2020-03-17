@@ -62,6 +62,7 @@ export const newsAbout = async (chat, payload) => {
                         event: `Meldung`,
                         label: r.headline,
                         subType: '1.Bubble',
+                        publicationDate: r.published_date,
                     },
                 }));
 
