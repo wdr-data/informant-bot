@@ -1,5 +1,7 @@
 import request from 'request-promise-native';
 import urls from '../lib/urls';
+import { buttonUrl } from '../lib/facebook';
+import { trackLink, regexSlug } from '../lib/utils';
 
 export default async (chat, payload) => {
     const params = {
@@ -12,9 +14,20 @@ export default async (chat, payload) => {
     }
     const push = await request(params);
 
-    await chat.sendText(push.outro);
-
     if (push.attachment) {
-        return chat.sendAttachment(push.attachment.processed);
+        await chat.sendAttachment(push.attachment.processed);
     }
+    if (push.link) {
+        return chat.sendButtons(
+            push.outro, [
+                buttonUrl( `🔗 ${push.link_name}`, trackLink(
+                    push.link, {
+                        campaignType: 'push_outro',
+                        campaignName: regexSlug(push.link_name),
+                        campaignId: push.id,
+                    }),
+                ),
+            ]);
+    }
+    return chat.sendText(push.outro);
 };
