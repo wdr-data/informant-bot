@@ -104,6 +104,11 @@
         },
         {
           "id": 254,
+          "type": "last",
+          "subtype": {
+            "emoji": "⚗",
+            "title": "Teste das Letzte"
+          },
           "created": "2018-03-20T17:27:51+01:00",
           "genres": [
             {
@@ -116,8 +121,8 @@
             "name": "Musik 🎶"
           },
           "tags": [],
-          "headline": "Das Letzte: Deine Songs zum Glücklichsein",
-          "short_headline": "Das Letzte",
+          "headline": "Deine Songs zum Glücklichsein",
+          "short_headline": "Glücklichsein",
           "text": "Heute ist Weltglückstag 🍀🍀🍀 Meine Kollegen aus der 1LIVE-Musikredaktion haben deshalb mal drei Gute-Laune-Songs für dich rausgesucht.",
           "attachment": null,
           "published": true,
