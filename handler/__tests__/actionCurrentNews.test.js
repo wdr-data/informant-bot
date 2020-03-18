@@ -17,6 +17,7 @@ describe('actionCurrentNews', () => {
                         'Alle Infos',
                         {
                             action: 'report_start',
+                            preview: false,
                             push: 4,
                             timing: 'evening',
                             report: 2,
@@ -36,8 +37,9 @@ describe('actionCurrentNews', () => {
                             track: {
                                 category: 'Abend-Push',
                                 event: 'Hörfunknachrichten',
-                                label: 'WDR Aktuell',
+                                label: 'WDR aktuell',
                                 subType: 'Audio',
+                                publicationDate: '2018-03-20',
                             },
                         }),
                 ],
@@ -47,6 +49,7 @@ describe('actionCurrentNews', () => {
                         payload: {
                             action: 'report_start',
                             before: [],
+                            preview: false,
                             push: 4,
                             timing: 'evening',
                             report: 2,
@@ -66,6 +69,7 @@ describe('actionCurrentNews', () => {
                         payload: {
                             action: 'report_start',
                             before: [],
+                            preview: false,
                             push: 4,
                             timing: 'evening',
                             report: 253,
@@ -85,6 +89,7 @@ describe('actionCurrentNews', () => {
                         payload: {
                             action: 'report_start',
                             before: [],
+                            preview: false,
                             push: 4,
                             timing: 'evening',
                             report: 251,
@@ -104,6 +109,7 @@ describe('actionCurrentNews', () => {
                         payload: {
                             action: 'report_start',
                             before: [],
+                            preview: false,
                             push: 4,
                             timing: 'evening',
                             report: 254,
@@ -111,12 +117,12 @@ describe('actionCurrentNews', () => {
                             track: {
                                 category: 'Abend-Push',
                                 event: 'Meldung',
-                                label: 'Das Letzte: Deine Songs zum Glücklichsein',
+                                label: 'Deine Songs zum Glücklichsein',
                                 publicationDate: '2018-03-20',
                                 subType: '1.Bubble',
                             },
                         },
-                        title: '➡ Das Letzte',
+                        title: '⚗ Teste das Letzte',
                     },
                 ]
             );
