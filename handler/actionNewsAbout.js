@@ -43,7 +43,7 @@ export const newsAbout = async (chat, payload) => {
                         audioUrl: r.audio,
                         track: {
                             category: 'Unterhaltung',
-                            event: `Meldung`,
+                            event: r.subtype ? `Meldung: ${r.subtype.title}` : 'Meldung',
                             label: r.headline,
                             subType: 'Audio',
                         },
@@ -59,7 +59,7 @@ export const newsAbout = async (chat, payload) => {
                     type: 'report',
                     track: {
                         category: 'Unterhaltung',
-                        event: `Meldung`,
+                        event: r.subtype ? `Meldung: ${r.subtype.title}` : 'Meldung',
                         label: r.headline,
                         subType: '1.Bubble',
                         publicationDate: r.published_date,
