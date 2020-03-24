@@ -181,10 +181,13 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         console.log(`  Parameters: ${JSON.stringify(result.parameters)}`);
         console.log(`  Action: ${result.action}`);
         if (result.action in handler.actions) {
+            chat.dialogflowParams = result.parameters.fields;
+            chat.dialogflowResponse = result.fulfillmentText;
             chat.track({
                 category: 'Unterhaltung',
                 event: 'Dialogflow',
                 label: result.intent.displayName,
+                subType: result.action,
             });
             return handler.actions[result.action](chat, result.parameters['fields']);
         }
