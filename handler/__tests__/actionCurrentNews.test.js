@@ -116,7 +116,7 @@ describe('actionCurrentNews', () => {
                             type: 'push',
                             track: {
                                 category: 'Abend-Push',
-                                event: 'Meldung',
+                                event: 'Meldung: Teste das Letzte',
                                 label: 'Deine Songs zum Glücklichsein',
                                 publicationDate: '2018-03-20',
                                 subType: '1.Bubble',
