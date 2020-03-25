@@ -21,9 +21,9 @@ export const handleLocation = async (chat, payload) => {
     if (city) {
         chat.track({
             category: 'Unterhaltung',
-            event: 'Dialogflow',
-            label: 'Location-Feature',
-            subType: city,
+            event: 'Feature',
+            label: 'Location',
+            subType: byCities[city] ? `${city}-NRW` : city,
         });
     }
     if (byCities[city]) {
