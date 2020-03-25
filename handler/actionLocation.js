@@ -21,9 +21,9 @@ export const handleLocation = async (chat, payload) => {
     if (city) {
         chat.track({
             category: 'Unterhaltung',
-            event: 'Dialogflow',
-            label: 'Location-Feature',
-            subType: city,
+            event: 'Feature',
+            label: 'Location',
+            subType: byCities[city] ? `${city}-NRW` : city,
         });
     }
     if (byCities[city]) {
@@ -61,21 +61,25 @@ export const handleCity = async (chat, cityFull) => {
         cityFull.keyCity.slice(-1) === '0' ? cityFull.city : 'den Landkreis ' + cityFull.district
     }:\n${covidData.infected} positiv auf das Coronavirus getestete Menschen. Das entspricht ${
         covidData.per100k
-    } Menschen pro 100.000 Einwohner. An der Krankheit Covid-19 sind bisher ${
+    } Menschen pro 100.000 Einwohner. An der Krankheit Covid-19 sind ${
+        cityFull.keyCity.slice(-1) === '0' ?
+            `in ${cityFull.city}` : 'im Landkreis ' +
+            cityFull.district
+    } bisher ${
         covidData.dead
     } Menschen gestorben.\n\nMit ${
         covidData.max.per100k
-    } wurde die meisten positiven Tests pro 100.000 Einwohner (${
+    } wurden die meisten positiven Tests pro 100.000 Einwohner (${
         covidData.max.dead
     } Tote) in ${
         covidData.max.district
-    } registriert.\nDie wenigsten positiven Tests in NRW wurden in ${
+    } registriert.\nDie wenigsten positiven Tests wurden hier gezählt: ${
         covidData.min.district
     } mit ${
         covidData.min.per100k
-    } pro 100.000 Einwohner (${
+    } Infizierten pro 100.000 Einwohner (${
         covidData.min.dead
-    } Tote) gezählt.\n\n(Stand: ${
+    } Tote).\n\n(Stand: ${
         covidData.publishedDate
     })\n\n`;
     await chat.sendText(messageText);
