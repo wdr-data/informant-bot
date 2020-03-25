@@ -14,6 +14,7 @@ export default {
         'faq_onboarding': require('./actionFaq').default('onboarding'),
         'current_audio': require('./payloadCurrentAudio').default,
         'contact': require('./actionContact').feedbackStart,
+        'location': require('./actionLocation').handleLocation,
     },
     payloads: {
         'report_start': require('./payloadReportStart').default,
