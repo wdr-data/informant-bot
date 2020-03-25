@@ -8,8 +8,8 @@ import csvtojson from 'csvtojson';
 
 const uri = 'https://covid19nrw.netlify.com/.netlify/functions/get_nrw';
 
-export const handleLocation = async (chat) => {
-    const location = chat.dialogflowParams.location.structValue.fields;
+export const handleLocation = async (chat, payload) => {
+    const location = payload.location.structValue.fields;
     console.log(`Detected location: ${JSON.stringify(location)}`);
     let messageText = chat.dialogflowResponse;
     const zipCode = location['zip-code'].stringValue;
