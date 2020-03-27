@@ -6,7 +6,7 @@ import { buttonUrl } from '../lib/facebook';
 import request from 'request-promise-native';
 import csvtojson from 'csvtojson';
 
-const uri = 'https://covid19nrw.netlify.com/.netlify/functions/get_nrw';
+const uri = 'https://coronanrw-prod.s3.eu-central-1.amazonaws.com/corona_mags_nrw.csv';
 
 export const handleLocation = async (chat, payload) => {
     const location = payload.location.structValue.fields;
