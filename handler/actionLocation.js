@@ -9,32 +9,33 @@ import csvtojson from 'csvtojson';
 const uri = 'https://coronanrw-prod.s3.eu-central-1.amazonaws.com/corona_mags_nrw.csv';
 
 export const handleLocation = async (chat, payload) => {
-    const location = payload.location.structValue.fields;
-    console.log(`Detected location: ${JSON.stringify(location)}`);
-    let messageText = chat.dialogflowResponse;
-    const zipCode = location['zip-code'].stringValue;
-    let city = location.city.stringValue;
+    if (payload.location.structValue.fields) {
+        const location = payload.location.structValue.fields;
+        console.log(`Detected location: ${JSON.stringify(location)}`);
+        const zipCode = location['zip-code'].stringValue;
+        let city = location.city.stringValue;
 
-    if (byZipCodes[zipCode]) {
-        city = byZipCodes[zipCode].city;
+        if (byZipCodes[zipCode]) {
+            city = byZipCodes[zipCode].city;
+        }
+        if (city) {
+            chat.track({
+                category: 'Unterhaltung',
+                event: 'Feature',
+                label: 'Location',
+                subType: byCities[city] ? `${city}-NRW` : city,
+            });
+        }
+        if (byCities[city]) {
+            return handleCity(chat, byCities[city]);
+        }
+        if (city || zipCode) {
+            return chat.sendText(`${
+                zipCode ? `Die Postleitzahl ${zipCode}` : city
+            } liegt wohl nicht in NRW. Versuche es mit einer PLZ oder einem Ort aus NRW.`);
+        }
     }
-    if (city) {
-        chat.track({
-            category: 'Unterhaltung',
-            event: 'Feature',
-            label: 'Location',
-            subType: byCities[city] ? `${city}-NRW` : city,
-        });
-    }
-    if (byCities[city]) {
-        return handleCity(chat, byCities[city]);
-    }
-    if (city || zipCode) {
-        return chat.sendText(`${
-            zipCode ? `Die Postleitzahl ${zipCode}` : city
-        } liegt wohl nicht in NRW. Versuche es mit einer PLZ, einem Ort oder einer Stadt aus NRW.`);
-    }
-    return chat.sendText(messageText);
+    return chat.sendText(chat.dialogflowResponse);
 };
 
 export const handleCity = async (chat, cityFull) => {
