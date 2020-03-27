@@ -98,7 +98,7 @@ export const getCovid = async (district) => {
     console.log(`CovidData First Entry: ${covidData[0]}`);
 
     const sorted = covidData.sort(
-        (a, b) => a['Infizierte pro 100.000 Einwohner'] - b['Infizierte pro 100.000 Einwohner']
+        (a, b) => a['Infizierte pro 100.000'] - b['Infizierte pro 100.000']
     );
     const min = sorted[0];
     const max = sorted[sorted.length - 1];
@@ -106,20 +106,20 @@ export const getCovid = async (district) => {
         if (row['Landkreis/ kreisfreie Stadt'] === district) {
             return {
                 infected: row['Infizierte'],
-                per100k: row['Infizierte pro 100.000 Einwohner'].split('.')[0],
-                dead: row['Tote'] || '0',
+                per100k: row['Infizierte pro 100.000'].split('.')[0],
+                dead: row['Todesfälle'] || '0',
                 publishedDate: row['Stand'],
                 max: {
                     district: max['Landkreis/ kreisfreie Stadt'],
                     infected: max['Infizierte'],
-                    dead: max['Tote'] || '0',
-                    per100k: max['Infizierte pro 100.000 Einwohner'].split('.')[0],
+                    dead: max['Todesfälle'] || '0',
+                    per100k: max['Infizierte pro 100.000'].split('.')[0],
                 },
                 min: {
                     district: min['Landkreis/ kreisfreie Stadt'],
                     infected: min['Infizierte'],
-                    dead: min['Tote'] || '0',
-                    per100k: min['Infizierte pro 100.000 Einwohner'].split('.')[0],
+                    dead: min['Todesfälle'] || '0',
+                    per100k: min['Infizierte pro 100.000'].split('.')[0],
                 },
             };
         }
