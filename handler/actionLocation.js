@@ -9,7 +9,7 @@ import csvtojson from 'csvtojson';
 const uri = 'https://coronanrw-prod.s3.eu-central-1.amazonaws.com/corona_mags_nrw.csv';
 
 export const handleLocation = async (chat, payload) => {
-    if (!payload.location.structValue.fields) {
+    if (!payload.location) {
         return chat.sendText(chat.dialogflowResponse);
     }
     const location = payload.location.structValue.fields;
