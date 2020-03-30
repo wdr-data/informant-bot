@@ -58,6 +58,7 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
                 data: report,
                 preview: event.preview,
                 recipients: 0,
+                blocked: 0,
             };
         } catch (error) {
             console.log('Sending report failed: ', JSON.stringify(error, null, 2));
@@ -102,6 +103,7 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
             data: push,
             preview: event.preview,
             recipients: 0,
+            blocked: 0,
         };
     } catch (error) {
         console.log('Sending push failed: ', JSON.stringify(error, null, 2));
@@ -111,11 +113,15 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
 
 const handlePushFailed = async (chat, error) => {
     console.error(error);
-
+    const reasons = {
+        UNKNOWN: 'unknown',
+        TIMED_OUT: 'timed out',
+        BLOCKED: 'blocked',
+    };
     if (error.error.code === 'ETIMEDOUT') {
         console.error('Request timed out!');
         Raven.captureException(error);
-        return;
+        return reasons.TIMED_OUT;
     } else if (error.statusCode !== 400) {
         console.error('Not a bad request!');
         Raven.captureException(error);
@@ -129,7 +135,8 @@ const handlePushFailed = async (chat, error) => {
     // 100 / 2018001: No matching user found
     if (resp.code === 551 || resp.code === 100 && resp['error_subcode'] === 2018001) {
         console.log(`Deleting user ${chat.psid} due to code ${resp.code}`);
-        return subscriptions.remove(chat.psid);
+        await subscriptions.remove(chat.psid);
+        return reasons.BLOCKED;
     } else {
         console.error(`Unknown error code ${resp.code}!`);
         Raven.captureException(error);
@@ -158,6 +165,7 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                 timing: event.timing,
                 data: event.data,
                 recipients: event.recipients,
+                blocked: event.blocked,
             };
         }
 
@@ -253,6 +261,7 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                 timing: event.timing,
                 data: event.data,
                 recipients: event.recipients,
+                blocked: event.blocked,
             };
         }
 
@@ -264,6 +273,7 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
             start: last,
             preview: event.preview,
             recipients: event.recipients,
+            blocked: event.blocked,
         };
     } catch (err) {
         console.error('Sending failed:', err);
@@ -322,6 +332,7 @@ export const finish = RavenLambdaWrapper.handler(Raven, function(event, context,
         label: event.data.headline,
         publicationDate: event.data.pub_date || event.data.published_date,
         recipients: event.recipients,
+        blocked: event.blocked,
     });
 
     markSent(event.id, event.type)
