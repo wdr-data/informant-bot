@@ -9,31 +9,32 @@ import csvtojson from 'csvtojson';
 const uri = 'https://coronanrw-prod.s3.eu-central-1.amazonaws.com/corona_mags_nrw.csv';
 
 export const handleLocation = async (chat, payload) => {
-    if (payload.location.structValue.fields) {
-        const location = payload.location.structValue.fields;
-        console.log(`Detected location: ${JSON.stringify(location)}`);
-        const zipCode = location['zip-code'].stringValue;
-        let city = location.city.stringValue;
+    if (!payload.location.structValue.fields) {
+        return chat.sendText(chat.dialogflowResponse);
+    }
+    const location = payload.location.structValue.fields;
+    console.log(`Detected location: ${JSON.stringify(location)}`);
+    const zipCode = location['zip-code'].stringValue;
+    let city = location.city.stringValue;
 
-        if (byZipCodes[zipCode]) {
-            city = byZipCodes[zipCode].city;
-        }
-        if (city) {
-            chat.track({
-                category: 'Unterhaltung',
-                event: 'Feature',
-                label: 'Location',
-                subType: byCities[city] ? city : `${city}-0`,
-            });
-        }
-        if (byCities[city]) {
-            return handleCity(chat, byCities[city]);
-        }
-        if (city || zipCode) {
-            return chat.sendText(`${
-                zipCode ? `Die Postleitzahl ${zipCode}` : city
-            } liegt wohl nicht in NRW. Versuche es mit einer PLZ oder einem Ort aus NRW.`);
-        }
+    if (byZipCodes[zipCode]) {
+        city = byZipCodes[zipCode].city;
+    }
+    if (city) {
+        chat.track({
+            category: 'Unterhaltung',
+            event: 'Feature',
+            label: 'Location',
+            subType: byCities[city] ? city : `${city}-0`,
+        });
+    }
+    if (byCities[city]) {
+        return handleCity(chat, byCities[city]);
+    }
+    if (city || zipCode) {
+        return chat.sendText(`${
+            zipCode ? `Die Postleitzahl ${zipCode}` : city
+        } liegt wohl nicht in NRW. Versuche es mit einer PLZ oder einem Ort aus NRW.`);
     }
     return chat.sendText(chat.dialogflowResponse);
 };
