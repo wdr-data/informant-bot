@@ -111,13 +111,15 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
     }
 });
 
+const reasons = {
+    UNKNOWN: 'unknown',
+    TIMED_OUT: 'timed out',
+    BLOCKED: 'blocked',
+};
+
 const handlePushFailed = async (chat, error) => {
     console.error(error);
-    const reasons = {
-        UNKNOWN: 'unknown',
-        TIMED_OUT: 'timed out',
-        BLOCKED: 'blocked',
-    };
+
     if (error.error.code === 'ETIMEDOUT') {
         console.error('Request timed out!');
         Raven.captureException(error);
@@ -125,7 +127,7 @@ const handlePushFailed = async (chat, error) => {
     } else if (error.statusCode !== 400) {
         console.error('Not a bad request!');
         Raven.captureException(error);
-        return;
+        return reasons.UNKNOWN;
     }
 
     // Handle FB error codes
@@ -140,6 +142,7 @@ const handlePushFailed = async (chat, error) => {
     } else {
         console.error(`Unknown error code ${resp.code}!`);
         Raven.captureException(error);
+        return reasons.UNKNOWN;
     }
 };
 
@@ -212,41 +215,55 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                 messageText = report.text;
             }
 
-            await Promise.all(users.map((user) => {
+            await Promise.all(users.map(async (user) => {
                 const chat = new Chat({ sender: { id: user.psid } });
                 event.recipients++;
-                return fragmentSender(
-                    chat,
-                    report.next_fragments,
-                    payload,
-                    messageText,
-                    report.attachment,
-                    {
-                        timeout: 20000,
-                        extra: {
-                            'messaging_type': 'MESSAGE_TAG',
-                            tag: 'NON_PROMOTIONAL_SUBSCRIPTION',
-                        },
+                try {
+                    await fragmentSender(
+                        chat,
+                        report.next_fragments,
+                        payload,
+                        messageText,
+                        report.attachment,
+                        {
+                            timeout: 20000,
+                            extra: {
+                                'messaging_type': 'MESSAGE_TAG',
+                                tag: 'NON_PROMOTIONAL_SUBSCRIPTION',
+                            },
+                        }
+                    );
+                } catch (err) {
+                    const reason = await handlePushFailed(chat, err);
+                    if (reason === reasons.BLOCKED) {
+                        event.blocked++;
                     }
-                ).catch((err) => Raven.captureException(err));
+                }
             }));
         } else if (event.type === 'push') {
             const { messageText, buttons, quickReplies } = assemblePush(event.data, event.preview);
-            await Promise.all(users.map((user) => {
+            await Promise.all(users.map(async (user) => {
                 const chat = new Chat({ sender: { id: user.psid } });
                 event.recipients++;
-                return chat.sendButtons(
-                    messageText,
-                    buttons,
-                    quickReplies,
-                    {
-                        timeout: 20000,
-                        extra: {
-                            'messaging_type': 'MESSAGE_TAG',
-                            tag: 'NON_PROMOTIONAL_SUBSCRIPTION',
+                try {
+                    await chat.sendButtons(
+                        messageText,
+                        buttons,
+                        quickReplies,
+                        {
+                            timeout: 20000,
+                            extra: {
+                                'messaging_type': 'MESSAGE_TAG',
+                                tag: 'NON_PROMOTIONAL_SUBSCRIPTION',
+                            },
                         },
-                    },
-                ).catch((err) => handlePushFailed(chat, err));
+                    );
+                } catch (err) {
+                    const reason = await handlePushFailed(chat, err);
+                    if (reason === reasons.BLOCKED) {
+                        event.blocked++;
+                    }
+                }
             }));
         }
         console.log(`${event.type} sent to ${users.length} users`);
