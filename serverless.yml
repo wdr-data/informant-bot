@@ -2,6 +2,7 @@ service: wdraktuell-bot-fb
 
 provider:
   name: aws
+  versionFunctions: false
   region: ${file(config.yml):region}
   runtime: nodejs12.x
   stage: ${file(config/env.js):stage}
