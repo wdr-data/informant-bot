@@ -23,7 +23,7 @@ export const handleLocation = async (chat, payload) => {
                 category: 'Unterhaltung',
                 event: 'Feature',
                 label: 'Location',
-                subType: byCities[city] ? `${city}-NRW` : city,
+                subType: byCities[city] ? city : `${city}-0`,
             });
         }
         if (byCities[city]) {
