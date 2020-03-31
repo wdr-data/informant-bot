@@ -60,11 +60,11 @@ export const handleCity = async (chat, cityFull) => {
     const ddjLinkButton = buttonUrl('🔗 Fallzahlen - NRW', ddjUrl);
 
     const messageText = `Hier die aktuellen Zahlen für ${
-        cityFull.keyCity.slice(-1) === '0' ? cityFull.city : 'den Landkreis ' + cityFull.district
+        cityFull.keyCity.slice(-3) === '000' ? cityFull.city : 'den Landkreis ' + cityFull.district
     }:\n${covidData.infected} positiv auf das Coronavirus getestete Menschen. Das entspricht ${
         covidData.per100k
     } Menschen pro 100.000 Einwohner. An der Krankheit Covid-19 sind ${
-        cityFull.keyCity.slice(-1) === '0' ?
+        cityFull.keyCity.slice(-3) === '000' ?
             `in ${cityFull.city}` : 'im Landkreis ' +
             cityFull.district
     } bisher ${
