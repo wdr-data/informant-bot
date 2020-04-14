@@ -12,7 +12,7 @@ export default async (chat, payload) => {
             console.error(`FAQ for referral ${payload.ref} not found!`);
             console.error(e);
             greeting = await getFaq('greeting_default', true);
-            referral = 'default';
+            referral = payload.ref;
         }
     } else {
         greeting = await getFaq('greeting_default', true);
