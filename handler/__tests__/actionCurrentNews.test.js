@@ -4,7 +4,7 @@ const facebook = require('../../lib/facebook');
 const currentNews = require('../actionCurrentNews').default;
 
 describe('actionCurrentNews', () => {
-    it('sends a specific message with a button and quick replies', async () => {
+    xit('sends a specific message with a button and quick replies', async () => {
         // 6921ba6efc959572aee6c963d0720b711c1e1abf
         const chat = new facebook.Chat();
         await currentNews(chat, { intro: true });
