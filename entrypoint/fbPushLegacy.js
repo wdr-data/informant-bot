@@ -182,7 +182,9 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                 track: {
                     category: `Breaking-Push-${report.id}`,
                     event: `Breaking Meldung:`,
-                    label: report.subtype ? `${report.subtype.title}: ${report.headline}` : report.headline,
+                    label: report.subtype ?
+                        `${report.subtype.title}: ${report.headline}` :
+                        report.headline,
                     subType: '1.Bubble',
                     publicationDate: report.published_date,
                 },
