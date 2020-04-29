@@ -43,8 +43,7 @@ export const newsAbout = async (chat, payload) => {
                         audioUrl: r.audio,
                         track: {
                             category: 'Feature',
-                            event: r.type === 'last' ? `Letzte Meldung` :
-                                r.type === 'breaking' ? 'Breaking Meldung' : 'Reguläre Meldung',
+                            event: 'Meldung nach Tag/Genre',
                             label: r.subtype ? `${r.subtype.title}: ${r.headline}` : r.headline,
                             subType: 'Audio',
                         },
