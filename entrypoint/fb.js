@@ -141,7 +141,7 @@ const handleMessage = async (event, context, chat, msgEvent) => {
             category: 'Unterhaltung',
             event: 'Feedback-Modus',
             label: '70 Zeichen',
-            subtype: text.slice(0, 50),
+            subType: text.slice(0, 50),
         });
         return contact(chat);
     }
