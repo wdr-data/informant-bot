@@ -42,9 +42,10 @@ export const newsAbout = async (chat, payload) => {
                         action: 'report_audio',
                         audioUrl: r.audio,
                         track: {
-                            category: 'Unterhaltung',
-                            event: r.subtype ? `Meldung: ${r.subtype.title}` : 'Meldung',
-                            label: r.headline,
+                            category: 'Feature',
+                            event: r.type === 'last' ? `Letzte Meldung` :
+                                r.type === 'breaking' ? 'Breaking Meldung' : 'Reguläre Meldung',
+                            label: r.subtype ? `${r.subtype.title}: ${r.headline}` : r.headline,
                             subType: 'Audio',
                         },
                     }
@@ -58,9 +59,10 @@ export const newsAbout = async (chat, payload) => {
                     report: r.id,
                     type: 'report',
                     track: {
-                        category: 'Unterhaltung',
-                        event: r.subtype ? `Meldung: ${r.subtype.title}` : 'Meldung',
-                        label: r.headline,
+                        category: 'Feature',
+                        event: r.type === 'last' ? `Letzte Meldung` :
+                            r.type === 'breaking' ? 'Breaking Meldung' : 'Reguläre Meldung',
+                        label: r.subtype ? `${r.subtype.title}: ${r.headline}` : r.headline,
                         subType: '1.Bubble',
                         publicationDate: r.published_date,
                     },
