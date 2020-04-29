@@ -60,8 +60,7 @@ export const newsAbout = async (chat, payload) => {
                     type: 'report',
                     track: {
                         category: 'Feature',
-                        event: r.type === 'last' ? `Letzte Meldung` :
-                            r.type === 'breaking' ? 'Breaking Meldung' : 'Reguläre Meldung',
+                        event: 'Meldung nach Tag/Genre',
                         label: r.subtype ? `${r.subtype.title}: ${r.headline}` : r.headline,
                         subType: '1.Bubble',
                         publicationDate: r.published_date,
@@ -79,20 +78,18 @@ export const newsAbout = async (chat, payload) => {
 
     if (payload.tags.stringValue) {
         await chat.track({
-            category: 'Unterhaltung',
-            event: 'Dialogflow',
-            label: 'Themen-Suche',
-            subType: 'Tag',
-            tags: payload.tags.stringValue,
+            category: 'Feature',
+            event: 'Meldung nach Tag/Genre',
+            label: 'Tag',
+            subType: payload.tags.stringValue,
         });
     }
     if (payload.genres.stringValue) {
         await chat.track({
-            category: 'Unterhaltung',
-            event: 'Dialogflow',
-            label: 'Themen-Suche',
-            subType: 'Genre',
-            tags: payload.genres.stringValue,
+            category: 'Feature',
+            event: 'Meldung nach Tag/Genre',
+            label: 'Genre',
+            subType: payload.genres.stringValue,
         });
     }
 
