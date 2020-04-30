@@ -42,9 +42,9 @@ export const newsAbout = async (chat, payload) => {
                         action: 'report_audio',
                         audioUrl: r.audio,
                         track: {
-                            category: 'Unterhaltung',
-                            event: r.subtype ? `Meldung: ${r.subtype.title}` : 'Meldung',
-                            label: r.headline,
+                            category: 'Feature',
+                            event: 'Meldung nach Tag/Genre',
+                            label: r.subtype ? `${r.subtype.title}: ${r.headline}` : r.headline,
                             subType: 'Audio',
                         },
                     }
@@ -58,9 +58,9 @@ export const newsAbout = async (chat, payload) => {
                     report: r.id,
                     type: 'report',
                     track: {
-                        category: 'Unterhaltung',
-                        event: r.subtype ? `Meldung: ${r.subtype.title}` : 'Meldung',
-                        label: r.headline,
+                        category: 'Feature',
+                        event: 'Meldung nach Tag/Genre',
+                        label: r.subtype ? `${r.subtype.title}: ${r.headline}` : r.headline,
                         subType: '1.Bubble',
                         publicationDate: r.published_date,
                     },
@@ -77,20 +77,18 @@ export const newsAbout = async (chat, payload) => {
 
     if (payload.tags.stringValue) {
         await chat.track({
-            category: 'Unterhaltung',
-            event: 'Dialogflow',
-            label: 'Themen-Suche',
-            subType: 'Tag',
-            tags: payload.tags.stringValue,
+            category: 'Feature',
+            event: 'Meldung nach Tag/Genre',
+            label: 'Tag',
+            subType: payload.tags.stringValue,
         });
     }
     if (payload.genres.stringValue) {
         await chat.track({
-            category: 'Unterhaltung',
-            event: 'Dialogflow',
-            label: 'Themen-Suche',
-            subType: 'Genre',
-            tags: payload.genres.stringValue,
+            category: 'Feature',
+            event: 'Meldung nach Tag/Genre',
+            label: 'Genre',
+            subType: payload.genres.stringValue,
         });
     }
 
