@@ -217,6 +217,10 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                 messageText = report.text;
             }
 
+            if (report.type === 'breaking') {
+                payload.nextAsButton = true;
+            }
+
             await Promise.all(users.map(async (user) => {
                 const chat = new Chat({ sender: { id: user.psid } });
                 event.recipients++;
