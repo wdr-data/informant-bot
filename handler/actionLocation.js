@@ -16,8 +16,12 @@ export const handleLocation = async (chat, payload) => {
     const location = payload.location.structValue.fields;
     console.log(`Detected location: ${JSON.stringify(location)}`);
     const zipCode = location['zip-code'].stringValue;
+    const subadminArea = location['subadmin-area'].stringValue;
     let city = location.city.stringValue;
 
+    if (subadminArea) {
+        city = subadminArea;
+    }
     if (byZipCodes[zipCode]) {
         city = byZipCodes[zipCode].city;
     }
@@ -61,27 +65,45 @@ export const handleCity = async (chat, cityFull) => {
         });
     const ddjLinkButton = buttonUrl('🔗 Fallzahlen - NRW', ddjUrl);
 
+    let indicator = '';
+    if (covidDataCity.lastSevenDaysPer100k >= 50) {
+        indicator = '🟥';
+    } else if (covidDataCity.lastSevenDaysPer100k >= 25) {
+        indicator = '🟧';
+    } else if (covidDataCity.lastSevenDaysPer100k > 10) {
+        indicator = '🟨';
+    }
+
+    /* eslint-disable */
     const messageText = `Hier die aktuellen Corona-Fallzahlen für ${
         cityFull.keyCity.slice(-3) === '000' ? cityFull.city : 'den Landkreis ' + cityFull.district
-    }:\n\tBestätigte Infektionen: ${
+    }:\n\nGemeldete Infektionen in den vergangenen 7 Tagen pro 100.000 Einwohner: ${
+        covidDataCity.lastSevenDaysPer100k
+    } ${
+        indicator
+    }\nGemeldete Infektionen in den vergangenen 7 Tagen: ${
+        covidDataCity.lastSevenDaysNew
+    }\nBestätigte Infektionen seit Beginn: ${
         covidDataCity.infected
-    }\n\tGenesene: ${
+    }\nGenesene: ${
         covidDataCity.recovered
-    }\n\tTodesfälle: ${
+    }\nTodesfälle: ${
         covidDataCity.dead
-    }\n\tInfektionen je 100.000 Einwohner: ${
-        covidDataCity.per100k
-    }\n\nAktuelle Zahlen für NRW im Überblick:\n\tBestätigte Infektionen: ${
+    }\n\nSteigt die Zahl der Neuinfektionen in den vergangenen 7 Tagen pro 100.000 Einwohner über 50, dann muss der Ort Maßnahmen zur Eindämmung ergreifen.\n
+Aktuelle Zahlen für NRW im Überblick:\nGemeldete Infektionen in den vergangenen 7 Tagen pro 100.000 Einwohner: ${
+        covidDataNRW.lastSevenDaysPer100k
+    }\nGemeldete Infektionen in den vergangenen 7 Tagen: ${
+        covidDataNRW.lastSevenDaysNew
+    }\nBestätigte Infektionen: ${
         covidDataNRW.infected
-    }\n\tGenesene: ${
+    }\nGenesene: ${
         covidDataNRW.recovered
-    }\n\tTodesfälle: ${
+    }\nTodesfälle: ${
         covidDataNRW.dead
-    }\n\tInfektionen je 100.000 Einwohner: ${
-        covidDataNRW.per100k
     }\n\n(Quelle: MAGS NRW, Stand: ${
         covidDataCity.publishedDate
     })\n\n`;
+    /* eslint-enable */
 
     await chat.sendText(messageText);
     return chat.sendButtons(
@@ -110,6 +132,8 @@ export const getCovidCityMAGS = async (district) => {
                 dead: row['Todesfälle'] || '0',
                 publishedDate: row['Stand'],
                 recovered: row['Genesene*'],
+                lastSevenDaysNew: row['Neuinfektionen vergangene 7 Tage'],
+                lastSevenDaysPer100k: row['7-Tage-Inzidenz'],
                 max: {
                     district: max['Landkreis/ kreisfreie Stadt'],
                     infected: max['Infizierte'],
@@ -142,5 +166,7 @@ export const getCovidNRWMAGS = async () => {
         dead: total['Todesfälle'] || '0',
         publishedDate: total['Stand'],
         recovered: total['Genesene*'],
+        lastSevenDaysNew: total['Neuinfektionen vergangene 7 Tage'],
+        lastSevenDaysPer100k: total['7-Tage-Inzidenz'],
     };
 };
