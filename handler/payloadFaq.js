@@ -16,7 +16,7 @@ export const getFaq = async function(slug, full = false) {
     return faqs[0];
 };
 
-export default async function(chat, payload) {
+export async function payloadFaq(chat, payload) {
     let faq;
     try {
         faq = await getFaq(payload.slug);

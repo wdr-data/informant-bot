@@ -1,7 +1,8 @@
+import DynamoDbCrud from '../lib/dynamodbCrud';
 import { onboardingBreaking } from './payloadGetStarted';
 import { choose as analyticsChoose } from './payloadAnalytics';
-import payloadFaq from './payloadFaq';
-import { buttonPostback, genericElement } from '../lib/facebook';
+import { getFaq, payloadFaq } from './payloadFaq';
+import { buttonPostback, genericElement, buttonUrl } from '../lib/facebook';
 import libSubscriptions from '../lib/subscriptions';
 
 export const disableSubscription = async function(psid, timing) {
@@ -137,45 +138,90 @@ export const subscriptions = async function(chat) {
     return chat.sendGenericTemplate(elements);
 };
 
-export const subscribe = async function(chat, payload) {
-    const promises = [];
+export async function subscribe(chat, payload) {
     if (payload.subscription === 'morning' || payload.subscription === 'all') {
-        promises.push(enableSubscription(chat.event.sender.id, 'morning'));
+        await enableSubscription(chat.event.sender.id, 'morning');
     }
     if (payload.subscription === 'evening' || payload.subscription === 'all') {
-        promises.push(enableSubscription(chat.event.sender.id, 'evening'));
+        await enableSubscription(chat.event.sender.id, 'evening');
     }
     if (payload.subscription === 'morning_and_evening') {
-        promises.push(enableSubscription(chat.event.sender.id, 'morning'));
-        promises.push(enableSubscription(chat.event.sender.id, 'evening'));
+        await enableSubscription(chat.event.sender.id, 'morning');
+        await enableSubscription(chat.event.sender.id, 'evening');
     }
     if (payload.subscription === 'breaking' || payload.subscription === 'all') {
-        promises.push(enableSubscription(chat.event.sender.id, 'breaking'));
+        await enableSubscription(chat.event.sender.id, 'breaking');
     }
-
-    await Promise.all(promises);
-
     switch (payload.nextStep) {
     case 'onboarding_breaking':
-        return onboardingBreaking(chat, payload);
+        await onboardingBreaking(chat, payload);
+        break;
     case 'onboarding_analytics':
-        return analyticsChoose(chat, payload);
+        await analyticsChoose(chat, payload);
     }
     return payloadFaq(chat, { slug: 'subscribed' });
-};
+}
 
-export const unsubscribe = async function(chat, payload) {
-    const promises = [];
+export async function unsubscribe(chat, payload) {
     if (payload.subscription === 'morning' || payload.subscription === 'all') {
-        promises.push(disableSubscription(chat.event.sender.id, 'morning'));
+        await disableSubscription(chat.event.sender.id, 'morning');
     }
     if (payload.subscription === 'evening' || payload.subscription === 'all') {
-        promises.push(disableSubscription(chat.event.sender.id, 'evening'));
+        await disableSubscription(chat.event.sender.id, 'evening');
     }
     if (payload.subscription === 'breaking' || payload.subscription === 'all') {
-        promises.push(disableSubscription(chat.event.sender.id, 'breaking'));
+        await disableSubscription(chat.event.sender.id, 'breaking');
     }
-    return Promise.all(
-        promises.concat(payloadFaq(chat, { slug: 'unsubscribed' }))
+
+    if (chat.surveyMode) {
+        return payloadFaq(chat, { slug: 'unsubscribed' });
+    }
+    return startSurvey(chat);
+}
+
+export async function startSurvey(chat) {
+    const unsubscribedSurvey = await getFaq('unsubscribed-survey', true);
+    const surveyLinkButton = buttonUrl('🔗 Ja, klar', process.env.SURVEY_URL);
+    const buttonNoRelaxed = buttonPostback(
+        'Nein, Danke',
+        {
+            action: 'faq',
+            slug: 'survey-declined',
+            track: {
+                category: 'Menüpunkt',
+                event: 'Einstellungen',
+                label: 'Umfrage',
+                subType: 'abgelehnt',
+            },
+        });
+    const buttonNoStressed = buttonPostback(
+        'Bleib mir bloß weg!',
+        {
+            action: 'faq',
+            slug: 'survey-declined',
+            track: {
+                category: 'Menüpunkt',
+                event: 'Einstellungen',
+                label: 'Umfrage',
+                subType: 'hart abgelehnt',
+            },
+        });
+
+    const userStates = new DynamoDbCrud(process.env.DYNAMODB_USERSTATES, 'psid');
+    try {
+        await userStates.create(chat.psid, { 'surveyTime': Math.floor( Date.now()/1000 ) } );
+        console.log('Enable survey mode.');
+    } catch (e) {
+        await userStates.update(chat.psid, 'surveyTime', Math.floor( Date.now()/1000 ) );
+        console.log('Update survey mode');
+    }
+
+    return chat.sendButtons(
+        unsubscribedSurvey.text,
+        [
+            surveyLinkButton,
+            buttonNoRelaxed,
+            buttonNoStressed,
+        ],
     );
-};
+}
