@@ -1,7 +1,7 @@
 const { Expect } = require('../../lib/testing');
 const facebook = require('../../lib/facebook');
 
-const payloadFaq = require('../payloadFaq').default;
+const payloadFaq = require('../payloadFaq').payloadFaq;
 
 describe('payloadFaq', () => {
     it('sends a specific faq', () => {
