@@ -1,6 +1,5 @@
 import DynamoDbCrud from '../lib/dynamodbCrud';
-import payloadFaq from './payloadFaq';
-import { getFaq } from './payloadFaq';
+import { getFaq, payloadFaq } from './payloadFaq';
 import { buttonPostback } from '../lib/facebook';
 
 export async function contact(chat) {

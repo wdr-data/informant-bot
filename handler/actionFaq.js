@@ -1,4 +1,4 @@
-import payloadFaq from './payloadFaq';
+import { payloadFaq } from './payloadFaq';
 
 export default function(slug) {
     const payload = { action: 'faq', slug };
