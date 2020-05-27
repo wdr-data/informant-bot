@@ -83,7 +83,7 @@ export async function feedbackMode(chat) {
 
 export async function feedbackDone(chat) {
     const userStates = new DynamoDbCrud(process.env.DYNAMODB_USERSTATES, 'psid');
-    await userStates.update(chat.psid, 'feedbackTime', Math.floor(1000));
+    await userStates.update(chat.psid, 'feedbackTime', Math.floor(0));
     console.log('Disable feedback mode.');
     return payloadFaq(chat, { slug: 'feedback_done' });
 }

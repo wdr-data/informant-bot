@@ -13,7 +13,7 @@ export default {
         'faq_about': require('./actionFaq').default('about'),
         'faq_onboarding': require('./actionFaq').default('onboarding'),
         'current_audio': require('./payloadCurrentAudio').default,
-        'contact': require('./actionContact').feedbackStart,
+        'contact': require('./actionContact').contact,
         'location': require('./actionLocation').handleLocation,
     },
     payloads: {
