@@ -1,9 +1,9 @@
-import DynamoDbCrud from '../lib/dynamodbCrud';
 import { onboardingBreaking } from './payloadGetStarted';
 import { choose as analyticsChoose } from './payloadAnalytics';
-import { getFaq, payloadFaq } from './payloadFaq';
-import { buttonPostback, genericElement, buttonUrl } from '../lib/facebook';
+import { payloadFaq } from './payloadFaq';
+import { buttonPostback, genericElement } from '../lib/facebook';
 import libSubscriptions from '../lib/subscriptions';
+import { startSurvey } from './payloadSurvey';
 
 export const disableSubscription = async function(psid, timing) {
     try {
@@ -177,51 +177,4 @@ export async function unsubscribe(chat, payload) {
         return payloadFaq(chat, { slug: 'unsubscribed' });
     }
     return startSurvey(chat);
-}
-
-export async function startSurvey(chat) {
-    const unsubscribedSurvey = await getFaq('unsubscribed-survey', true);
-    const surveyLinkButton = buttonUrl('🔗 Ja, klar', process.env.SURVEY_URL);
-    const buttonNoRelaxed = buttonPostback(
-        'Nein, Danke',
-        {
-            action: 'faq',
-            slug: 'survey-declined',
-            track: {
-                category: 'Menüpunkt',
-                event: 'Einstellungen',
-                label: 'Umfrage',
-                subType: 'abgelehnt',
-            },
-        });
-    const buttonNoStressed = buttonPostback(
-        'Bleib mir bloß weg!',
-        {
-            action: 'faq',
-            slug: 'survey-declined',
-            track: {
-                category: 'Menüpunkt',
-                event: 'Einstellungen',
-                label: 'Umfrage',
-                subType: 'hart abgelehnt',
-            },
-        });
-
-    const userStates = new DynamoDbCrud(process.env.DYNAMODB_USERSTATES, 'psid');
-    try {
-        await userStates.create(chat.psid, { 'surveyTime': Math.floor( Date.now()/1000 ) } );
-        console.log('Enable survey mode.');
-    } catch (e) {
-        await userStates.update(chat.psid, 'surveyTime', Math.floor( Date.now()/1000 ) );
-        console.log('Update survey mode');
-    }
-
-    return chat.sendButtons(
-        unsubscribedSurvey.text,
-        [
-            surveyLinkButton,
-            buttonNoRelaxed,
-            buttonNoStressed,
-        ],
-    );
 }

@@ -38,5 +38,6 @@ export default {
         'feedback_start': require('./actionContact').feedbackStart,
         'feedback_done': require('./actionContact').feedbackDone,
         'get_started': require('./payloadGetStarted').default,
+        'survey': require('./payloadSurvey').surveyQuestions,
     },
 };
