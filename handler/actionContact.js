@@ -10,6 +10,7 @@ export async function contact(chat) {
             'Feedback zum Service',
             {
                 action: 'feedback_start',
+                faqSlug: 'feedback_start',
                 track: {
                     category: 'Menüpunkt',
                     event: 'Feebdack-Menü',
@@ -20,8 +21,8 @@ export async function contact(chat) {
         buttonPostback(
             'Thema vorschlagen',
             {
-                action: 'faq',
-                slug: 'yes_to_contact',
+                action: 'feedback_start',
+                faqSlug: 'yes_to_contact',
                 track: {
                     category: 'Menüpunkt',
                     event: 'Feedback-Menü',
@@ -56,8 +57,9 @@ export async function feedbackStart(chat, payload) {
         await userStates.update(chat.psid, 'feedbackTime', Math.floor(Date.now() / 1000) );
     }
 
-    return payloadFaq(chat, { slug: 'feedback_start' });
+    return payloadFaq(chat, { slug: payload.faqSlug });
 }
+
 
 export async function feedbackMode(chat) {
     const feedbackMode = await getFaq('feedback_mode', true);
