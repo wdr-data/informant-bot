@@ -48,13 +48,12 @@ export async function contact(chat) {
 
 export async function feedbackStart(chat, payload) {
     // start 1 hours of feedback conversation
-    const lastDefaultReplies = new DynamoDbCrud(process.env.DYNAMODB_LASTDEFAULTREPLIES, 'psid');
-    const ttl = Math.floor(Date.now() / 1000) + 1*60*60;
+    const userStates = new DynamoDbCrud(process.env.DYNAMODB_USERSTATES, 'psid');
     try {
-        await lastDefaultReplies.create(chat.psid, { ttl });
+        await userStates.create(chat.psid, { 'feedbackTime': Math.floor(Date.now() / 1000) });
         console.log('Enable feedback mode.');
     } catch (e) {
-        await lastDefaultReplies.update(chat.psid, 'ttl', ttl);
+        await userStates.update(chat.psid, 'feedbackTime', Math.floor(Date.now() / 1000) );
     }
 
     return payloadFaq(chat, { slug: 'feedback_start' });
@@ -81,8 +80,8 @@ export async function feedbackMode(chat) {
 }
 
 export async function feedbackDone(chat) {
-    const lastDefaultReplies = new DynamoDbCrud(process.env.DYNAMODB_LASTDEFAULTREPLIES, 'psid');
-    await lastDefaultReplies.remove(chat.psid);
+    const userStates = new DynamoDbCrud(process.env.DYNAMODB_USERSTATES, 'psid');
+    await userStates.update(chat.psid, 'feedbackTime', Math.floor(1000));
     console.log('Disable feedback mode.');
     return payloadFaq(chat, { slug: 'feedback_done' });
 }
