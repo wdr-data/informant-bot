@@ -27,7 +27,6 @@ export async function surveyQuestions(chat, payload) {
         );
     }
     const survey = surveyData[payload.nextStep];
-    console.log(survey);
     let buttons = [];
     survey.answers.map(
         (answer) => buttons.push(
