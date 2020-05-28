@@ -173,7 +173,7 @@ export async function unsubscribe(chat, payload) {
         await disableSubscription(chat.event.sender.id, 'breaking');
     }
 
-    if (chat.surveyMode) {
+    if (chat.surveyMode || !chat.trackingEnabled) {
         return payloadFaq(chat, { slug: 'unsubscribed' });
     }
     return startSurvey(chat);
