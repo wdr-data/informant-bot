@@ -15,6 +15,7 @@ export default {
         'current_audio': require('./payloadCurrentAudio').default,
         'contact': require('./actionContact').feedbackStart,
         'location': require('./actionLocation').handleLocation,
+        'newsfeed_corona': require('./actionNewsfeed').newsfeedStart,
     },
     payloads: {
         'report_start': require('./payloadReportStart').default,
