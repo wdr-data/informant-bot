@@ -124,7 +124,7 @@ const tableProps = {
             },
         ],
     },
-    'UserStates': {
+    'userStates': {
         AttributeDefinitions: [
             {
                 AttributeName: 'psid',
