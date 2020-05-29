@@ -139,7 +139,7 @@ export const subscriptions = async function(chat) {
 };
 
 export async function subscribe(chat, payload) {
-    const promises = []
+    const promises = [];
     if (payload.subscription === 'morning' || payload.subscription === 'all') {
         promises.push(enableSubscription(chat.event.sender.id, 'morning'));
     }
