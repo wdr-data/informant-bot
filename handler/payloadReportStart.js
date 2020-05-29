@@ -39,5 +39,10 @@ export default async (chat, payload) => {
         payload.audio = report.audio;
     }
 
-    return fragmentSender(chat, report.next_fragments, payload, report.text, report.attachment);
+    let text = report.text;
+    if (report.type === 'last' && !payload.before) {
+        text = `${report.subtype.emoji} ${report.subtype.title}: ${report.text}`;
+    }
+
+    return fragmentSender(chat, report.next_fragments, payload, text, report.attachment);
 };

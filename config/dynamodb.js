@@ -124,7 +124,7 @@ const tableProps = {
             },
         ],
     },
-    'LastDefaultReplies': {
+    'userStates': {
         AttributeDefinitions: [
             {
                 AttributeName: 'psid',
@@ -137,10 +137,6 @@ const tableProps = {
                 KeyType: 'HASH',
             },
         ],
-        TimeToLiveSpecification: {
-            AttributeName: 'ttl',
-            Enabled: 'TRUE',
-        },
     },
 };
 

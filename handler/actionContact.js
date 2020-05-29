@@ -1,6 +1,5 @@
 import DynamoDbCrud from '../lib/dynamodbCrud';
-import payloadFaq from './payloadFaq';
-import { getFaq } from './payloadFaq';
+import { getFaq, payloadFaq } from './payloadFaq';
 import { buttonPostback } from '../lib/facebook';
 
 export async function contact(chat) {
@@ -11,6 +10,7 @@ export async function contact(chat) {
             'Feedback zum Service',
             {
                 action: 'feedback_start',
+                faqSlug: 'feedback_start',
                 track: {
                     category: 'Menüpunkt',
                     event: 'Feebdack-Menü',
@@ -21,8 +21,8 @@ export async function contact(chat) {
         buttonPostback(
             'Thema vorschlagen',
             {
-                action: 'faq',
-                slug: 'yes_to_contact',
+                action: 'feedback_start',
+                faqSlug: 'yes_to_contact',
                 track: {
                     category: 'Menüpunkt',
                     event: 'Feedback-Menü',
@@ -49,17 +49,17 @@ export async function contact(chat) {
 
 export async function feedbackStart(chat, payload) {
     // start 1 hours of feedback conversation
-    const lastDefaultReplies = new DynamoDbCrud(process.env.DYNAMODB_LASTDEFAULTREPLIES, 'psid');
-    const ttl = Math.floor(Date.now() / 1000) + 1*60*60;
+    const userStates = new DynamoDbCrud(process.env.DYNAMODB_USERSTATES, 'psid');
     try {
-        await lastDefaultReplies.create(chat.psid, { ttl });
+        await userStates.create(chat.psid, { 'feedbackTime': Math.floor(Date.now() / 1000) });
         console.log('Enable feedback mode.');
     } catch (e) {
-        await lastDefaultReplies.update(chat.psid, 'ttl', ttl);
+        await userStates.update(chat.psid, 'feedbackTime', Math.floor(Date.now() / 1000) );
     }
 
-    return payloadFaq(chat, { slug: 'feedback_start' });
+    return payloadFaq(chat, { slug: payload.faqSlug });
 }
+
 
 export async function feedbackMode(chat) {
     const feedbackMode = await getFaq('feedback_mode', true);
@@ -82,8 +82,8 @@ export async function feedbackMode(chat) {
 }
 
 export async function feedbackDone(chat) {
-    const lastDefaultReplies = new DynamoDbCrud(process.env.DYNAMODB_LASTDEFAULTREPLIES, 'psid');
-    await lastDefaultReplies.remove(chat.psid);
+    const userStates = new DynamoDbCrud(process.env.DYNAMODB_USERSTATES, 'psid');
+    await userStates.update(chat.psid, 'feedbackTime', 0);
     console.log('Disable feedback mode.');
     return payloadFaq(chat, { slug: 'feedback_done' });
 }

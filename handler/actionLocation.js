@@ -27,9 +27,9 @@ export const handleLocation = async (chat, payload) => {
     }
     if (city) {
         chat.track({
-            category: 'Unterhaltung',
-            event: 'Feature',
-            label: 'Location',
+            category: 'Feature',
+            event: 'Location',
+            label: zipCode ? 'Postleitzahl' : 'Ort',
             subType: byCities[city] ? city : `${city}-0`,
         });
     }
