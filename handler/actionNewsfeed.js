@@ -4,6 +4,8 @@ import 'moment-timezone';
 
 import { buttonUrl, genericElement } from '../lib/facebook';
 import urls from '../lib/urls';
+import { trackLink } from '../lib/utils';
+
 
 const imageVariants = [ 'ARDFotogalerie', 'gseapremiumxl', 'TeaserAufmacher' ];
 
@@ -46,11 +48,22 @@ const getNews = async (options = { tag: 'Coronavirus' }) => {
             (candidate, i) => statuses[i].status === 'fulfilled'
         );
 
-        const linkButton = buttonUrl(`🔗 Lesen`, shareLink);
+        const linkButton = buttonUrl(`🔗 Lesen`, trackLink(
+            shareLink, {
+                campaignType: 'button',
+                campaignName: 'newsfeed',
+                campaignId: 'bot',
+            }),
+        );
 
         const defaultAction = {
             type: 'web_url',
-            url: shareLink,
+            url: trackLink(
+                shareLink, {
+                    campaignType: 'karte',
+                    campaignName: 'newsfeed',
+                    campaignId: 'bot',
+                }),
         };
 
         const element = genericElement(
