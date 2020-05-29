@@ -36,8 +36,8 @@ export async function surveyQuestions(chat, payload) {
                     action: 'survey',
                     nextStep: payload.nextStep + 1,
                     track: {
-                        category: 'Umfrage',
-                        event: 'Abmelden',
+                        category: 'Feature',
+                        event: 'Umfrage-Abmelden',
                         label: survey.question,
                         subType: answer,
                     },
