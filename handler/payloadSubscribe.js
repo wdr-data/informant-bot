@@ -1,8 +1,9 @@
 import { onboardingBreaking } from './payloadGetStarted';
 import { choose as analyticsChoose } from './payloadAnalytics';
-import payloadFaq from './payloadFaq';
+import { payloadFaq } from './payloadFaq';
 import { buttonPostback, genericElement } from '../lib/facebook';
 import libSubscriptions from '../lib/subscriptions';
+import { startSurvey } from './payloadSurvey';
 
 export const disableSubscription = async function(psid, timing) {
     try {
@@ -137,7 +138,7 @@ export const subscriptions = async function(chat) {
     return chat.sendGenericTemplate(elements);
 };
 
-export const subscribe = async function(chat, payload) {
+export async function subscribe(chat, payload) {
     const promises = [];
     if (payload.subscription === 'morning' || payload.subscription === 'all') {
         promises.push(enableSubscription(chat.event.sender.id, 'morning'));
@@ -162,9 +163,9 @@ export const subscribe = async function(chat, payload) {
         return analyticsChoose(chat, payload);
     }
     return payloadFaq(chat, { slug: 'subscribed' });
-};
+}
 
-export const unsubscribe = async function(chat, payload) {
+export async function unsubscribe(chat, payload) {
     const promises = [];
     if (payload.subscription === 'morning' || payload.subscription === 'all') {
         promises.push(disableSubscription(chat.event.sender.id, 'morning'));
@@ -175,7 +176,10 @@ export const unsubscribe = async function(chat, payload) {
     if (payload.subscription === 'breaking' || payload.subscription === 'all') {
         promises.push(disableSubscription(chat.event.sender.id, 'breaking'));
     }
-    return Promise.all(
-        promises.concat(payloadFaq(chat, { slug: 'unsubscribed' }))
-    );
-};
+    await Promise.all(promises);
+
+    if (chat.surveyMode || !chat.trackingEnabled) {
+        return payloadFaq(chat, { slug: 'unsubscribed' });
+    }
+    return startSurvey(chat);
+}
