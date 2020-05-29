@@ -139,39 +139,44 @@ export const subscriptions = async function(chat) {
 };
 
 export async function subscribe(chat, payload) {
+    const promises = []
     if (payload.subscription === 'morning' || payload.subscription === 'all') {
-        await enableSubscription(chat.event.sender.id, 'morning');
+        promises.push(enableSubscription(chat.event.sender.id, 'morning'));
     }
     if (payload.subscription === 'evening' || payload.subscription === 'all') {
-        await enableSubscription(chat.event.sender.id, 'evening');
+        promises.push(enableSubscription(chat.event.sender.id, 'evening'));
     }
     if (payload.subscription === 'morning_and_evening') {
-        await enableSubscription(chat.event.sender.id, 'morning');
-        await enableSubscription(chat.event.sender.id, 'evening');
+        promises.push(enableSubscription(chat.event.sender.id, 'morning'));
+        promises.push(enableSubscription(chat.event.sender.id, 'evening'));
     }
     if (payload.subscription === 'breaking' || payload.subscription === 'all') {
-        await enableSubscription(chat.event.sender.id, 'breaking');
+        promises.push(enableSubscription(chat.event.sender.id, 'breaking'));
     }
+
+    await Promise.all(promises);
+
     switch (payload.nextStep) {
     case 'onboarding_breaking':
-        await onboardingBreaking(chat, payload);
-        break;
+        return onboardingBreaking(chat, payload);
     case 'onboarding_analytics':
-        await analyticsChoose(chat, payload);
+        return analyticsChoose(chat, payload);
     }
     return payloadFaq(chat, { slug: 'subscribed' });
 }
 
 export async function unsubscribe(chat, payload) {
+    const promises = [];
     if (payload.subscription === 'morning' || payload.subscription === 'all') {
-        await disableSubscription(chat.event.sender.id, 'morning');
+        promises.push(disableSubscription(chat.event.sender.id, 'morning'));
     }
     if (payload.subscription === 'evening' || payload.subscription === 'all') {
-        await disableSubscription(chat.event.sender.id, 'evening');
+        promises.push(disableSubscription(chat.event.sender.id, 'evening'));
     }
     if (payload.subscription === 'breaking' || payload.subscription === 'all') {
-        await disableSubscription(chat.event.sender.id, 'breaking');
+        promises.push(disableSubscription(chat.event.sender.id, 'breaking'));
     }
+    await Promise.all(promises);
 
     if (chat.surveyMode || !chat.trackingEnabled) {
         return payloadFaq(chat, { slug: 'unsubscribed' });
