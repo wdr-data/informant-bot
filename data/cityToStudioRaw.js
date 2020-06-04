@@ -180,7 +180,7 @@ export default [
 ,
 {"city":"Grevenbroich","type":"Stadt","keyCity":"5162008","state":"Nordrhein-Westfalen","studioRadio":"Düsseldorf","studio":"Düsseldorf","region":"Rheinland","district":"Rhein-Kreis Neuss"}
 ,
-{"city":"Gronau (Westf.)","type":"Stadt","keyCity":"5554020","state":"Nordrhein-Westfalen","studioRadio":"Münster","studio":"Münster","region":"Westfalen","district":"Borken"}
+{"city":"Gronau (Westfalen)","type":"Stadt","keyCity":"5554020","state":"Nordrhein-Westfalen","studioRadio":"Münster","studio":"Münster","region":"Westfalen","district":"Borken"}
 ,
 {"city":"Gummersbach","type":"Stadt","keyCity":"5374012","state":"Nordrhein-Westfalen","studioRadio":"Wuppertal","studio":"Köln","region":"Rheinland","district":"Oberbergischer Kreis"}
 ,
