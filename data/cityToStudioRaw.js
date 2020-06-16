@@ -307,12 +307,12 @@ export default [
 {"city":"Lage","type":"Stadt","keyCity":"5766040","state":"Nordrhein-Westfalen","studioRadio":"Bielefeld","studio":"Bielefeld","region":"Westfalen","district":"Lippe"},
 {"city":"Langenberg","type":"Gemeinde","keyCity":"5754024","state":"Nordrhein-Westfalen","studioRadio":"Bielefeld","studio":"Bielefeld","region":"Westfalen","district":"Gütersloh"}
 ,
-{"city":"Langenfeld (Rhld.)","type":"Stadt","keyCity":"5158020","state":"Nordrhein-Westfalen","studioRadio":"Wuppertal","studio":"Wuppertal","region":"Rheinland","district":"Mettmann"},
+{"city":"Langenfeld (Rheinland)","type":"Stadt","keyCity":"5158020","state":"Nordrhein-Westfalen","studioRadio":"Wuppertal","studio":"Wuppertal","region":"Rheinland","district":"Mettmann"},
 {"city":"Langerwehe","type":"Gemeinde","keyCity":"5358032","state":"Nordrhein-Westfalen","studioRadio":"Aachen","studio":"Aachen","region":"Rheinland","district":"Düren"}
 ,
 {"city":"Legden","type":"Gemeinde","keyCity":"5554036","state":"Nordrhein-Westfalen","studioRadio":"Münster","studio":"Münster","region":"Westfalen","district":"Borken"}
 ,
-{"city":"Leichlingen (Rhld.)","type":"Stadt","keyCity":"5378016","state":"Nordrhein-Westfalen","studioRadio":"Wuppertal","studio":"Wuppertal","region":"Rheinland","district":"Rheinisch-Bergischer Kreis"},
+{"city":"Leichlingen (Rheinland)","type":"Stadt","keyCity":"5378016","state":"Nordrhein-Westfalen","studioRadio":"Wuppertal","studio":"Wuppertal","region":"Rheinland","district":"Rheinisch-Bergischer Kreis"},
 {"city":"Lemgo","type":"Stadt","keyCity":"5766044","state":"Nordrhein-Westfalen","studioRadio":"Bielefeld","studio":"Bielefeld","region":"Westfalen","district":"Lippe"},
 {"city":"Lengerich","type":"Stadt","keyCity":"5566040","state":"Nordrhein-Westfalen","studioRadio":"Münster","studio":"Münster","region":"Westfalen","district":"Steinfurt"}
 ,
@@ -545,7 +545,7 @@ export default [
 ,
 {"city":"Stemwede","type":"Gemeinde","keyCity":"5770044","state":"Nordrhein-Westfalen","studioRadio":"Bielefeld","studio":"Bielefeld","region":"Westfalen","district":"Minden-Lübbecke"}
 ,
-{"city":"Stolberg (Rhld.)","type":"Stadt","keyCity":"5334032","state":"Nordrhein-Westfalen","studioRadio":"Aachen","studio":"Aachen","region":"Rheinland","district":"Städteregion Aachen"}
+{"city":"Stolberg","type":"Stadt","keyCity":"5334032","state":"Nordrhein-Westfalen","studioRadio":"Aachen","studio":"Aachen","region":"Rheinland","district":"Städteregion Aachen"}
 ,
 {"city":"Straelen","type":"Stadt","keyCity":"5154052","state":"Nordrhein-Westfalen","studioRadio":"Duisburg","studio":"Duisburg","region":"Rheinland","district":"Kleve"},
 {"city":"Südlohn","type":"Gemeinde","keyCity":"5554060","state":"Nordrhein-Westfalen","studioRadio":"Münster","studio":"Münster","region":"Westfalen","district":"Borken"}

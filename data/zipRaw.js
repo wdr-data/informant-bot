@@ -239,7 +239,7 @@ export default [
 {"osm_id": "62699", "city": "Solingen", "zipCode": "42699", "state": "Nordrhein-Westfalen"},
 {"osm_id": "62699", "city": "Solingen", "zipCode": "42719", "state": "Nordrhein-Westfalen"},
 {"osm_id": "66527", "city": "Haan", "zipCode": "42781", "state": "Nordrhein-Westfalen"},
-{"osm_id": "173095", "city": "Leichlingen", "zipCode": "42799", "state": "Nordrhein-Westfalen"},
+{"osm_id": "173095", "city": "Leichlingen (Rheinland)", "zipCode": "42799", "state": "Nordrhein-Westfalen"},
 {"osm_id": "62455", "city": "Remscheid", "zipCode": "42853", "state": "Nordrhein-Westfalen"},
 {"osm_id": "62455", "city": "Remscheid", "zipCode": "42855", "state": "Nordrhein-Westfalen"},
 {"osm_id": "62455", "city": "Remscheid", "zipCode": "42857", "state": "Nordrhein-Westfalen"},
