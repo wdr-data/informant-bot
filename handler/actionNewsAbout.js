@@ -61,7 +61,7 @@ export const newsAbout = async (chat, payload) => {
                         category: 'Feature',
                         event: 'Meldung nach Tag/Genre',
                         label: r.subtype ? `${r.subtype.title}: ${r.headline}` : r.headline,
-                        subType: '1.Bubble',
+                        subType: `1.Bubble (${r.question_count + 1})`,
                         publicationDate: r.published_date,
                     },
                 }));

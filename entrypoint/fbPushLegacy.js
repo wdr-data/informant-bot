@@ -185,7 +185,7 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                     label: report.subtype ?
                         `${report.subtype.title}: ${report.headline}` :
                         report.headline,
-                    subType: '1.Bubble',
+                    subType: `1.Bubble (${report.question_count + 1})`,
                     publicationDate: report.published_date,
                 },
             };
