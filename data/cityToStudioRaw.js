@@ -188,7 +188,7 @@ export default [
 ,
 {"city":"Haan","type":"Stadt","keyCity":"5158008","state":"Nordrhein-Westfalen","studioRadio":"Wuppertal","studio":"Wuppertal","region":"Rheinland","district":"Mettmann"},
 {"city":"Hagen","type":"Stadt","keyCity":"5914000","state":"Nordrhein-Westfalen","studioRadio":"Dortmund","studio":"Dortmund","region":"Ruhrgebiet","district":"Hagen"},
-{"city":"Halle (Westf.)","type":"Stadt","keyCity":"5754012","state":"Nordrhein-Westfalen","studioRadio":"Bielefeld","studio":"Bielefeld","region":"Westfalen","district":"Gütersloh"}
+{"city":"Halle (Westfalen)","type":"Stadt","keyCity":"5754012","state":"Nordrhein-Westfalen","studioRadio":"Bielefeld","studio":"Bielefeld","region":"Westfalen","district":"Gütersloh"}
 ,
 {"city":"Hallenberg","type":"Stadt","keyCity":"5958020","state":"Nordrhein-Westfalen","studioRadio":"Siegen","studio":"Siegen","region":"Westfalen","district":"Hochsauerlandkreis"},
 {"city":"Haltern am See","type":"Stadt","keyCity":"5562016","state":"Nordrhein-Westfalen","studioRadio":"Münster","studio":"Dortmund","region":"Ruhrgebiet","district":"Recklinghausen"}
@@ -608,7 +608,7 @@ export default [
 {"city":"Werl","type":"Stadt","keyCity":"5974052","state":"Nordrhein-Westfalen","studioRadio":"Siegen","studio":"Siegen","region":"Westfalen","district":"Soest"},
 {"city":"Wermelskirchen","type":"Stadt","keyCity":"5378032","state":"Nordrhein-Westfalen","studioRadio":"Wuppertal","studio":"Wuppertal","region":"Rheinland","district":"Rheinisch-Bergischer Kreis"},
 {"city":"Werne","type":"Stadt","keyCity":"5978040","state":"Nordrhein-Westfalen","studioRadio":"Dortmund","studio":"Dortmund","region":"Ruhrgebiet","district":"Unna"},
-{"city":"Werther (Westf.)","type":"Stadt","keyCity":"5754052","state":"Nordrhein-Westfalen","studioRadio":"Bielefeld","studio":"Bielefeld","region":"Westfalen","district":"Gütersloh"}
+{"city":"Werther (Westfalen)","type":"Stadt","keyCity":"5754052","state":"Nordrhein-Westfalen","studioRadio":"Bielefeld","studio":"Bielefeld","region":"Westfalen","district":"Gütersloh"}
 ,
 {"city":"Wesel","type":"Stadt","keyCity":"5170048","state":"Nordrhein-Westfalen","studioRadio":"Duisburg","studio":"Duisburg","region":"Rheinland","district":"Wesel"},
 {"city":"Wesseling","type":"Stadt","keyCity":"5362040","state":"Nordrhein-Westfalen","studioRadio":"Köln","studio":"Köln","region":"Rheinland","district":"Rhein-Erft-Kreis"}
