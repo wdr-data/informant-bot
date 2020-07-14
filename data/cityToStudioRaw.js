@@ -180,7 +180,7 @@ export default [
 ,
 {"city":"Grevenbroich","type":"Stadt","keyCity":"5162008","state":"Nordrhein-Westfalen","studioRadio":"Düsseldorf","studio":"Düsseldorf","region":"Rheinland","district":"Rhein-Kreis Neuss"}
 ,
-{"city":"Gronau (Westf.)","type":"Stadt","keyCity":"5554020","state":"Nordrhein-Westfalen","studioRadio":"Münster","studio":"Münster","region":"Westfalen","district":"Borken"}
+{"city":"Gronau (Westfalen)","type":"Stadt","keyCity":"5554020","state":"Nordrhein-Westfalen","studioRadio":"Münster","studio":"Münster","region":"Westfalen","district":"Borken"}
 ,
 {"city":"Gummersbach","type":"Stadt","keyCity":"5374012","state":"Nordrhein-Westfalen","studioRadio":"Wuppertal","studio":"Köln","region":"Rheinland","district":"Oberbergischer Kreis"}
 ,
@@ -188,7 +188,7 @@ export default [
 ,
 {"city":"Haan","type":"Stadt","keyCity":"5158008","state":"Nordrhein-Westfalen","studioRadio":"Wuppertal","studio":"Wuppertal","region":"Rheinland","district":"Mettmann"},
 {"city":"Hagen","type":"Stadt","keyCity":"5914000","state":"Nordrhein-Westfalen","studioRadio":"Dortmund","studio":"Dortmund","region":"Ruhrgebiet","district":"Hagen"},
-{"city":"Halle (Westf.)","type":"Stadt","keyCity":"5754012","state":"Nordrhein-Westfalen","studioRadio":"Bielefeld","studio":"Bielefeld","region":"Westfalen","district":"Gütersloh"}
+{"city":"Halle (Westfalen)","type":"Stadt","keyCity":"5754012","state":"Nordrhein-Westfalen","studioRadio":"Bielefeld","studio":"Bielefeld","region":"Westfalen","district":"Gütersloh"}
 ,
 {"city":"Hallenberg","type":"Stadt","keyCity":"5958020","state":"Nordrhein-Westfalen","studioRadio":"Siegen","studio":"Siegen","region":"Westfalen","district":"Hochsauerlandkreis"},
 {"city":"Haltern am See","type":"Stadt","keyCity":"5562016","state":"Nordrhein-Westfalen","studioRadio":"Münster","studio":"Dortmund","region":"Ruhrgebiet","district":"Recklinghausen"}
@@ -307,12 +307,12 @@ export default [
 {"city":"Lage","type":"Stadt","keyCity":"5766040","state":"Nordrhein-Westfalen","studioRadio":"Bielefeld","studio":"Bielefeld","region":"Westfalen","district":"Lippe"},
 {"city":"Langenberg","type":"Gemeinde","keyCity":"5754024","state":"Nordrhein-Westfalen","studioRadio":"Bielefeld","studio":"Bielefeld","region":"Westfalen","district":"Gütersloh"}
 ,
-{"city":"Langenfeld (Rhld.)","type":"Stadt","keyCity":"5158020","state":"Nordrhein-Westfalen","studioRadio":"Wuppertal","studio":"Wuppertal","region":"Rheinland","district":"Mettmann"},
+{"city":"Langenfeld (Rheinland)","type":"Stadt","keyCity":"5158020","state":"Nordrhein-Westfalen","studioRadio":"Wuppertal","studio":"Wuppertal","region":"Rheinland","district":"Mettmann"},
 {"city":"Langerwehe","type":"Gemeinde","keyCity":"5358032","state":"Nordrhein-Westfalen","studioRadio":"Aachen","studio":"Aachen","region":"Rheinland","district":"Düren"}
 ,
 {"city":"Legden","type":"Gemeinde","keyCity":"5554036","state":"Nordrhein-Westfalen","studioRadio":"Münster","studio":"Münster","region":"Westfalen","district":"Borken"}
 ,
-{"city":"Leichlingen (Rhld.)","type":"Stadt","keyCity":"5378016","state":"Nordrhein-Westfalen","studioRadio":"Wuppertal","studio":"Wuppertal","region":"Rheinland","district":"Rheinisch-Bergischer Kreis"},
+{"city":"Leichlingen (Rheinland)","type":"Stadt","keyCity":"5378016","state":"Nordrhein-Westfalen","studioRadio":"Wuppertal","studio":"Wuppertal","region":"Rheinland","district":"Rheinisch-Bergischer Kreis"},
 {"city":"Lemgo","type":"Stadt","keyCity":"5766044","state":"Nordrhein-Westfalen","studioRadio":"Bielefeld","studio":"Bielefeld","region":"Westfalen","district":"Lippe"},
 {"city":"Lengerich","type":"Stadt","keyCity":"5566040","state":"Nordrhein-Westfalen","studioRadio":"Münster","studio":"Münster","region":"Westfalen","district":"Steinfurt"}
 ,
@@ -545,7 +545,7 @@ export default [
 ,
 {"city":"Stemwede","type":"Gemeinde","keyCity":"5770044","state":"Nordrhein-Westfalen","studioRadio":"Bielefeld","studio":"Bielefeld","region":"Westfalen","district":"Minden-Lübbecke"}
 ,
-{"city":"Stolberg (Rhld.)","type":"Stadt","keyCity":"5334032","state":"Nordrhein-Westfalen","studioRadio":"Aachen","studio":"Aachen","region":"Rheinland","district":"Städteregion Aachen"}
+{"city":"Stolberg","type":"Stadt","keyCity":"5334032","state":"Nordrhein-Westfalen","studioRadio":"Aachen","studio":"Aachen","region":"Rheinland","district":"Städteregion Aachen"}
 ,
 {"city":"Straelen","type":"Stadt","keyCity":"5154052","state":"Nordrhein-Westfalen","studioRadio":"Duisburg","studio":"Duisburg","region":"Rheinland","district":"Kleve"},
 {"city":"Südlohn","type":"Gemeinde","keyCity":"5554060","state":"Nordrhein-Westfalen","studioRadio":"Münster","studio":"Münster","region":"Westfalen","district":"Borken"}
@@ -608,7 +608,7 @@ export default [
 {"city":"Werl","type":"Stadt","keyCity":"5974052","state":"Nordrhein-Westfalen","studioRadio":"Siegen","studio":"Siegen","region":"Westfalen","district":"Soest"},
 {"city":"Wermelskirchen","type":"Stadt","keyCity":"5378032","state":"Nordrhein-Westfalen","studioRadio":"Wuppertal","studio":"Wuppertal","region":"Rheinland","district":"Rheinisch-Bergischer Kreis"},
 {"city":"Werne","type":"Stadt","keyCity":"5978040","state":"Nordrhein-Westfalen","studioRadio":"Dortmund","studio":"Dortmund","region":"Ruhrgebiet","district":"Unna"},
-{"city":"Werther (Westf.)","type":"Stadt","keyCity":"5754052","state":"Nordrhein-Westfalen","studioRadio":"Bielefeld","studio":"Bielefeld","region":"Westfalen","district":"Gütersloh"}
+{"city":"Werther (Westfalen)","type":"Stadt","keyCity":"5754052","state":"Nordrhein-Westfalen","studioRadio":"Bielefeld","studio":"Bielefeld","region":"Westfalen","district":"Gütersloh"}
 ,
 {"city":"Wesel","type":"Stadt","keyCity":"5170048","state":"Nordrhein-Westfalen","studioRadio":"Duisburg","studio":"Duisburg","region":"Rheinland","district":"Wesel"},
 {"city":"Wesseling","type":"Stadt","keyCity":"5362040","state":"Nordrhein-Westfalen","studioRadio":"Köln","studio":"Köln","region":"Rheinland","district":"Rhein-Erft-Kreis"}
