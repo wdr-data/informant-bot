@@ -100,7 +100,7 @@ Aktuelle Zahlen für NRW im Überblick:\nGemeldete Infektionen in den vergangene
         covidDataNRW.recovered
     }\nTodesfälle: ${
         covidDataNRW.dead
-    }\n\n(Quelle: RKI NRW, Stand: ${
+    }\n\n(Quelle: RKI, Stand: ${
         covidDataCity.publishedDate
     })\n\n`;
     /* eslint-enable */
