@@ -6,8 +6,8 @@ import { buttonUrl } from '../lib/facebook';
 import request from 'request-promise-native';
 import csvtojson from 'csvtojson';
 
-const uriCityMAGS = 'https://coronanrw-prod.s3.eu-central-1.amazonaws.com/rki_ndr_districts_nrw.csv';
-const uriNRWMAGS = 'https://coronanrw-prod.s3.eu-central-1.amazonaws.com/rki_ndr_districts_nrw_gesamt.csv';
+const uriCityRKI = 'https://coronanrw-prod.s3.eu-central-1.amazonaws.com/rki_ndr_districts_nrw.csv';
+const uriNRWRKI = 'https://coronanrw-prod.s3.eu-central-1.amazonaws.com/rki_ndr_districts_nrw_gesamt.csv';
 
 export const handleLocation = async (chat, payload) => {
     if (!payload.location.structValue) {
@@ -47,8 +47,8 @@ export const handleLocation = async (chat, payload) => {
 export const handleCity = async (chat, cityFull) => {
     const covidText = await getFaq(`locationcovidnrw`);
 
-    const covidDataCity = await getCovidCityMAGS(cityFull.district);
-    const covidDataNRW = await getCovidNRWMAGS();
+    const covidDataCity = await getCovidCityRKI(cityFull.district);
+    const covidDataNRW = await getCovidNRWRKI();
 
     const studioUrl = await trackLink(byStudios[cityFull.studio].linkCorona, {
         campaignType: 'unterhaltung',
@@ -100,7 +100,7 @@ Aktuelle Zahlen für NRW im Überblick:\nGemeldete Infektionen in den vergangene
         covidDataNRW.recovered
     }\nTodesfälle: ${
         covidDataNRW.dead
-    }\n\n(Quelle: MAGS NRW, Stand: ${
+    }\n\n(Quelle: RKI NRW, Stand: ${
         covidDataCity.publishedDate
     })\n\n`;
     /* eslint-enable */
@@ -115,8 +115,8 @@ Aktuelle Zahlen für NRW im Überblick:\nGemeldete Infektionen in den vergangene
     );
 };
 
-export const getCovidCityMAGS = async (district) => {
-    const response = await request.get({ uri: uriCityMAGS });
+export const getCovidCityRKI = async (district) => {
+    const response = await request.get({ uri: uriCityRKI });
     const covidData = await csvtojson({ flatKeys: true }).fromString(response);
 
     const sorted = covidData.sort(
@@ -154,8 +154,8 @@ export const getCovidCityMAGS = async (district) => {
     return;
 };
 
-export const getCovidNRWMAGS = async () => {
-    const response = await request.get({ uri: uriNRWMAGS });
+export const getCovidNRWRKI = async () => {
+    const response = await request.get({ uri: uriNRWRKI });
     console.log(response);
     const covidData = await csvtojson({ flatKeys: true }).fromString(response);
     console.log(covidData);
