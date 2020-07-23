@@ -147,6 +147,7 @@ export default [
 {"osm_id": "66535", "city": "Erkrath", "zipCode": "40699", "state": "Nordrhein-Westfalen"},
 {"osm_id": "66555", "city": "Hilden", "zipCode": "40723", "state": "Nordrhein-Westfalen"},
 {"osm_id": "66555", "city": "Hilden", "zipCode": "40724", "state": "Nordrhein-Westfalen"},
+{"osm_id": "66555", "city": "Hilden", "zipCode": "40721", "state": "Nordrhein-Westfalen"},
 {"osm_id": "66578", "city": "Langenfeld (Rheinland)", "zipCode": "40764", "state": "Nordrhein-Westfalen"},
 {"osm_id": "33070", "city": "Monheim am Rhein", "zipCode": "40789", "state": "Nordrhein-Westfalen"},
 {"osm_id": "66521", "city": "Mettmann", "zipCode": "40822", "state": "Nordrhein-Westfalen"},
