@@ -2,6 +2,7 @@ import ddb from '../lib/dynamodb';
 import subscriptions from '../lib/subscriptions';
 import { Chat, buttonPostback } from '../lib/facebook';
 import { getFaq } from '../handler/payloadFaq';
+import { sleep } from '../lib/utils';
 
 function getSubs(start = null, limit = 25) {
     const params = {
@@ -57,10 +58,6 @@ function splitArray(input, spacing) {
     }
 
     return output;
-}
-
-function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function scanTracking(start = null, limit = 25, old = false) {
