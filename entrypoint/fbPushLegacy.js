@@ -12,6 +12,7 @@ import ddb from '../lib/dynamodb';
 import subscriptions from '../lib/subscriptions';
 import { trackLink, regexSlug } from '../lib/utils';
 import Webtrekk from '../lib/webtrekk';
+import { sleep } from '../lib/utils';
 
 export const proxy = RavenLambdaWrapper.handler(Raven, async (event) => {
     const params = {
@@ -172,6 +173,9 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
             };
         }
 
+        // FIXME: Sleep to prevent rate limiting
+        await sleep(1000);
+
         if (event.type === 'report') {
             const report = event.data;
             const payload = {
@@ -304,7 +308,7 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
     }
 });
 
-export function getUsers(timing, start = null, limit = 50) {
+export function getUsers(timing, start = null, limit = 25) {
     const params = {
         Limit: limit,
         TableName: process.env.DYNAMODB_SUBSCRIPTIONS,
