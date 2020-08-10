@@ -14,6 +14,12 @@ export const byCities = Object.fromEntries(
     ),
 );
 
+export const byAGS = Object.fromEntries(
+    cityRaw.map(
+        (entry) => [ entry.keyCity, entry ],
+    ),
+);
+
 export const byZipCodes = Object.fromEntries(
     zipRaw.map(
         (entry) => [ entry.zipCode, entry ],
