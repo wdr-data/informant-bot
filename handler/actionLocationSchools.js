@@ -10,6 +10,8 @@ export const handleLocation = async (chat, payload) => {
 };
 
 export const handleAGS = async (chat, ags) => {
+    const schoolData = schoolsByAGS[ags];
+
     chat.track({
         category: 'Feature',
         event: 'Location',
@@ -17,7 +19,6 @@ export const handleAGS = async (chat, ags) => {
         subType: schoolData.name,
     });
 
-    const schoolData = schoolsByAGS[ags];
     const schoolDataNRW = schoolsByAGS['nrw'];
     console.log(ags);
     console.log(schoolData);
