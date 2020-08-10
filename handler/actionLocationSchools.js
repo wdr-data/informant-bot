@@ -48,22 +48,43 @@ export const handleAGS = async (chat, ags) => {
         }.`;
 
         const noDevice = [];
+        const noAnswer = [];
         const device = [];
         if (schoolData.answeredDevices) {
-            for (const [ key, value ] of Object.entries({
-                'studentsPerLaptop': [ 'Laptops', 'Schüler*innen einen Laptop' ],
-                'studentsPerTablet': [ 'Tablets', 'Schüler*innen ein Tablet' ],
-                'studentsPerDesktop': [ 'Desktoprechner', 'Schüler*innen einen Desktoprechner' ],
-                'studentsPerWhiteboard': [ 'Whiteboards', 'Schüler*innen ein Whiteboard' ],
-            })) {
-                if (!schoolData[key]) {
-                    noDevice.push(value[0]);
+            for (const [ keys, values ] of [
+                [
+                    [ 'studentsPerLaptop', 'laptopsPer100' ],
+                    [ 'Laptops', 'Schüler*innen einen Laptop' ],
+                ],
+                [
+                    [ 'studentsPerTablet', 'tabletsPer100' ],
+                    [ 'Tablets', 'Schüler*innen ein Tablet' ],
+                ],
+                [
+                    [ 'studentsPerDesktop', 'desktopsPer100' ],
+                    [ 'Desktoprechner', 'Schüler*innen einen Desktoprechner' ],
+                ],
+                [
+                    [ 'studentsPerWhiteboard', 'whiteboardsPer100' ],
+                    [ 'Whiteboards', 'Schüler*innen ein Whiteboard' ],
+                ],
+            ]) {
+                const [ perDeviceKey, perStudentKey ] = keys;
+                const [ name, studentName ] = values;
+
+                if (schoolData[perDeviceKey] !== null) {
+                    device.push(`${schoolData[perDeviceKey]} ${studentName}`);
+                } else if (schoolData[perStudentKey] !== null) {
+                    noDevice.push(name);
                 } else {
-                    device.push(`${schoolData[key]} ${value[1]}`);
+                    noAnswer.push(name);
                 }
             }
             if (device.length) {
                 allDevice += 'An den Schulen teilen sich im Schnitt\n' + device.join(',\n') + '.';
+            }
+            if (noAnswer.length) {
+                allDevice += '\nZu ' + noAnswer.join(', ') + ' wurden keine Angaben gemacht.';
             }
             if (noDevice.length) {
                 allDevice += '\n' + noDevice.join(', ') + ' sind keine vorhanden.';
