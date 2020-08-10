@@ -15,6 +15,10 @@ export default {
         'current_audio': require('./payloadCurrentAudio').default,
         'contact': require('./actionContact').contact,
         'location': require('./actionLocation').handleLocation,
+        'location_corona': (chat, payload) =>
+            require('./actionLocation').handleLocation(chat, payload, { type: 'corona' }),
+        'location_schools': (chat, payload) =>
+            require('./actionLocation').handleLocation(chat, payload, { type: 'schools' }),
         'newsfeed_corona': require('./actionNewsfeed').newsfeedStart,
     },
     payloads: {
@@ -40,5 +44,7 @@ export default {
         'feedback_done': require('./actionContact').feedbackDone,
         'get_started': require('./payloadGetStarted').default,
         'survey': require('./payloadSurvey').surveyQuestions,
+        'location_corona': require('./payloadLocation').handleLocationCorona,
+        'location_schools': require('./payloadLocation').handleLocationSchools,
     },
 };

@@ -54,9 +54,6 @@ functions:
     handler: entrypoint/fb.push
     timeout: 30
     events:
-      - http:
-          path: push
-          method: post
       - schedule:
           name: ${self:service}-${self:provider.stage}-push_m
           rate: cron(30 6 ? * MON-FRI *) # UTC+1 (No DST)
@@ -170,6 +167,11 @@ functions:
             timing: evening
   getWebtrekkConsent:
     handler: entrypoint/tools.getWebtrekkConsent
+    timeout: 900
+
+  # Special events
+  uploadSchoolImages:
+    handler: entrypoint/events.uploadSchoolImages
     timeout: 900
 
 stepFunctions:
