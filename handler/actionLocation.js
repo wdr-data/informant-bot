@@ -1,5 +1,5 @@
-// import moment from 'moment';
-// import 'moment-timezone';
+import moment from 'moment';
+import 'moment-timezone';
 
 import { buttonPostback } from '../lib/facebook';
 import { byCities, byZipCodes } from '../data/locationMappings';
@@ -35,11 +35,10 @@ export const handleLocation = async (chat, payload, options = {}) => {
     }
 
     // Feature is not Public before
-    /*
     if (moment.tz('Europe/Berlin').isBefore(moment.tz('2020-08-11 06:00:00', 'Europe/Berlin'))) {
-        return handleCityCorona(ctx, location);
+        return handleCityCorona(chat, location);
     }
-    */
+
     // Trigger specific location feature
     if (options.type === 'corona') {
         return handleCityCorona(chat, location);
