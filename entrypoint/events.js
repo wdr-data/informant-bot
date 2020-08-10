@@ -12,6 +12,6 @@ export const uploadSchoolImages = RavenLambdaWrapper.handler(Raven, async (event
         console.log(`Resolving ${item['name']} with URL ${url}`);
         const id = await getAttachmentId(url);
         console.log(`Resolved to: ${id}`);
-        await sleep(1000);
+        await sleep(100);
     }
 });
