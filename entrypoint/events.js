@@ -9,7 +9,7 @@ import { sleep } from '../lib/utils';
 export const uploadSchoolImages = RavenLambdaWrapper.handler(Raven, async (event) => {
     for (const [ ags, item ] of Object.entries(schoolData)) {
         const url = generateImageUrl(ags);
-        console.log(`Resolving ${item['Ort']} with URL ${url}`);
+        console.log(`Resolving ${item['name']} with URL ${url}`);
         const id = await getAttachmentId(url);
         console.log(`Resolved to: ${id}`);
         await sleep(1000);
