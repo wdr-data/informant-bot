@@ -119,7 +119,7 @@ export const handleAGS = async (chat, ags) => {
     }
 
     const outro = `\nFür die Daten hat das WDR Newsroom-Team ` +
-        `alle 396 Kommunen in NRW im Juli 2020 per IFG angefragt.`;
+        `alle 396 Kommunen in NRW im Juli 2020 per IFG NRW angefragt.`;
 
     const ddjUrl = trackLink(
         'https://www1.wdr.de/nachrichten/digitalisierung-schulen-umfrage-kommunen-100.html', {
