@@ -115,7 +115,7 @@ export const handleAGS = async (chat, ags) => {
                 schoolData.name
             } bezüglich des Glasfaseranschluss an Schulen nicht ausgewertet werden.`;
         }
-        fiber += `\nIm Schnitt ist in NRW jede dritte Schule ans Glasfasernetz angeschlossenen.`;
+        fiber += `\nIm Schnitt ist in NRW jede dritte Schule ans Glasfasernetz angeschlossen.`;
     }
 
     const outro = `\nFür die Daten hat das WDR Newsroom-Team ` +
