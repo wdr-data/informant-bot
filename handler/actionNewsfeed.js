@@ -31,22 +31,27 @@ const getNews = async (options = { tag: 'Coronavirus' }) => {
         const shareLink = item.teaser.shareLink;
 
         // Get image url
+        let imageUrl = 'https://www1.wdr.de/nachrichten/wdr-aktuell-app-icon-100~_v-TeaserAufmacher.jpg';
+
         const mediaItems = Object.values(item.teaser.containsMedia).sort(
             (a, b) => a.index - b.index
         );
-        const imageUrlTemplate = mediaItems.find((e) => e.mediaType === 'image')
-            .url;
+        const firstImageItem = mediaItems.find((e) => e.mediaType === 'image');
 
-        const imageCandidates = imageVariants.map((variant) =>
-            imageUrlTemplate.replace('%%FORMAT%%', variant)
-        );
+        if (firstImageItem) {
+            const imageUrlTemplate = firstImageItem.url;
 
-        const statuses = await Promise.allSettled(
-            imageCandidates.map((url) => request.head(url))
-        );
-        const imageUrl = imageCandidates.find(
-            (candidate, i) => statuses[i].status === 'fulfilled'
-        );
+            const imageCandidates = imageVariants.map((variant) =>
+                imageUrlTemplate.replace('%%FORMAT%%', variant)
+            );
+
+            const statuses = await Promise.allSettled(
+                imageCandidates.map((url) => request.head(url))
+            );
+            imageUrl = imageCandidates.find(
+                (candidate, i) => statuses[i].status === 'fulfilled'
+            ) || imageUrl;
+        }
 
         const linkButton = buttonUrl(`🔗 Lesen`, trackLink(
             shareLink, {
