@@ -529,7 +529,7 @@ export default [
 {"osm_id": "155793", "city": "Wettringen", "zipCode": "48493", "state": "Nordrhein-Westfalen"},
 {"osm_id": "155639", "city": "Hopsten", "zipCode": "48496", "state": "Nordrhein-Westfalen"},
 {"osm_id": "155787", "city": "Steinfurt", "zipCode": "48565", "state": "Nordrhein-Westfalen"},
-{"osm_id": "162865", "city": "Gronau", "zipCode": "48599", "state": "Nordrhein-Westfalen"},
+{"osm_id": "162865", "city": "Gronau (Westfalen)", "zipCode": "48599", "state": "Nordrhein-Westfalen"},
 {"osm_id": "155790", "city": "Ochtrup", "zipCode": "48607", "state": "Nordrhein-Westfalen"},
 {"osm_id": "155783", "city": "Horstmar", "zipCode": "48612", "state": "Nordrhein-Westfalen"},
 {"osm_id": "162873", "city": "Heek", "zipCode": "48619", "state": "Nordrhein-Westfalen"},
