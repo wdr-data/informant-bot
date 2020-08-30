@@ -3701,7 +3701,7 @@ export default {
     "numSchoolsFiberPercent": 100.0
   },
   "5554020": {
-    "name": "Gronau (Westf.)",
+    "name": "Gronau (Westfalen)",
     "responded": true,
     "answeredDevices": true,
     "tabletsPer100": 21.4,
