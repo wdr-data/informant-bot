@@ -54,7 +54,7 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
             }
             return {
                 state: 'nextChunk',
-                timing: 'breaking',
+                timing: report.type,
                 type: 'report',
                 data: report,
                 preview: event.preview,
@@ -205,6 +205,13 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                             campaignName: regexSlug(report.headline),
                             campaignId: report.id,
                         });
+                } else if (report.type === 'evening') {
+                    payload.link = trackLink(
+                        report.link, {
+                            campaignType: 'evening_push',
+                            campaignName: regexSlug(report.headline),
+                            campaignId: report.id,
+                        });
                 } else {
                     payload.link = report.link;
                 }
@@ -217,6 +224,8 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
             let messageText;
             if (report.type === 'breaking') {
                 messageText = `🚨 ${report.headline}\n\n${report.text}\n\n${unsubscribeNote}`;
+            } else if (report.type === 'evening') {
+                messageText = `➡️ ${report.headline}\n\n${report.text}`;
             } else {
                 messageText = report.text;
             }
