@@ -225,7 +225,7 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
             if (report.type === 'breaking') {
                 messageText = `🚨 ${report.headline}\n\n${report.text}\n\n${unsubscribeNote}`;
             } else if (report.type === 'evening') {
-                messageText = `➡️ ${report.headline}\n\n${report.text};
+                messageText = `➡️ ${report.headline}\n\n${report.text}`;
             } else {
                 messageText = report.text;
             }
