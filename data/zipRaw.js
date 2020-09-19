@@ -858,5 +858,6 @@ export default [
 {"osm_id": "157421", "city": "Olsberg", "zipCode": "59939", "state": "Nordrhein-Westfalen"},
 {"osm_id": "157414", "city": "Winterberg", "zipCode": "59955", "state": "Nordrhein-Westfalen"},
 {"osm_id": "157387", "city": "Medebach", "zipCode": "59964", "state": "Nordrhein-Westfalen"},
-{"osm_id": "157388", "city": "Hallenberg", "zipCode": "59969", "state": "Nordrhein-Westfalen"}
+{"osm_id": "157388", "city": "Hallenberg", "zipCode": "59969", "state": "Nordrhein-Westfalen"},
+{"osm_id": "158026", "city": "Heinsberg", "zipCode": "52525", "state": "Nordrhein-Westfalen"}
 ]
