@@ -2,6 +2,7 @@ import request from 'request-promise-native';
 import Raven from 'raven';
 import RavenLambdaWrapper from 'serverless-sentry-lib';
 import * as aws from 'aws-sdk';
+import moment from 'moment';
 
 import getTiming from '../lib/timing';
 import urls from '../lib/urls';
@@ -155,7 +156,13 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
         if (event.preview) {
             users = [ { psid: event.preview } ];
         } else {
-            const result = await getUsers(event.timing, event.start);
+            // Increase batch size in small steps
+            const startDate = moment('2020-09-22');
+            const daysSinceStart = Math.floor(moment.duration(moment().diff(startDate)).asDays());
+            const increase = 5 * Math.min(5, daysSinceStart);
+            console.log(`Using batch size increase = ${increase}`);
+
+            const result = await getUsers(event.timing, event.start, 25 + increase);
             users = result.users;
             last = result.last;
         }
