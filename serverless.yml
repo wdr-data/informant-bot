@@ -156,13 +156,13 @@ functions:
       - schedule:
           name: ${self:service}-${self:provider.stage}-pL_e
           rate: cron(30 17 * * ? *) # UTC+1 (No DST)
-          enabled: true
+          enabled: false
           input:
             timing: evening
       - schedule:
           name: ${self:service}-${self:provider.stage}-pL_e_dst
           rate: cron(30 16 * * ? *) # UTC+2 (DST)
-          enabled: true
+          enabled: false
           input:
             timing: evening
   getWebtrekkConsent:
