@@ -215,7 +215,7 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                 } else if (report.type === 'evening') {
                     payload.link = trackLink(
                         report.link, {
-                            campaignType: 'evening_push',
+                            campaignType: 'abend_push',
                             campaignName: regexSlug(report.headline),
                             campaignId: report.id,
                         });
