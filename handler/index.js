@@ -19,7 +19,9 @@ export default {
             require('./actionLocation').handleLocation(chat, payload, { type: 'corona' }),
         'location_schools': (chat, payload) =>
             require('./actionLocation').handleLocation(chat, payload, { type: 'schools' }),
-        'newsfeed_corona': require('./actionNewsfeed').newsfeedStart,
+        'newsfeed_corona': (chat, payload) =>
+            require('./actionNewsfeed').newsfeedStart(chat, payload, { tag: 'Coronavirus' }),
+        'newsfeed_curated': require('./actionNewsfeed').newsfeedStart,
     },
     payloads: {
         'report_start': require('./payloadReportStart').default,

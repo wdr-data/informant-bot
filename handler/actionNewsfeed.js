@@ -9,31 +9,47 @@ import { trackLink } from '../lib/utils';
 
 const imageVariants = [ 'ARDFotogalerie', 'gseapremiumxl', 'TeaserAufmacher' ];
 
-const getNews = async (options = { tag: 'Coronavirus' }) => {
-    const { tag } = options;
-    const response = await request({
-        uri: urls.newsfeedByTopicCategories(1, 10, tag),
-        json: true,
-    });
+const getNews = async (options) => {
+    let response;
+    if (options.tag) {
+        response = await request({
+            uri: urls.newsfeedByTopicCategories(1, 10, options.tag),
+            json: true,
+        });
+    } else {
+        response = await request({
+            uri: urls.curatedNewsFeed(1, 10),
+            json: true,
+        });
+    }
 
+    return createElements(response);
+};
+
+const createElements = async (response) => {
     const elements = [];
 
     for (const item of response.data) {
-        const headline = item.teaser.schlagzeile;
-        const teaserText = item.teaser.teaserText
+        let content = item;
+        if (item.teaser) {
+            content = item.teaser;
+        }
+
+        const headline = content.schlagzeile;
+        const teaserText = content.teaserText
             .map((text) => ` • ${text}`)
             .join('\n');
         const lastUpdate = moment(
-            item.teaser.redaktionellerStand * 1000
+            content.redaktionellerStand * 1000
         )
             .tz('Europe/Berlin')
             .format('DD.MM.YY, HH:mm');
-        const shareLink = item.teaser.shareLink;
+        const shareLink = content.shareLink;
 
         // Get image url
-        let imageUrl = 'https://www1.wdr.de/nachrichten/wdr-aktuell-app-icon-100~_v-TeaserAufmacher.jpg';
+        let imageUrl = 'https://www1.wdr.de/nachrichten/wdr-aktuell-icon-facebook-mesenger-100~_v-gseapremiumxl.jpg';
 
-        const mediaItems = Object.values(item.teaser.containsMedia).sort(
+        const mediaItems = Object.values(content.containsMedia).sort(
             (a, b) => a.index - b.index
         );
         const firstImageItem = mediaItems.find((e) => e.mediaType === 'image');
@@ -87,7 +103,7 @@ const getNews = async (options = { tag: 'Coronavirus' }) => {
     return { elements };
 };
 
-export const newsfeedStart = async (chat) => {
-    const { elements } = await getNews();
+export const newsfeedStart = async (chat, payload, options = {}) => {
+    const { elements } = await getNews(options);
     return chat.sendGenericTemplate(elements);
 };
