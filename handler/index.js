@@ -48,5 +48,6 @@ export default {
         'survey': require('./payloadSurvey').surveyQuestions,
         'location_corona': require('./payloadLocation').handleLocationCorona,
         'location_schools': require('./payloadLocation').handleLocationSchools,
+        'newsfeed_curated': require('./actionNewsfeed').newsfeedStart,
     },
 };
