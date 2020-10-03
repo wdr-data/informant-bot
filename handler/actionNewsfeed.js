@@ -35,10 +35,17 @@ const createElements = async (response) => {
             content = item.teaser;
         }
 
-        const headline = content.schlagzeile;
-        const teaserText = content.teaserText
-            .map((text) => ` • ${text}`)
-            .join('\n');
+        const headline = content.schlagzeile ? content.schlagzeile : content.title;
+        let teaserText = '';
+        if (content.teaserText) {
+            if (content.teaserText.length > 1) {
+                teaserText = content.teaserText
+                    .map((text) => ` • ${text}`)
+                    .join('\n');
+            } else {
+                teaserText = content.teaserText[0];
+            }
+        }
         const lastUpdate = moment(
             content.redaktionellerStand * 1000
         )
