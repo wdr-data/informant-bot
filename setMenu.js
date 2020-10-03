@@ -33,14 +33,14 @@ const MENU_ACTIONS = [
         }),
     },
     {
-        title: '🔧 An-/Abmelden',
+        title: '💬 Kontakt/Feedback',
         type: 'postback',
         payload: JSON.stringify({
-            action: 'subscriptions',
+            action: 'contact',
             track: {
                 category: 'Menüpunkt',
                 event: 'Messenger-Menü',
-                label: 'An-/Abmelden',
+                label: 'Kontakt/Feedback',
             },
         }),
     },
@@ -53,6 +53,18 @@ const MENU_ACTIONS = [
                 category: 'Menüpunkt',
                 event: 'Messenger-Menü',
                 label: 'Mehr',
+            },
+        }),
+    },
+    {
+        title: '🔧 An-/Abmelden',
+        type: 'postback',
+        payload: JSON.stringify({
+            action: 'subscriptions',
+            track: {
+                category: 'Menüpunkt',
+                event: 'Messenger-Menü',
+                label: 'An-/Abmelden',
             },
         }),
     },
