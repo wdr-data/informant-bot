@@ -15,18 +15,6 @@ export default async function(chat) {
             })
         ),
         genericElement(
-            '💬 Kontakt/Feedback',
-            'Anregungen, Fragen, Kritik? Immer her damit',
-            buttonPostback('Mehr', {
-                action: 'contact',
-                track: {
-                    category: 'Menüpunkt',
-                    event: 'Messenger-Menü',
-                    label: 'Kontakt/Feedback',
-                },
-            })
-        ),
-        genericElement(
             '🕵 WDR aktuell im Messenger.',
             'Warum gibt es diesen Service.',
             buttonPostback('Mehr', {
