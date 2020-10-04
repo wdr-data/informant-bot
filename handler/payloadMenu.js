@@ -3,18 +3,6 @@ import { genericElement, buttonPostback } from '../lib/facebook';
 export default async function(chat) {
     const elements = [
         genericElement(
-            '💌 Teilen',
-            'Du findest den Service von WDRaktuell gut? Teile ihn mit deinen Freunden!',
-            buttonPostback('Mehr', {
-                action: 'share',
-                track: {
-                    category: 'Menü-Punkt',
-                    event: 'Messenger-Menü',
-                    label: 'Teilen',
-                },
-            })
-        ),
-        genericElement(
             '🕵 WDR aktuell im Messenger.',
             'Warum gibt es diesen Service.',
             buttonPostback('Mehr', {

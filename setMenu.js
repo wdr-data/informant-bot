@@ -33,6 +33,18 @@ const MENU_ACTIONS = [
         }),
     },
     {
+        title: '💌 Teilen',
+        type: 'postback',
+        payload: JSON.stringify({
+            action: 'share',
+            track: {
+                category: 'Menü-Punkt',
+                event: 'Messenger-Menü',
+                label: 'Teilen',
+            },
+        }),
+    },
+    {
         title: '💬 Kontakt/Feedback',
         type: 'postback',
         payload: JSON.stringify({
