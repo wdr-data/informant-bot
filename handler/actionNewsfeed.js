@@ -9,24 +9,24 @@ import { trackLink } from '../lib/utils';
 
 const imageVariants = [ 'ARDFotogalerie', 'gseapremiumxl', 'TeaserAufmacher' ];
 
-const getNews = async (options) => {
+const getNews = async (options = { tag: 'Schlagzeilen' }) => {
     let response;
-    if (options.tag) {
-        response = await request({
-            uri: urls.newsfeedByTopicCategories(1, 10, options.tag),
-            json: true,
-        });
-    } else {
+    if (options.tag === 'Schlagzeilen') {
         response = await request({
             uri: urls.curatedNewsFeed(1, 10),
             json: true,
         });
+    } else {
+        response = await request({
+            uri: urls.newsfeedByTopicCategories(1, 10, options.tag),
+            json: true,
+        });
     }
 
-    return createElements(response);
+    return createElements(response, options.tag);
 };
 
-const createElements = async (response) => {
+const createElements = async (response, tag) => {
     const elements = [];
 
     for (const item of response.data) {
@@ -78,8 +78,8 @@ const createElements = async (response) => {
 
         const linkButton = buttonUrl(`🔗 Lesen`, trackLink(
             shareLink, {
-                campaignType: 'button',
-                campaignName: 'newsfeed',
+                campaignType: `${tag}-newsfeed`,
+                campaignName: headline,
                 campaignId: 'bot',
             }),
         );
@@ -88,8 +88,8 @@ const createElements = async (response) => {
             type: 'web_url',
             url: trackLink(
                 shareLink, {
-                    campaignType: 'karte',
-                    campaignName: 'newsfeed',
+                    campaignType: `${tag}-newsfeed`,
+                    campaignName: headline,
                     campaignId: 'bot',
                 }),
         };
@@ -110,7 +110,7 @@ const createElements = async (response) => {
     return { elements };
 };
 
-export const newsfeedStart = async (chat, payload, options = {}) => {
+export const newsfeedStart = async (chat, payload, options = { tag: 'Schlagzeilen' }) => {
     const { elements } = await getNews(options);
     return chat.sendGenericTemplate(elements);
 };
