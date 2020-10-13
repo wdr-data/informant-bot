@@ -29,7 +29,7 @@ export const handleCity = async (chat, location) => {
         campaignName: `Corona Info Studio ${location.studio}`,
         campaignId: 'covid',
     });
-    const studioLinkButton = buttonUrl('🔗 Corona-Spezial', studioUrl);
+    const studioLinkButton = buttonUrl(`🔗 Studio ${location.studio}`, studioUrl);
 
     const ddjUrl = await trackLink(
         'https://www1.wdr.de/nachrichten/themen/coronavirus/corona-daten-nrw-100.html', {
@@ -37,15 +37,20 @@ export const handleCity = async (chat, location) => {
             campaignName: `Zahlen Corona-Krise NRW`,
             campaignId: 'covid',
         });
-    const ddjLinkButton = buttonUrl('🔗 Fallzahlen - NRW', ddjUrl);
+    const ddjLinkButton = buttonUrl('🔗 Corona in Zahlen', ddjUrl);
+
+    let incidenceText = {
+        text: 'Steigt die Zahl der Neuinfektionen in den vergangenen 7 Tagen ' +
+            'pro 100.000 Einwohner über 35, dann muss der Ort Maßnahmen zur Eindämmung ergreifen.',
+    };
 
     let indicator = '';
     if (covidDataCity.lastSevenDaysPer100k >= 50) {
         indicator = '🟥';
-    } else if (covidDataCity.lastSevenDaysPer100k >= 25) {
+        incidenceText = await getFaq(`incidence50`);
+    } else if (covidDataCity.lastSevenDaysPer100k >= 35) {
         indicator = '🟧';
-    } else if (covidDataCity.lastSevenDaysPer100k > 10) {
-        indicator = '🟨';
+        incidenceText = await getFaq(`incidence35`);
     }
 
     /* eslint-disable */
@@ -63,7 +68,7 @@ export const handleCity = async (chat, location) => {
         covidDataCity.recovered
     }\nTodesfälle: ${
         covidDataCity.dead
-    }\n\nSteigt die Zahl der Neuinfektionen in den vergangenen 7 Tagen pro 100.000 Einwohner über 50, dann muss der Ort Maßnahmen zur Eindämmung ergreifen.\n
+    }\n\n${incidenceText.text}\n
 Aktuelle Zahlen für NRW im Überblick:\nGemeldete Infektionen in den vergangenen 7 Tagen pro 100.000 Einwohner: ${
         covidDataNRW.lastSevenDaysPer100k
     }\nGemeldete Infektionen in den vergangenen 7 Tagen: ${
