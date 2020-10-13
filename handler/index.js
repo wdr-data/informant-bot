@@ -11,6 +11,7 @@ export default {
         'faq_imprint': require('./actionFaq').default('impressum'),
         'faq_how_to': require('./actionFaq').default('how_to'),
         'faq_about': require('./actionFaq').default('about'),
+        'faq_list_of_features': require('./actionFaq').default('list_of_features'),
         'faq_onboarding': require('./actionFaq').default('onboarding'),
         'current_audio': require('./payloadCurrentAudio').default,
         'contact': require('./actionContact').contact,

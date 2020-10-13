@@ -45,6 +45,19 @@ const MENU_ACTIONS = [
         }),
     },
     {
+        title: '✨ Neue und weitere Funktionen',
+        type: 'postback',
+        payload: JSON.stringify({
+            action: 'faq',
+            slug: 'list_of_features',
+            track: {
+                category: 'Menü-Punkt',
+                event: 'Messenger-Menü',
+                label: 'Weitere Funktionen',
+            },
+        }),
+    },
+    {
         title: '💬 Kontakt/Feedback',
         type: 'postback',
         payload: JSON.stringify({
