@@ -11,6 +11,7 @@ export default {
         'faq_imprint': require('./actionFaq').default('impressum'),
         'faq_how_to': require('./actionFaq').default('how_to'),
         'faq_about': require('./actionFaq').default('about'),
+        'faq_list_of_features': require('./actionFaq').default('list_of_features'),
         'faq_onboarding': require('./actionFaq').default('onboarding'),
         'current_audio': require('./payloadCurrentAudio').default,
         'contact': require('./actionContact').contact,
@@ -19,7 +20,9 @@ export default {
             require('./actionLocation').handleLocation(chat, payload, { type: 'corona' }),
         'location_schools': (chat, payload) =>
             require('./actionLocation').handleLocation(chat, payload, { type: 'schools' }),
-        'newsfeed_corona': require('./actionNewsfeed').newsfeedStart,
+        'newsfeed_corona': (chat, payload) =>
+            require('./actionNewsfeed').newsfeedStart(chat, payload, { tag: 'Coronavirus' }),
+        'newsfeed_curated': require('./actionNewsfeed').newsfeedStart,
     },
     payloads: {
         'report_start': require('./payloadReportStart').default,
@@ -46,5 +49,6 @@ export default {
         'survey': require('./payloadSurvey').surveyQuestions,
         'location_corona': require('./payloadLocation').handleLocationCorona,
         'location_schools': require('./payloadLocation').handleLocationSchools,
+        'newsfeed_curated': require('./actionNewsfeed').newsfeedStart,
     },
 };

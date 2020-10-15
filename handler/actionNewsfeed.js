@@ -9,31 +9,54 @@ import { trackLink } from '../lib/utils';
 
 const imageVariants = [ 'ARDFotogalerie', 'gseapremiumxl', 'TeaserAufmacher' ];
 
-const getNews = async (options = { tag: 'Coronavirus' }) => {
-    const { tag } = options;
-    const response = await request({
-        uri: urls.newsfeedByTopicCategories(1, 10, tag),
-        json: true,
-    });
+const getNews = async (options = { tag: 'Schlagzeilen' }) => {
+    let response;
+    if (options.tag === 'Schlagzeilen') {
+        response = await request({
+            uri: urls.curatedNewsFeed(1, 10),
+            json: true,
+        });
+    } else {
+        response = await request({
+            uri: urls.newsfeedByTopicCategories(1, 10, options.tag),
+            json: true,
+        });
+    }
 
+    return createElements(response, options.tag);
+};
+
+const createElements = async (response, tag) => {
     const elements = [];
 
     for (const item of response.data) {
-        const headline = item.teaser.schlagzeile;
-        const teaserText = item.teaser.teaserText
-            .map((text) => ` • ${text}`)
-            .join('\n');
+        let content = item;
+        if (item.teaser) {
+            content = item.teaser;
+        }
+
+        const headline = content.schlagzeile ? content.schlagzeile : content.title;
+        let teaserText = '';
+        if (content.teaserText) {
+            if (content.teaserText.length > 1) {
+                teaserText = content.teaserText
+                    .map((text) => ` • ${text}`)
+                    .join('\n');
+            } else {
+                teaserText = content.teaserText[0];
+            }
+        }
         const lastUpdate = moment(
-            item.teaser.redaktionellerStand * 1000
+            content.redaktionellerStand * 1000
         )
             .tz('Europe/Berlin')
             .format('DD.MM.YY, HH:mm');
-        const shareLink = item.teaser.shareLink;
+        const shareLink = content.shareLink;
 
         // Get image url
-        let imageUrl = 'https://www1.wdr.de/nachrichten/wdr-aktuell-app-icon-100~_v-TeaserAufmacher.jpg';
+        let imageUrl = 'https://images.informant.einslive.de/facebook-placeholder-8621b39c-f95e-400c-bd3f-84a93e1d550f.jpg';
 
-        const mediaItems = Object.values(item.teaser.containsMedia).sort(
+        const mediaItems = Object.values(content.containsMedia).sort(
             (a, b) => a.index - b.index
         );
         const firstImageItem = mediaItems.find((e) => e.mediaType === 'image');
@@ -55,8 +78,8 @@ const getNews = async (options = { tag: 'Coronavirus' }) => {
 
         const linkButton = buttonUrl(`🔗 Lesen`, trackLink(
             shareLink, {
-                campaignType: 'button',
-                campaignName: 'newsfeed',
+                campaignType: `${tag}-newsfeed`,
+                campaignName: headline,
                 campaignId: 'bot',
             }),
         );
@@ -65,8 +88,8 @@ const getNews = async (options = { tag: 'Coronavirus' }) => {
             type: 'web_url',
             url: trackLink(
                 shareLink, {
-                    campaignType: 'karte',
-                    campaignName: 'newsfeed',
+                    campaignType: `${tag}-newsfeed`,
+                    campaignName: headline,
                     campaignId: 'bot',
                 }),
         };
@@ -87,7 +110,7 @@ const getNews = async (options = { tag: 'Coronavirus' }) => {
     return { elements };
 };
 
-export const newsfeedStart = async (chat) => {
-    const { elements } = await getNews();
+export const newsfeedStart = async (chat, payload, options = { tag: 'Schlagzeilen' }) => {
+    const { elements } = await getNews(options);
     return chat.sendGenericTemplate(elements);
 };

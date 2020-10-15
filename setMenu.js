@@ -1,7 +1,7 @@
 import request from 'request-promise-native';
 
 const FB_PAGETOKEN = process.env.FB_PAGETOKEN;
-const MESSENGER_PROFILE_URL = 'https://graph.facebook.com/v6.0/me/messenger_profile';
+const MESSENGER_PROFILE_URL = 'https://graph.facebook.com/v8.0/me/messenger_profile';
 
 const GET_STARTED_PAYLOAD = {
     action: 'get_started',
@@ -9,7 +9,19 @@ const GET_STARTED_PAYLOAD = {
 
 const MENU_ACTIONS = [
     {
-        title: '📰 Welche Infos habt ihr?',
+        title: '📰 Aktuelle Schlagzeilen',
+        type: 'postback',
+        payload: JSON.stringify({
+            action: 'newsfeed_curated',
+            track: {
+                category: 'Menüpunkt',
+                event: 'Messenger-Menü',
+                label: 'Schlagzeilen',
+            },
+        }),
+    },
+    {
+        title: '☕ Morgen-Update',
         type: 'postback',
         payload: JSON.stringify({
             action: 'current_news',
@@ -21,14 +33,39 @@ const MENU_ACTIONS = [
         }),
     },
     {
-        title: '🔧 An-/Abmelden',
+        title: '💌 Teilen',
         type: 'postback',
         payload: JSON.stringify({
-            action: 'subscriptions',
+            action: 'share',
+            track: {
+                category: 'Menü-Punkt',
+                event: 'Messenger-Menü',
+                label: 'Teilen',
+            },
+        }),
+    },
+    {
+        title: '✨ Neue und weitere Funktionen',
+        type: 'postback',
+        payload: JSON.stringify({
+            action: 'faq',
+            slug: 'list_of_features',
+            track: {
+                category: 'Menü-Punkt',
+                event: 'Messenger-Menü',
+                label: 'Weitere Funktionen',
+            },
+        }),
+    },
+    {
+        title: '💬 Kontakt/Feedback',
+        type: 'postback',
+        payload: JSON.stringify({
+            action: 'contact',
             track: {
                 category: 'Menüpunkt',
                 event: 'Messenger-Menü',
-                label: 'An-/Abmelden',
+                label: 'Kontakt/Feedback',
             },
         }),
     },
@@ -41,6 +78,18 @@ const MENU_ACTIONS = [
                 category: 'Menüpunkt',
                 event: 'Messenger-Menü',
                 label: 'Mehr',
+            },
+        }),
+    },
+    {
+        title: '🔧 An-/Abmelden',
+        type: 'postback',
+        payload: JSON.stringify({
+            action: 'subscriptions',
+            track: {
+                category: 'Menüpunkt',
+                event: 'Messenger-Menü',
+                label: 'An-/Abmelden',
             },
         }),
     },

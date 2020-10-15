@@ -15,3 +15,6 @@ coverage
 
 # Logs
 yarn-error.log
+
+# Mac
+.DS_Store
