@@ -21,14 +21,15 @@ const MENU_ACTIONS = [
         }),
     },
     {
-        title: '☕ Morgen-Update',
+        title: '✨ Neue und weitere Funktionen',
         type: 'postback',
         payload: JSON.stringify({
-            action: 'current_news',
+            action: 'faq',
+            slug: 'list_of_features',
             track: {
-                category: 'Menüpunkt',
+                category: 'Menü-Punkt',
                 event: 'Messenger-Menü',
-                label: 'Letzter Push',
+                label: 'Weitere Funktionen',
             },
         }),
     },
@@ -45,15 +46,14 @@ const MENU_ACTIONS = [
         }),
     },
     {
-        title: '✨ Neue und weitere Funktionen',
+        title: '☕ Morgen-Update',
         type: 'postback',
         payload: JSON.stringify({
-            action: 'faq',
-            slug: 'list_of_features',
+            action: 'current_news',
             track: {
-                category: 'Menü-Punkt',
+                category: 'Menüpunkt',
                 event: 'Messenger-Menü',
-                label: 'Weitere Funktionen',
+                label: 'Letzter Push',
             },
         }),
     },
