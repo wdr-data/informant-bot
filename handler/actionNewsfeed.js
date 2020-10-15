@@ -54,7 +54,7 @@ const createElements = async (response, tag) => {
         const shareLink = content.shareLink;
 
         // Get image url
-        let imageUrl = 'https://www1.wdr.de/nachrichten/wdr-aktuell-icon-facebook-mesenger-100~_v-gseapremiumxl.jpg';
+        let imageUrl = 'https://images.informant.einslive.de/facebook-placeholder-8621b39c-f95e-400c-bd3f-84a93e1d550f.jpg';
 
         const mediaItems = Object.values(content.containsMedia).sort(
             (a, b) => a.index - b.index
