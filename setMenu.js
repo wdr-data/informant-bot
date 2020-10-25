@@ -21,7 +21,7 @@ const MENU_ACTIONS = [
         }),
     },
     {
-        title: '✨ Neue und weitere Funktionen',
+        title: '✨ Was der Messenger alles kann',
         type: 'postback',
         payload: JSON.stringify({
             action: 'faq',
