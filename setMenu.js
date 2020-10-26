@@ -21,7 +21,7 @@ const MENU_ACTIONS = [
         }),
     },
     {
-        title: '✨ Was der Messenger alles kann',
+        title: '✨ Was der Messenger kann',
         type: 'postback',
         payload: JSON.stringify({
             action: 'faq',
