@@ -80,8 +80,8 @@ const chooseLocation = async (chat, location) => {
         });
 
     const buttons = [
-        buttonSchool,
         buttonCorona,
+        buttonSchool,
     ];
 
     await chat.sendButtons(messageText, buttons);
