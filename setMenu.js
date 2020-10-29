@@ -21,14 +21,15 @@ const MENU_ACTIONS = [
         }),
     },
     {
-        title: '☕ Morgen-Update',
+        title: '✨ Was der Messenger kann',
         type: 'postback',
         payload: JSON.stringify({
-            action: 'current_news',
+            action: 'faq',
+            slug: 'list_of_features',
             track: {
                 category: 'Menüpunkt',
                 event: 'Messenger-Menü',
-                label: 'Letzter Push',
+                label: 'Weitere Funktionen',
             },
         }),
     },
@@ -38,22 +39,21 @@ const MENU_ACTIONS = [
         payload: JSON.stringify({
             action: 'share',
             track: {
-                category: 'Menü-Punkt',
+                category: 'Menüpunkt',
                 event: 'Messenger-Menü',
                 label: 'Teilen',
             },
         }),
     },
     {
-        title: '✨ Neue und weitere Funktionen',
+        title: '☕ Morgen-Update',
         type: 'postback',
         payload: JSON.stringify({
-            action: 'faq',
-            slug: 'list_of_features',
+            action: 'current_news',
             track: {
-                category: 'Menü-Punkt',
+                category: 'Menüpunkt',
                 event: 'Messenger-Menü',
-                label: 'Weitere Funktionen',
+                label: 'Letzter Push',
             },
         }),
     },
