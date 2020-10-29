@@ -27,7 +27,7 @@ const MENU_ACTIONS = [
             action: 'faq',
             slug: 'list_of_features',
             track: {
-                category: 'Menü-Punkt',
+                category: 'Menüpunkt',
                 event: 'Messenger-Menü',
                 label: 'Weitere Funktionen',
             },
@@ -39,7 +39,7 @@ const MENU_ACTIONS = [
         payload: JSON.stringify({
             action: 'share',
             track: {
-                category: 'Menü-Punkt',
+                category: 'Menüpunkt',
                 event: 'Messenger-Menü',
                 label: 'Teilen',
             },
