@@ -299,6 +299,7 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
                 }
             }));
         }
+
         console.log(`${event.type} sent to ${users.length} users`);
 
         // LastEvaluatedKey is empty, scan is finished
