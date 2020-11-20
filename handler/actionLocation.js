@@ -86,8 +86,12 @@ const chooseLocation = async (chat, location) => {
             },
         });
 
+    let buttonText = 'Regionale News';
+    if (moment.now() - moment('2020-11-21')< 7*24*60*60*1000) {
+        buttonText = '✨Neu✨ ' + buttonText;
+    }
     const buttonRegions = buttonPostback(
-        'Regionale News',
+        buttonText,
         {
             action: 'location_region',
             ags: location.keyCity,
