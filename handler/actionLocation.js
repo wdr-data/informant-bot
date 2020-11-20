@@ -5,6 +5,7 @@ import { buttonPostback } from '../lib/facebook';
 import { byCities, byZipCodes } from '../data/locationMappings';
 import { handleCity as handleCityCorona } from './actionLocationCorona';
 import { handleAGS as handleAGSSchools } from './actionLocationSchools';
+import { newsfeedStart } from './actionNewsfeed';
 
 export const handleLocation = async (chat, payload, options = {}) => {
     if (!payload.location.structValue) {
@@ -44,6 +45,12 @@ export const handleLocation = async (chat, payload, options = {}) => {
         return handleCityCorona(chat, location);
     } else if (options.type === 'schools') {
         return handleAGSSchools(chat, location.keyCity);
+    } else if (options.type === 'regions' ) {
+        return newsfeedStart(
+            chat,
+            payload,
+            { tag: location.sophoraDistrictTag, location: location }
+        );
     } else {
         return chooseLocation(chat, location);
     }
@@ -79,8 +86,23 @@ const chooseLocation = async (chat, location) => {
             },
         });
 
+    const buttonRegions = buttonPostback(
+        'Regionale News',
+        {
+            action: 'location_region',
+            ags: location.keyCity,
+            track: {
+                category: 'Feature',
+                event: 'Location',
+                label: 'Choose',
+                subType: 'Regionale News',
+            },
+        });
+
+
     const buttons = [
         buttonCorona,
+        buttonRegions,
         buttonSchool,
     ];
 
