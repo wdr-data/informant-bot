@@ -78,7 +78,7 @@ const createElements = async (response, tag) => {
         const shareLink = content.shareLink;
 
         // Get image url
-        let imageUrl = 'https://images.informant.einslive.de/facebook-placeholder-8621b39c-f95e-400c-bd3f-84a93e1d550f.jpg';
+        let imageUrl = 'https://images.informant.einslive.de/ef6b7695-479d-4ab8-a616-ddd61cf5f47d.png';
 
         const mediaItems = Object.values(content.containsMedia).sort(
             (a, b) => a.index - b.index
