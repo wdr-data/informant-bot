@@ -2,18 +2,31 @@ import request from 'request-promise-native';
 import Raven from 'raven';
 import RavenLambdaWrapper from 'serverless-sentry-lib';
 import * as aws from 'aws-sdk';
-import moment from 'moment';
 
 import getTiming from '../lib/timing';
 import urls from '../lib/urls';
 import fragmentSender from '../lib/fragmentSender';
-import { assemblePush, getLatestPush, markSent, markSending } from '../lib/pushData';
+import {
+    assemblePush,
+    getLatestPush,
+    markSent,
+    markSending,
+    assembleReport,
+} from '../lib/pushData';
 import { Chat } from '../lib/facebook';
 import ddb from '../lib/dynamodb';
 import subscriptions from '../lib/subscriptions';
-import { trackLink, regexSlug } from '../lib/utils';
 import Webtrekk from '../lib/webtrekk';
 import { sleep } from '../lib/utils';
+
+const fromPrevious = (event, change) => ({
+    timing: event.timing,
+    type: event.type,
+    data: event.data,
+    options: event.options,
+    stats: event.stats,
+    ...change,
+});
 
 export const proxy = RavenLambdaWrapper.handler(Raven, async (event) => {
     const params = {
@@ -38,39 +51,52 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
         event = JSON.parse(event.body);
     }
 
+    // Ensure options are always set
+    event.options = event.options || {};
+
     if (event.report) {
-        try {
-            const params = {
-                uri: `${urls.report(event.report)}?withFragments=1`,
-                json: true,
-            };
-            // Authorize so we can access unpublished items
-            if (event.preview) {
-                params.headers = { Authorization: 'Token ' + process.env.CMS_API_TOKEN };
-            }
-            const report = await request(params);
-            console.log('Starting to send report with id:', report.id);
-            if (!event.preview) {
-                await markSending(report.id, 'report');
-            }
-            return {
-                state: 'nextChunk',
-                timing: report.type,
-                type: 'report',
-                data: report,
-                preview: event.preview,
+        return fetchReport(event);
+    } else if (event.push) {
+        return fetchPush(event);
+    }
+});
+
+const fetchReport = async (event) => {
+    try {
+        const params = {
+            uri: `${urls.report(event.report)}?withFragments=1`,
+            json: true,
+        };
+        // Authorize so we can access unpublished items
+        if (event.options.preview) {
+            params.headers = { Authorization: 'Token ' + process.env.CMS_API_TOKEN };
+        }
+        const report = await request(params);
+        console.log('Starting to send report with id:', report.id);
+        if (!event.options.preview) {
+            await markSending(report.id, 'report');
+        }
+        return {
+            state: 'nextChunk',
+            timing: report.type,
+            type: 'report',
+            data: report,
+            options: event.options,
+            stats: {
                 recipients: 0,
                 blocked: 0,
-            };
-        } catch (error) {
-            console.log('Sending report failed: ', JSON.stringify(error, null, 2));
-            throw error;
-        }
+            },
+        };
+    } catch (error) {
+        console.log('Sending report failed: ', JSON.stringify(error, null, 2));
+        throw error;
     }
+};
 
+const fetchPush = async (event) => {
     try {
         let push, timing;
-        if (event.preview) {
+        if (event.options.preview) {
             const params = {
                 uri: urls.push(event.push),
                 json: true,
@@ -90,12 +116,16 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
                 timing = getTiming(event);
             } catch (e) {
                 console.log(e);
-                return { state: 'finished' };
+                return {
+                    state: 'finished',
+                    error: true,
+                    options: event.options,
+                };
             }
             push = await getLatestPush(timing, { 'delivered_fb': 'not_sent' });
         }
         console.log('Starting to send push with id:', push.id);
-        if (!event.preview) {
+        if (!event.options.preview) {
             await markSending(push.id, 'push');
         }
         return {
@@ -103,15 +133,17 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
             timing,
             type: 'push',
             data: push,
-            preview: event.preview,
-            recipients: 0,
-            blocked: 0,
+            options: event.options,
+            stats: {
+                recipients: 0,
+                blocked: 0,
+            },
         };
     } catch (error) {
         console.log('Sending push failed: ', JSON.stringify(error, null, 2));
         throw error;
     }
-});
+};
 
 const reasons = {
     UNKNOWN: 'unknown',
@@ -153,201 +185,135 @@ export const send = RavenLambdaWrapper.handler(Raven, async (event) => {
 
     try {
         let users, last;
-        if (event.preview) {
-            users = [ { psid: event.preview } ];
+        if (event.options.preview) {
+            users = [ { psid: event.options.preview } ];
         } else {
-            // Increase batch size in small steps
-            const startDate = moment('2020-09-22');
-            const daysSinceStart = Math.floor(moment.duration(moment().diff(startDate)).asDays());
-            const increase = 5 * Math.min(5, daysSinceStart);
-            console.log(`Using batch size increase = ${increase}`);
-
-            const result = await getUsers(event.timing, event.start, 25 + increase);
+            const result = await getUsers(event, 50);
             users = result.users;
             last = result.last;
         }
 
         if (users.length === 0) {
-            return {
+            return fromPrevious(event, {
                 state: 'finished',
                 id: event.data.id,
-                type: event.type,
-                preview: event.preview,
-                timing: event.timing,
-                data: event.data,
-                recipients: event.recipients,
-                blocked: event.blocked,
-            };
+            });
         }
 
         // FIXME: Sleep to prevent rate limiting
         await sleep(1000);
 
         if (event.type === 'report') {
-            const report = event.data;
-            const payload = {
-                action: 'report_start',
-                report: report.id,
-                type: 'report',
-                preview: event.preview,
-                track: {
-                    category: `Breaking-Push-${report.id}`,
-                    event: `Breaking Meldung`,
-                    label: report.subtype ?
-                        `${report.subtype.title}: ${report.headline}` :
-                        report.headline,
-                    subType: `1.Bubble (${report.question_count + 1})`,
-                    publicationDate: report.published_date,
-                },
-            };
-
-            if (report.is_quiz) {
-                payload.quiz = true;
-            }
-            if (report.link) {
-                if (report.type === 'breaking') {
-                    payload.link = trackLink(
-                        report.link, {
-                            campaignType: 'breaking_push',
-                            campaignName: regexSlug(report.headline),
-                            campaignId: report.id,
-                        });
-                } else if (report.type === 'evening') {
-                    payload.link = trackLink(
-                        report.link, {
-                            campaignType: 'abend_push',
-                            campaignName: regexSlug(report.headline),
-                            campaignId: report.id,
-                        });
-                } else {
-                    payload.link = report.link;
-                }
-            }
-            if (report.audio) {
-                payload.audio = report.audio;
-            }
-
-            if (!report.attachment && report.type === 'breaking') {
-                report.attachment= {
-                    processed: 'https://images.informant.einslive.de/TG_Eilmeldung_7-2b2154a9-3616-4eff-930d-1f4d789dd072.png',
-                    title: 'Eilmeldung',
-                };
-            }
-
-            const unsubscribeNote = 'Um Eilmeldungen abzubestellen, schreibe "Stop".';
-            let messageText;
-            if (report.type === 'breaking') {
-                messageText = `🚨 ${report.headline}\n\n${report.text}\n\n${unsubscribeNote}`;
-            } else if (report.type === 'evening') {
-                messageText = `➡️ ${report.headline}\n\n${report.text}`;
-            } else {
-                messageText = report.text;
-            }
-
-            if (report.type === 'breaking') {
-                payload.nextAsButton = true;
-            }
-
-            await Promise.all(users.map(async (user) => {
-                const chat = new Chat({ sender: { id: user.psid } });
-                event.recipients++;
-                try {
-                    await fragmentSender(
-                        chat,
-                        report.next_fragments,
-                        payload,
-                        messageText,
-                        report.attachment,
-                        {
-                            timeout: 20000,
-                            extra: {
-                                'messaging_type': 'MESSAGE_TAG',
-                                tag: 'NON_PROMOTIONAL_SUBSCRIPTION',
-                            },
-                        }
-                    );
-                } catch (err) {
-                    const reason = await handlePushFailed(chat, err);
-                    if (reason === reasons.BLOCKED) {
-                        event.blocked++;
-                    }
-                }
-            }));
+            await sendReport(event, users);
         } else if (event.type === 'push') {
-            const { messageText, buttons, quickReplies } = assemblePush(event.data, event.preview);
-            await Promise.all(users.map(async (user) => {
-                const chat = new Chat({ sender: { id: user.psid } });
-                event.recipients++;
-                try {
-                    await chat.sendButtons(
-                        messageText,
-                        buttons,
-                        quickReplies,
-                        {
-                            timeout: 20000,
-                            extra: {
-                                'messaging_type': 'MESSAGE_TAG',
-                                tag: 'NON_PROMOTIONAL_SUBSCRIPTION',
-                            },
-                        },
-                    );
-                } catch (err) {
-                    const reason = await handlePushFailed(chat, err);
-                    if (reason === reasons.BLOCKED) {
-                        event.blocked++;
-                    }
-                }
-            }));
+            await sendPush(event, users);
         }
         console.log(`${event.type} sent to ${users.length} users`);
 
         // LastEvaluatedKey is empty, scan is finished
         if (!last) {
-            return {
+            return fromPrevious(event, {
                 state: 'finished',
                 id: event.data.id,
-                type: event.type,
-                preview: event.preview,
-                timing: event.timing,
-                data: event.data,
-                recipients: event.recipients,
-                blocked: event.blocked,
-            };
+            });
         }
 
-        return {
+        return fromPrevious(event, {
             state: 'nextChunk',
-            timing: event.timing,
-            type: event.type,
-            data: event.data,
             start: last,
-            preview: event.preview,
-            recipients: event.recipients,
-            blocked: event.blocked,
-        };
+        });
     } catch (err) {
         console.error('Sending failed:', err);
         throw err;
     }
 });
 
-export function getUsers(timing, start = null, limit = 25) {
+const sendReport = async (event, users) => {
+    const report = event.data;
+    const { messageText, payload } = assembleReport(report, event.options.preview);
+
+    await Promise.all(users.map(async (user) => {
+        const chat = new Chat({ sender: { id: user.psid } });
+        event.stats.recipients++;
+        try {
+            await fragmentSender(
+                chat,
+                report.next_fragments,
+                payload,
+                messageText,
+                report.attachment,
+                {
+                    timeout: 20000,
+                    extra: {
+                        'messaging_type': 'MESSAGE_TAG',
+                        tag: 'NON_PROMOTIONAL_SUBSCRIPTION',
+                    },
+                }
+            );
+        } catch (err) {
+            const reason = await handlePushFailed(chat, err);
+            if (reason === reasons.BLOCKED) {
+                event.stats.blocked++;
+            }
+        }
+    }));
+};
+
+const sendPush = async (event, users) => {
+    const { messageText, buttons, quickReplies } = assemblePush(event.data, event.options.preview);
+    await Promise.all(users.map(async (user) => {
+        const chat = new Chat({ sender: { id: user.psid } });
+        event.stats.recipients++;
+        try {
+            await chat.sendButtons(
+                messageText,
+                buttons,
+                quickReplies,
+                {
+                    timeout: 20000,
+                    extra: {
+                        'messaging_type': 'MESSAGE_TAG',
+                        tag: 'NON_PROMOTIONAL_SUBSCRIPTION',
+                    },
+                },
+            );
+        } catch (err) {
+            const reason = await handlePushFailed(chat, err);
+            if (reason === reasons.BLOCKED) {
+                event.stats.blocked++;
+            }
+        }
+    }));
+};
+
+export function getUsers(event, limit = 25) {
+    let FilterExpression = `${event.timing} = :p`;
+
+    if (event.options.timings) {
+        FilterExpression = event.options.timings.map((timing) => `${timing} = :p`).join(' or ');
+    }
+
     const params = {
         Limit: limit,
         TableName: process.env.DYNAMODB_SUBSCRIPTIONS,
-        FilterExpression: `${timing} = :p`,
-        ExpressionAttributeValues: { ':p': 1 },
+        FilterExpression,
+        ExpressionAttributeValues: {
+            ':p': 1,
+        },
     };
 
-    if (start) {
-        params.ExclusiveStartKey = start;
+    if (event.start) {
+        params.ExclusiveStartKey = event.start;
     }
     return new Promise((resolve, reject) => {
         ddb.scan(params, (err, data) => {
             if (err) {
                 return reject(err);
             }
-            resolve({ users: data.Items, last: data.LastEvaluatedKey });
+            resolve({
+                users: data.Items,
+                last: data.LastEvaluatedKey,
+            });
         });
     });
 }
@@ -355,7 +321,12 @@ export function getUsers(timing, start = null, limit = 25) {
 export const finish = RavenLambdaWrapper.handler(Raven, function(event, context, callback) {
     console.log(`Sending of ${event.type} finished:`, event);
 
-    if (event.preview) {
+    if (event.error) {
+        console.log('Error state, exiting early');
+        return;
+    }
+
+    if (event.options.preview) {
         console.log(`Only a preview, not marking as sent.`);
         return callback(null, {});
     }
@@ -381,8 +352,8 @@ export const finish = RavenLambdaWrapper.handler(Raven, function(event, context,
         event: 'Zugestellt',
         label: event.data.headline,
         publicationDate: event.data.pub_date || event.data.published_date,
-        recipients: event.recipients,
-        blocked: event.blocked,
+        recipients: event.stats.recipients,
+        blocked: event.stats.blocked,
     });
 
     markSent(event.id, event.type)
