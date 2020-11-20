@@ -127,7 +127,7 @@ functions:
           path: push
           method: post
       - http:
-          path: breaking
+          path: report
           method: post
       - schedule:
           name: ${self:service}-${self:provider.stage}-pL_m
