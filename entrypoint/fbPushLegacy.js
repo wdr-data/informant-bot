@@ -104,7 +104,7 @@ const fetchPush = async (event) => {
             // Authorize so we can access unpublished items
             params.headers = { Authorization: 'Token ' + process.env.CMS_API_TOKEN };
             push = await request(params);
-        } else if (event.manual) {
+        } else if (event.options.manual) {
             const params = {
                 uri: urls.push(event.push),
                 json: true,
