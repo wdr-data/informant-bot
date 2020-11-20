@@ -5,11 +5,35 @@ import 'moment-timezone';
 import { buttonUrl, genericElement } from '../lib/facebook';
 import urls from '../lib/urls';
 import { trackLink } from '../lib/utils';
+import { byAGS } from '../data/locationMappings';
 
 
 const imageVariants = [ 'ARDFotogalerie', 'gseapremiumxl', 'TeaserAufmacher' ];
 
+export const handleLocationRegions = async (chat, payload) => {
+    const location = byAGS[payload.ags];
+    return newsfeedStart(
+        chat,
+        payload,
+        {
+            tag: location.sophoraDistrictTag,
+            location: location,
+        }
+    );
+};
+
+export const handleSophoraTag = async (chat, payload) => {
+    if (payload.sophoraTag.stringValue) {
+        const tag = payload.sophoraTag.stringValue;
+        return newsfeedStart(chat, payload, { tag } );
+    }
+    return newsfeedStart(chat, payload, { tag: 'Schlagzeilen' });
+};
+
 const getNews = async (options = { tag: 'Schlagzeilen' }) => {
+    if (options.tag === undefined) {
+        options.tag = 'Schlagzeilen';
+    }
     let response;
     if (options.tag === 'Schlagzeilen') {
         response = await request({
@@ -54,7 +78,7 @@ const createElements = async (response, tag) => {
         const shareLink = content.shareLink;
 
         // Get image url
-        let imageUrl = 'https://images.informant.einslive.de/facebook-placeholder-8621b39c-f95e-400c-bd3f-84a93e1d550f.jpg';
+        let imageUrl = 'https://images.informant.einslive.de/ef6b7695-479d-4ab8-a616-ddd61cf5f47d.png';
 
         const mediaItems = Object.values(content.containsMedia).sort(
             (a, b) => a.index - b.index
@@ -112,5 +136,14 @@ const createElements = async (response, tag) => {
 
 export const newsfeedStart = async (chat, payload, options = { tag: 'Schlagzeilen' }) => {
     const { elements } = await getNews(options);
+
+    let introText = `Hier unser aktuellen Nachrichten zum Thema "${options.tag}":`;
+    if ('location' in options) {
+        introText = `Das ist gerade in der Region ${options.location.district} wichtig:`;
+    } else if (options.tag === 'Schlagzeilen') {
+        introText = 'Hier die neuesten Meldungen von WDR aktuell:';
+    }
+
+    await chat.sendText(introText);
     return chat.sendGenericTemplate(elements);
 };

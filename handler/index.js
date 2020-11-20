@@ -23,6 +23,10 @@ export default {
         'newsfeed_corona': (chat, payload) =>
             require('./actionNewsfeed').newsfeedStart(chat, payload, { tag: 'Coronavirus' }),
         'newsfeed_curated': require('./actionNewsfeed').newsfeedStart,
+        'location_region': (chat, payload) =>
+            require('./actionLocation').handleLocation(chat, payload, { type: 'regions' }),
+        'newsfeed_sophora_tag': require('./actionNewsfeed').handleSophoraTag,
+
     },
     payloads: {
         'report_start': require('./payloadReportStart').default,
@@ -50,5 +54,6 @@ export default {
         'location_corona': require('./payloadLocation').handleLocationCorona,
         'location_schools': require('./payloadLocation').handleLocationSchools,
         'newsfeed_curated': require('./actionNewsfeed').newsfeedStart,
+        'location_region': require('./actionNewsfeed').handleLocationRegions,
     },
 };
