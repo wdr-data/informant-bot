@@ -56,7 +56,7 @@ export const fetch = RavenLambdaWrapper.handler(Raven, async (event) => {
 
     if (event.report) {
         return fetchReport(event);
-    } else if (event.push) {
+    } else {
         return fetchPush(event);
     }
 });
