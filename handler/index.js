@@ -26,7 +26,7 @@ export default {
         'location_region': (chat, payload) =>
             require('./actionLocation').handleLocation(chat, payload, { type: 'regions' }),
         'newsfeed_sophora_tag': require('./actionNewsfeed').handleSophoraTag,
-
+        'menu': require('./menu').handleMenu,
     },
     payloads: {
         'report_start': require('./payloadReportStart').default,
@@ -40,7 +40,7 @@ export default {
         'share': require('./payloadShare.js').default,
         'current_news': require('./actionCurrentNews').default,
         'current_audio': require('./actionFaq').default('no-radionews-anymore'),
-        'menu_details': require('./payloadMenu.js').default,
+        'menu_details': require('./menu.js').handleMenu,
         'report_audio': require('./payloadAudio').default,
         'analyticsAccept': require('./payloadAnalytics').accept,
         'analyticsDecline': require('./payloadAnalytics').decline,
