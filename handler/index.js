@@ -13,7 +13,7 @@ export default {
         'faq_about': require('./actionFaq').default('about'),
         'faq_list_of_features': require('./actionFaq').default('list_of_features'),
         'faq_onboarding': require('./actionFaq').default('onboarding'),
-        'current_audio': require('./payloadCurrentAudio').default,
+        'current_audio': require('./actionFaq').default('no-radionews-anymore'),
         'contact': require('./actionContact').contact,
         'location': require('./actionLocation').handleLocation,
         'location_corona': (chat, payload) =>
@@ -39,7 +39,7 @@ export default {
         'unsubscribe': require('./payloadSubscribe').unsubscribe,
         'share': require('./payloadShare.js').default,
         'current_news': require('./actionCurrentNews').default,
-        'current_audio': require('./payloadCurrentAudio').default,
+        'current_audio': require('./actionFaq').default('no-radionews-anymore'),
         'menu_details': require('./payloadMenu.js').default,
         'report_audio': require('./payloadAudio').default,
         'analyticsAccept': require('./payloadAnalytics').accept,
