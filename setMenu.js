@@ -7,105 +7,6 @@ const GET_STARTED_PAYLOAD = {
     action: 'get_started',
 };
 
-const MENU_ACTIONS = [
-    {
-        title: '📰 Aktuelle Schlagzeilen',
-        type: 'postback',
-        payload: JSON.stringify({
-            action: 'newsfeed_curated',
-            track: {
-                category: 'Menüpunkt',
-                event: 'Messenger-Menü',
-                label: 'Schlagzeilen',
-            },
-        }),
-    },
-    {
-        title: '✨ Was der Messenger kann',
-        type: 'postback',
-        payload: JSON.stringify({
-            action: 'faq',
-            slug: 'list_of_features',
-            track: {
-                category: 'Menüpunkt',
-                event: 'Messenger-Menü',
-                label: 'Weitere Funktionen',
-            },
-        }),
-    },
-    {
-        title: '💌 Teilen',
-        type: 'postback',
-        payload: JSON.stringify({
-            action: 'share',
-            track: {
-                category: 'Menüpunkt',
-                event: 'Messenger-Menü',
-                label: 'Teilen',
-            },
-        }),
-    },
-    {
-        title: '☕ Morgen-Update',
-        type: 'postback',
-        payload: JSON.stringify({
-            action: 'current_news',
-            track: {
-                category: 'Menüpunkt',
-                event: 'Messenger-Menü',
-                label: 'Letzter Push',
-            },
-        }),
-    },
-    {
-        title: '💬 Kontakt/Feedback',
-        type: 'postback',
-        payload: JSON.stringify({
-            action: 'contact',
-            track: {
-                category: 'Menüpunkt',
-                event: 'Messenger-Menü',
-                label: 'Kontakt/Feedback',
-            },
-        }),
-    },
-    {
-        title: 'ℹ️ Mehr',
-        type: 'postback',
-        payload: JSON.stringify({
-            action: 'menu_details',
-            track: {
-                category: 'Menüpunkt',
-                event: 'Messenger-Menü',
-                label: 'Mehr',
-            },
-        }),
-    },
-    {
-        title: '🔧 An-/Abmelden',
-        type: 'postback',
-        payload: JSON.stringify({
-            action: 'subscriptions',
-            track: {
-                category: 'Menüpunkt',
-                event: 'Messenger-Menü',
-                label: 'An-/Abmelden',
-            },
-        }),
-    },
-];
-
-
-const PERSISTENT_MENU_DATA = {
-    'persistent_menu':
-        [
-            {
-                locale: 'default',
-                'call_to_actions': MENU_ACTIONS,
-            },
-        ],
-};
-
 const GET_STARTED_DATA = {
     'get_started':
     {
@@ -147,23 +48,11 @@ request.post({
             'access_token': FB_PAGETOKEN,
         },
         json: true,
-        body: PERSISTENT_MENU_DATA,
+        body: GREETING_DATA,
     }).then(() => {
-        console.log('Successfully set persistent menu');
-        request.post({
-            uri: MESSENGER_PROFILE_URL,
-            qs: {
-                'access_token': FB_PAGETOKEN,
-            },
-            json: true,
-            body: GREETING_DATA,
-        }).then(() => {
-            console.log('Successfully set greetings');
-        }).catch((error) => {
-            console.log('Setting greetings failed: ', error);
-        });
+        console.log('Successfully set greetings');
     }).catch((error) => {
-        console.log('Setting persistent menu failed: ', error);
+        console.log('Setting greetings failed: ', error);
     });
 }).catch((error) => {
     console.log("Setting 'get started' button failed: ", error);
