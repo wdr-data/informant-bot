@@ -115,7 +115,7 @@ functions:
       - schedule:
           name: ${self:service}-${self:provider.stage}-audio
           rate: rate(3 minutes)
-          enabled: true
+          enabled: false
 
   proxy:
     handler: entrypoint/fbPushLegacy.proxy
