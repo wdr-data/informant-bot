@@ -10,15 +10,18 @@ export default async (chat, payload) => {
         qs: {
             limit: 1,
             'delivered_fb': 'sent',
+            'published': 1,
         },
     });
 
     const push = data.results[0];
     const {
         messageText,
-        buttons,
         quickReplies,
-    } = assemblePush(push);
+    } = await assemblePush(push);
 
-    return chat.sendButtons(messageText, buttons, quickReplies);
+    if (push.attachment) {
+        await chat.sendAttachment(push.attachment.processed);
+    }
+    return chat.sendText(messageText, quickReplies);
 };
