@@ -260,7 +260,12 @@ const sendReport = async (event, users) => {
 };
 
 const sendPush = async (event, users) => {
-    const { messageText, buttons, quickReplies } = assemblePush(event.data, event.options.preview);
+    const {
+        messageText,
+        buttons,
+        quickReplies,
+    } = await assemblePush(event.data, event.options.preview);
+
     await Promise.all(users.map(async (user) => {
         const chat = new Chat({ sender: { id: user.psid } });
         event.stats.recipients++;
