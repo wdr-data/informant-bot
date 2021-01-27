@@ -13,8 +13,8 @@ import {
     markSending,
     assembleReport,
 } from '../lib/pushData';
-import { Chat } from '../lib/facebook';
-import { guessAttachmentType, getAttachmentId } from '../lib/facebookAttachments';
+import { Chat, guessAttachmentType } from '../lib/facebook';
+import { getAttachmentId } from '../lib/facebookAttachments';
 import ddb from '../lib/dynamodb';
 import subscriptions from '../lib/subscriptions';
 import Webtrekk from '../lib/webtrekk';
