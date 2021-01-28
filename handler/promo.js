@@ -22,7 +22,7 @@ export const handlePromo = async (chat, payload) => {
         return chat.sendText('Dieser Content ist nicht mehr verfügbar.');
     }
 
-    const { attachment, text, link, link_text: linkText } = promo;
+    const { attachment, text, link, link_name: linkName } = promo;
 
     const quickReplies = await buildQuickReplies(
         push,
@@ -36,7 +36,7 @@ export const handlePromo = async (chat, payload) => {
     }
 
     if (link) {
-        const linkButtonText = `🔗 ${linkText || 'Mehr'}`;
+        const linkButtonText = `🔗 ${linkName || 'Mehr'}`;
         const linkButton = buttonUrl(linkButtonText, link);
         return chat.sendButtons(text, [ linkButton ], quickReplies);
     } else {
