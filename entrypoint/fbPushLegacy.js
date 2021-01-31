@@ -13,7 +13,8 @@ import {
     markSending,
     assembleReport,
 } from '../lib/pushData';
-import { Chat } from '../lib/facebook';
+import { Chat, guessAttachmentType } from '../lib/facebook';
+import { getAttachmentId } from '../lib/facebookAttachments';
 import ddb from '../lib/dynamodb';
 import subscriptions from '../lib/subscriptions';
 import Webtrekk from '../lib/webtrekk';
@@ -261,22 +262,49 @@ const sendReport = async (event, users) => {
 };
 
 const sendPush = async (event, users) => {
-    const { messageText, buttons, quickReplies } = assemblePush(event.data, event.options.preview);
+    const {
+        messageText,
+        quickReplies,
+    } = await assemblePush(event.data, event.options.preview);
+
+    const options = {
+        timeout: 20000,
+        extra: {
+            'messaging_type': 'MESSAGE_TAG',
+            tag: 'NON_PROMOTIONAL_SUBSCRIPTION',
+        },
+    };
+
+    // Manual implementation of Chat.sendAttachment
+    let attachmentType, attachmentId;
+
+    if (event.data.attachment) {
+        attachmentType = guessAttachmentType(event.data.attachment.processed);
+        attachmentId = await getAttachmentId(event.data.attachment.processed, attachmentType);
+        options.timeout /= 2;
+    }
+
     await Promise.all(users.map(async (user) => {
         const chat = new Chat({ sender: { id: user.psid } });
         event.stats.recipients++;
         try {
-            await chat.sendButtons(
-                messageText,
-                buttons,
-                quickReplies,
-                {
-                    timeout: 20000,
-                    extra: {
-                        'messaging_type': 'MESSAGE_TAG',
-                        tag: 'NON_PROMOTIONAL_SUBSCRIPTION',
+            if (event.data.attachment) {
+                await chat.send({
+                    message: {
+                        attachment: {
+                            type: attachmentType,
+                            payload: {
+                                'attachment_id': attachmentId,
+                            },
+                        },
                     },
-                },
+                }, options);
+            }
+
+            await chat.sendText(
+                messageText,
+                quickReplies,
+                options,
             );
         } catch (err) {
             const reason = await handlePushFailed(chat, err);

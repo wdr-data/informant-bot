@@ -27,6 +27,7 @@ export default {
             require('./actionLocation').handleLocation(chat, payload, { type: 'regions' }),
         'newsfeed_sophora_tag': require('./actionNewsfeed').handleSophoraTag,
         'menu': require('./menu').handleMenu,
+        'podcast_0630': require('./podcast').handlePodcast,
     },
     payloads: {
         'report_start': require('./payloadReportStart').default,
@@ -55,5 +56,7 @@ export default {
         'location_schools': require('./payloadLocation').handleLocationSchools,
         'newsfeed_curated': require('./actionNewsfeed').newsfeedStart,
         'location_region': require('./actionNewsfeed').handleLocationRegions,
+        'promo': require('./promo').handlePromo,
+        'podcast': require('./podcast').handlePodcast,
     },
 };
