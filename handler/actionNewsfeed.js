@@ -8,7 +8,7 @@ import { trackLink } from '../lib/utils';
 import { byAGS } from '../data/locationMappings';
 
 
-const imageVariants = [ 'ARDFotogalerie', 'gseapremiumxl', 'TeaserAufmacher' ];
+const imageVariants = [ 'ARDFotogalerie', 'TeaserAufmacher', 'original' ];
 
 export const handleLocationRegions = async (chat, payload) => {
     const location = byAGS[payload.ags];
@@ -96,7 +96,8 @@ const createElements = async (response, tag) => {
                 imageCandidates.map((url) => request.head(url))
             );
             imageUrl = imageCandidates.find(
-                (candidate, i) => statuses[i].status === 'fulfilled'
+                (candidate, i) => statuses[i].status === 'fulfilled' &&
+                statuses[i].value['content-type'].startsWith('image')
             ) || imageUrl;
         }
 
