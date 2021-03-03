@@ -60,19 +60,6 @@ export const handleLocation = async (chat, payload, options = {}) => {
 const chooseLocation = async (chat, location) => {
     const messageText = 'Was interessiert dich?';
 
-    const buttonSchool = buttonPostback(
-        'Schulumfrage',
-        {
-            action: 'location_schools',
-            ags: location.keyCity,
-            track: {
-                category: 'Feature',
-                event: 'Location',
-                label: 'Choose',
-                subType: 'Schulumfrage',
-            },
-        });
-
     const buttonCorona = buttonPostback(
         'Corona-Fallzahlen',
         {
@@ -107,7 +94,6 @@ const chooseLocation = async (chat, location) => {
     const buttons = [
         buttonCorona,
         buttonRegions,
-        buttonSchool,
     ];
 
     await chat.sendButtons(messageText, buttons);
