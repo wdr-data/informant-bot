@@ -62,23 +62,11 @@ export const handleCity = async (chat, location) => {
         indicator
     }\nGemeldete Infektionen in den vergangenen 7 Tagen: ${
         covidDataCity.lastSevenDaysNew
-    }\nBestätigte Infektionen seit Beginn: ${
-        covidDataCity.infected
-    }\nGenesene: ${
-        covidDataCity.recovered
-    }\nTodesfälle: ${
-        covidDataCity.dead
     }\n\n${incidenceText.text}\n
-Aktuelle Zahlen für NRW im Überblick:\nGemeldete Infektionen in den vergangenen 7 Tagen pro 100.000 Einwohner: ${
+Aktuelle Zahlen für NRW:\nGemeldete Infektionen in den vergangenen 7 Tagen pro 100.000 Einwohner: ${
         covidDataNRW.lastSevenDaysPer100k
     }\nGemeldete Infektionen in den vergangenen 7 Tagen: ${
         covidDataNRW.lastSevenDaysNew
-    }\nBestätigte Infektionen: ${
-        covidDataNRW.infected
-    }\nGenesene: ${
-        covidDataNRW.recovered
-    }\nTodesfälle: ${
-        covidDataNRW.dead
     }\n\n(Quelle: RKI, Stand: ${
         covidDataCity.publishedDate
     })\n\n`;
