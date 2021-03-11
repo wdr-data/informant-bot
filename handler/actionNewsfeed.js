@@ -143,6 +143,8 @@ export const newsfeedStart = async (chat, payload, options = { tag: 'Schlagzeile
         introText = `Das ist gerade in der Region ${options.location.district} wichtig:`;
     } else if (options.tag === 'Schlagzeilen') {
         introText = 'Hier die neuesten Meldungen von WDR aktuell:';
+    } else if (options.tag === 'Tagesschau') {
+        introText = 'Hier die neuesten Meldungen der Tagesschau:';
     }
 
     await chat.sendText(introText);

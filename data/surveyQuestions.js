@@ -12,7 +12,7 @@ export default [
         'question': '4. Was ist dir am Wichtigsten?',
         'answers': [ 'Regionalität', 'Schneller Überblick', 'Hintergründe' ],
     }, {
-        'question': '5. Wie gefällt dir der Einsatz von Zwischenfragen, Gifs und Emojis?',
+        'question': '5. Wie gefällt dir der Einsatz von Gifs und Emojis?',
         'answers': [ 'Gut', 'Nicht so gut', 'Themenabhängig' ],
     },
 ];
