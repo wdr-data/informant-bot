@@ -51,7 +51,7 @@ export const handlePodcast = async (
         ));
     }
 
-    const messageText = `${episode.title} vom ${date}\n\n${teaserText}`;
+    const messageText = `${episode.title} vom ${date}\n\n${teaserText}`.slice(0, 630) + '...';
 
     return chat.sendButtons(messageText, buttonPicker, quickReplies);
 };
