@@ -624,6 +624,7 @@ export default [
 {"osm_id": "173103", "city": "Bergisch Gladbach", "zipCode": "51429", "state": "Nordrhein-Westfalen"},
 {"osm_id": "173103", "city": "Bergisch Gladbach", "zipCode": "51465", "state": "Nordrhein-Westfalen"},
 {"osm_id": "173103", "city": "Bergisch Gladbach", "zipCode": "51469", "state": "Nordrhein-Westfalen"},
+{"osm_id": "173103", "city": "Bergisch Gladbach", "zipCode": "51467", "state": "Nordrhein-Westfalen"},
 {"osm_id": "173104", "city": "Overath", "zipCode": "51491", "state": "Nordrhein-Westfalen"},
 {"osm_id": "173102", "city": "Rösrath", "zipCode": "51503", "state": "Nordrhein-Westfalen"},
 {"osm_id": "173105", "city": "Kürten", "zipCode": "51515", "state": "Nordrhein-Westfalen"},

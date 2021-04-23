@@ -30,7 +30,9 @@ export const handleLocation = async (chat, payload, options = {}) => {
     if (!location && (locationName || zipCode)) {
         return chat.sendText(`${
             zipCode ? `Die Postleitzahl ${zipCode}` : locationName
-        } liegt wohl nicht in NRW. Versuche es mit einer PLZ oder einem Ort aus NRW.`);
+        } erkennt unser System nicht. 
+Versuche es mal mit dem Namen deines Ortes oder mit einer anderen PLZ.
+Den Service bieten wir außerdem nur für Orte in NRW.`);
     } else if (!(locationName || zipCode)) {
         return chat.sendText(chat.dialogflowResponse);
     }
