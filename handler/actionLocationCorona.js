@@ -74,7 +74,7 @@ Aktuelle Zahlen für NRW:\nGemeldete Infektionen in den vergangenen 7 Tagen pro 
         covidDataNRW.lastSevenDaysNew
     }\n\nQuellen:\nInfektionen: RKI, Stand: ${
         covidDataCity.publishedDate
-    }\nIntensivbetten: Divi, Stand: ${diviData.publishedDate})\n\n`;
+    }\nIntensivbetten: Divi, Stand: ${diviData.publishedDate}\n\n`;
 
     await chat.sendText(messageText);
     return chat.sendButtons(
