@@ -33,14 +33,14 @@ export const handleCity = async (chat, location) => {
         getDIVI(location),
     ]);
 
-    const studioUrl = await trackLink(byStudios[location.studio].linkCorona, {
+    const studioUrl = trackLink(byStudios[location.studio].linkCorona, {
         campaignType: 'feature',
         campaignName: `Corona Info Studio ${location.studio}`,
         campaignId: 'covid',
     });
     const studioLinkButton = buttonUrl(`🔗 Studio ${location.studio}`, studioUrl);
 
-    const ddjUrl = await trackLink(
+    const ddjUrl = trackLink(
         'https://www1.wdr.de/nachrichten/themen/coronavirus/corona-daten-nrw-100.html', {
             campaignType: 'feature',
             campaignName: `Zahlen Corona-Krise NRW`,
@@ -171,4 +171,3 @@ export const getDIVI = async (location) => {
     }
     return;
 };
-
