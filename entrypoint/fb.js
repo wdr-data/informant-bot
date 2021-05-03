@@ -5,6 +5,7 @@ import handler from '../handler';
 import Raven from 'raven';
 import RavenLambdaWrapper from 'serverless-sentry-lib';
 import { contact, feedbackMode, contactWithLink } from '../handler/actionContact';
+import moment from 'moment-timezone';
 
 
 export const verify = RavenLambdaWrapper.handler(Raven, (event, context, callback) => {
@@ -100,6 +101,18 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         if (msgEvent.referral.ref === 'psid') {
             return chat.sendText(`Deine Page-Specific ID ist \`${chat.psid}\``);
         }
+        return;
+    }
+
+    // disable bot partially on wednesday, 05.May 2021
+    if ( moment('2021-05-03T18:35:00:00+02:00') < moment.now() &&
+    moment.now() < moment('2021-05-05T18:40:00+02:00') ) {
+        return;
+    }
+    // disable bot partially on wednesday, 05.May 2021
+    if ( moment('2021-05-03T18:20:00:00+02:00') < moment.now() &&
+    moment.now() < moment('2021-05-05T18:40:00+02:00') ) {
+        return chat.sendText('Almost disabled');
         return;
     }
 
