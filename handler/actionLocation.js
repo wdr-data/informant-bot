@@ -30,12 +30,12 @@ export const handleLocation = async (chat, payload, options = {}) => {
     if (!location && (locationName || zipCode)) {
         return chat.sendText(`${
             zipCode ? `Zur Postleitzahl ${zipCode}` : `Zu ${locationName}`
-        } liegen uns leider keine Daten.
+        } liegen uns leider keine Daten vor.
 Versuche es mal mit dem Namen deines Ortes oder mit einer anderen PLZ.
 Den Service bieten wir außerdem nur für Orte in NRW.
 
 Die Kolleg:innen vom NDR bieten auch einen Bot mit PLZ-Abfrage für ` +
-`Niedersachsen, Schleswig-Holstein und Mecklenburg-Vorpommern an:
+`Niedersachsen, Schleswig-Holstein, Mecklenburg-Vorpommern und Hamburg an:
 https://m.me/ndrinfo`);
     } else if (!(locationName || zipCode)) {
         return chat.sendText(chat.dialogflowResponse);
