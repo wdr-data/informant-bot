@@ -21,11 +21,17 @@ export const handleCity = async (chat, location) => {
         subType: location.city,
     });
 
-    const covidText = await getFaq(`locationcovidnrw`);
-
-    const covidDataCity = await getCovidCityRKI(location.district);
-    const covidDataNRW = await getCovidNRWRKI();
-    const diviData = await getDIVI(location);
+    const [
+        covidText,
+        covidDataCity,
+        covidDataNRW,
+        diviData,
+    ] = await Promise.all([
+        getFaq(`locationcovidnrw`),
+        getCovidCityRKI(location.district),
+        getCovidNRWRKI(),
+        getDIVI(location),
+    ]);
 
     const studioUrl = await trackLink(byStudios[location.studio].linkCorona, {
         campaignType: 'feature',
