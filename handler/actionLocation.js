@@ -29,10 +29,14 @@ export const handleLocation = async (chat, payload, options = {}) => {
     // If we didn't find the city, inform user about most likely cause if possible
     if (!location && (locationName || zipCode)) {
         return chat.sendText(`${
-            zipCode ? `Die Postleitzahl ${zipCode}` : locationName
-        } erkennt unser System nicht. 
+            zipCode ? `Zur Postleitzahl ${zipCode}` : `Zu ${locationName}`
+        } liegen uns leider keine Daten vor.
 Versuche es mal mit dem Namen deines Ortes oder mit einer anderen PLZ.
-Den Service bieten wir außerdem nur für Orte in NRW.`);
+Den Service bieten wir außerdem nur für Orte in NRW.
+
+Die Kolleg:innen vom NDR bieten auch einen Bot mit PLZ-Abfrage für ` +
+`Niedersachsen, Schleswig-Holstein, Mecklenburg-Vorpommern und Hamburg an:
+https://m.me/ndrinfo`);
     } else if (!(locationName || zipCode)) {
         return chat.sendText(chat.dialogflowResponse);
     }
