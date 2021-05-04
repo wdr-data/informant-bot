@@ -45,6 +45,7 @@
     "moment": "^2.21.0",
     "moment-feiertage": "^1.0.3",
     "moment-timezone": "^0.5.14",
+    "node-pre-gyp": "^0.17.0",
     "prom-client": "^11.0.0",
     "raven": "^2.4.2",
     "request": "^2.83.0",
