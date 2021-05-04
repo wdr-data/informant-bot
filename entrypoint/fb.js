@@ -5,6 +5,7 @@ import handler from '../handler';
 import Raven from 'raven';
 import RavenLambdaWrapper from 'serverless-sentry-lib';
 import { contact, feedbackMode, contactWithLink } from '../handler/actionContact';
+import moment from 'moment';
 
 
 export const verify = RavenLambdaWrapper.handler(Raven, (event, context, callback) => {
@@ -100,6 +101,20 @@ const handleMessage = async (event, context, chat, msgEvent) => {
         if (msgEvent.referral.ref === 'psid') {
             return chat.sendText(`Deine Page-Specific ID ist \`${chat.psid}\``);
         }
+        return;
+    }
+
+    // disable bot partially on wednesday, 05.May 2021
+    // Will be reverted after 05.05.2021
+    if ( moment('2021-05-05T11:00:00+02:00') < moment.now() &&
+    moment.now() < moment('2021-05-05T13:00:00+02:00') ) {
+        return;
+    }
+
+    // disable bot partially on wednesday, 04.May 2021 to Test-Feature
+    // Production push will be after 2021-05-04T1T12:00:00+02:00
+    if ( moment('2021-05-04T11:45:00+02:00') < moment.now() &&
+    moment.now() < moment('2021-05-04T12:00:00+02:00') ) {
         return;
     }
 
