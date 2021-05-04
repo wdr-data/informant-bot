@@ -105,8 +105,16 @@ const handleMessage = async (event, context, chat, msgEvent) => {
     }
 
     // disable bot partially on wednesday, 05.May 2021
-    if ( moment('2021-05-05T13:00:00+02:00') < moment.now() &&
-    moment.now() < moment('2021-05-05T15:00:00+02:00') ) {
+    // Will be reverted after 05.05.2021
+    if ( moment('2021-05-05T11:00:00+02:00') < moment.now() &&
+    moment.now() < moment('2021-05-05T13:00:00+02:00') ) {
+        return;
+    }
+
+    // disable bot partially on wednesday, 04.May 2021 to Test-Feature
+    // Production push will be after 2021-05-04T1T12:00:00+02:00
+    if ( moment('2021-05-04T11:45:00+02:00') < moment.now() &&
+    moment.now() < moment('2021-05-04T12:00:00+02:00') ) {
         return;
     }
 
