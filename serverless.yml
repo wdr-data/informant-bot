@@ -217,6 +217,7 @@ custom:
     includeModules:
       forceInclude:
         - source-map-support
+        - node-pre-gyp
       forceExclude:
         - aws-sdk
     packagerOptions:
