@@ -164,7 +164,7 @@ export const getDIVI = async (location) => {
                 casesNowVentilated: row['faelle_covid_aktuell_invasiv_beatmet'],
                 countPlaces: row['anzahl_standorte'],
                 bedsFree: row['betten_frei'],
-                bedsOccupied: row['betten_belegt vergangene 7 Tage'],
+                bedsOccupied: row['betten_belegt'],
                 bedsTotal: row['betten_gesamt'],
                 bedsPercentage: row['betten_auslastung'],
                 publishedDate: moment(
