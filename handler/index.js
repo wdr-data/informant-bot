@@ -53,6 +53,7 @@ export default {
         'get_started': require('./payloadGetStarted').default,
         'survey': require('./payloadSurvey').surveyQuestions,
         'location_corona': require('./payloadLocation').handleLocationCorona,
+        'location_weather': require('./payloadLocation').handleLocationWeather,
         'location_schools': require('./payloadLocation').handleLocationSchools,
         'newsfeed_curated': require('./actionNewsfeed').newsfeedStart,
         'location_region': require('./actionNewsfeed').handleLocationRegions,
