@@ -18,6 +18,8 @@ export default {
         'location': require('./actionLocation').handleLocation,
         'location_corona': (chat, payload) =>
             require('./actionLocation').handleLocation(chat, payload, { type: 'corona' }),
+        'location_weather': (chat, payload) =>
+            require('./actionLocation').handleLocation(chat, payload, { type: 'weather' }),
         'location_schools': (chat, payload) =>
             require('./actionLocation').handleLocation(chat, payload, { type: 'schools' }),
         'newsfeed_corona': (chat, payload) =>
