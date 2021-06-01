@@ -25,3 +25,11 @@ export const byZipCodes = Object.fromEntries(
         (entry) => [ entry.zipCode, entry ],
     ),
 );
+
+// We want a ZIP code for weather API because it's probably the most reliable
+// Note that we only get one ZIP per location
+export const zipForCity = Object.fromEntries(
+    zipRaw.map(
+        (entry) => [ entry.city, entry.zipCode ],
+    ),
+);

@@ -4,6 +4,7 @@ import 'moment-timezone';
 import { buttonPostback } from '../lib/facebook';
 import { byCities, byZipCodes } from '../data/locationMappings';
 import { handleCity as handleCityCorona } from './actionLocationCorona';
+import { handleCity as handleCityWeather } from './actionLocationWeather';
 import { handleAGS as handleAGSSchools } from './actionLocationSchools';
 import { newsfeedStart } from './actionNewsfeed';
 
@@ -40,14 +41,11 @@ https://m.me/tagesschau`);
         return chat.sendText(chat.dialogflowResponse);
     }
 
-    // Feature is not Public before
-    if (moment.tz('Europe/Berlin').isBefore(moment.tz('2020-08-11 06:00:00', 'Europe/Berlin'))) {
-        return handleCityCorona(chat, location);
-    }
-
     // Trigger specific location feature
     if (options.type === 'corona') {
         return handleCityCorona(chat, location);
+    } else if (options.type === 'weather') {
+        return handleCityWeather(chat, location);
     } else if (options.type === 'schools') {
         return handleAGSSchools(chat, location.keyCity);
     } else if (options.type === 'regions' ) {
@@ -95,10 +93,24 @@ const chooseLocation = async (chat, location) => {
             },
         });
 
+    const buttonWeather = buttonPostback(
+        'Wetter',
+        {
+            action: 'location_weather',
+            ags: location.keyCity,
+            track: {
+                category: 'Feature',
+                event: 'Location',
+                label: 'Choose',
+                subType: 'Wetter',
+            },
+        });
+
 
     const buttons = [
         buttonCorona,
         buttonRegions,
+        buttonWeather,
     ];
 
     await chat.sendButtons(messageText, buttons);

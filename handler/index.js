@@ -18,6 +18,8 @@ export default {
         'location': require('./actionLocation').handleLocation,
         'location_corona': (chat, payload) =>
             require('./actionLocation').handleLocation(chat, payload, { type: 'corona' }),
+        'location_weather': (chat, payload) =>
+            require('./actionLocation').handleLocation(chat, payload, { type: 'weather' }),
         'location_schools': (chat, payload) =>
             require('./actionLocation').handleLocation(chat, payload, { type: 'schools' }),
         'newsfeed_corona': (chat, payload) =>
@@ -53,6 +55,7 @@ export default {
         'get_started': require('./payloadGetStarted').default,
         'survey': require('./payloadSurvey').surveyQuestions,
         'location_corona': require('./payloadLocation').handleLocationCorona,
+        'location_weather': require('./payloadLocation').handleLocationWeather,
         'location_schools': require('./payloadLocation').handleLocationSchools,
         'newsfeed_curated': require('./actionNewsfeed').newsfeedStart,
         'location_region': require('./actionNewsfeed').handleLocationRegions,
