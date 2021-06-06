@@ -49,8 +49,7 @@ export const handleCity = async (chat, location) => {
     const ddjLinkButton = buttonUrl('🔗 Corona in Zahlen', ddjUrl);
 
     let incidenceText = {
-        text: 'Steigt die Zahl der Neuinfektionen in den vergangenen 7 Tagen ' +
-            'pro 100.000 Einwohner über 35, dann muss der Ort Maßnahmen zur Eindämmung ergreifen.',
+        text: '---',
     };
 
     let indicator = '';
