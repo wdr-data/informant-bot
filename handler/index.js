@@ -22,6 +22,8 @@ export default {
             require('./actionLocation').handleLocation(chat, payload, { type: 'weather' }),
         'location_schools': (chat, payload) =>
             require('./actionLocation').handleLocation(chat, payload, { type: 'schools' }),
+        'location_candidates': (chat, payload) =>
+            require('./actionLocation').handleLocation(chat, payload, { type: 'candidates' }),
         'newsfeed_corona': (chat, payload) =>
             require('./actionNewsfeed').newsfeedStart(chat, payload, { tag: 'Coronavirus' }),
         'newsfeed_curated': require('./actionNewsfeed').newsfeedStart,
@@ -57,6 +59,8 @@ export default {
         'location_corona': require('./payloadLocation').handleLocationCorona,
         'location_weather': require('./payloadLocation').handleLocationWeather,
         'location_schools': require('./payloadLocation').handleLocationSchools,
+        'location_candidates': require('./payloadLocation').handleLocationCandidates,
+        'location_candidates_wk': require('./actionLocationCandidates').handleWahlkreis,
         'newsfeed_curated': require('./actionNewsfeed').newsfeedStart,
         'location_region': require('./actionNewsfeed').handleLocationRegions,
         'promo': require('./promo').handlePromo,

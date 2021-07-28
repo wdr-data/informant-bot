@@ -55,6 +55,7 @@ export default [
 {"osm_id": "148074", "city": "Paderborn", "zipCode": "33106", "state": "Nordrhein-Westfalen"},
 {"osm_id": "148073", "city": "Delbrück", "zipCode": "33129", "state": "Nordrhein-Westfalen"},
 {"osm_id": "146479", "city": "Büren", "zipCode": "33142", "state": "Nordrhein-Westfalen"},
+{"osm_id": undefined, "city": "Hövelhof", "zipCode": "33161", "state": "Nordrhein-Westfalen"},
 {"osm_id": "148083", "city": "Lichtenau", "zipCode": "33165", "state": "Nordrhein-Westfalen"},
 {"osm_id": "148066", "city": "Bad Lippspringe", "zipCode": "33175", "state": "Nordrhein-Westfalen"},
 {"osm_id": "148082", "city": "Borchen", "zipCode": "33178", "state": "Nordrhein-Westfalen"},
@@ -853,7 +854,7 @@ export default [
 {"osm_id": "157396", "city": "Arnsberg", "zipCode": "59823", "state": "Nordrhein-Westfalen"},
 {"osm_id": "157395", "city": "Sundern (Sauerland)", "zipCode": "59846", "state": "Nordrhein-Westfalen"},
 {"osm_id": "157423", "city": "Meschede", "zipCode": "59872", "state": "Nordrhein-Westfalen"},
-{"osm_id": "157419", "city": "Eslohe", "zipCode": "59889", "state": "Nordrhein-Westfalen"},
+{"osm_id": "157419", "city": "Eslohe (Sauerland)", "zipCode": "59889", "state": "Nordrhein-Westfalen"},
 {"osm_id": "157422", "city": "Bestwig", "zipCode": "59909", "state": "Nordrhein-Westfalen"},
 {"osm_id": "157382", "city": "Brilon", "zipCode": "59929", "state": "Nordrhein-Westfalen"},
 {"osm_id": "157421", "city": "Olsberg", "zipCode": "59939", "state": "Nordrhein-Westfalen"},
@@ -861,6 +862,8 @@ export default [
 {"osm_id": "157387", "city": "Medebach", "zipCode": "59964", "state": "Nordrhein-Westfalen"},
 {"osm_id": "157388", "city": "Hallenberg", "zipCode": "59969", "state": "Nordrhein-Westfalen"},
 {"osm_id": "157389", "city": "Salzkotten", "zipCode": "33154", "state": "Nordrhein-Westfalen"},
+{"osm_id": undefined, "city": "Selfkant", "zipCode": "52538", "state": "Nordrhein-Westfalen"},
 {"osm_id": "1580299", "city": "Gangelt", "zipCode": "52538", "state": "Nordrhein-Westfalen"},
+{"osm_id": undefined, "city": "Waldfeucht", "zipCode": "52525", "state": "Nordrhein-Westfalen"},
 {"osm_id": "158026", "city": "Heinsberg", "zipCode": "52525", "state": "Nordrhein-Westfalen"}
 ]
