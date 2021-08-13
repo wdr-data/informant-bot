@@ -386,7 +386,7 @@ export default {
   },
   "33333": {
     "city": "Gütersloh",
-    "wahlkreise": []
+    "wahlkreise": ["132"]
   },
   "33334": {
     "city": "Gütersloh",

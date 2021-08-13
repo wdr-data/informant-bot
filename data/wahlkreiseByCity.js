@@ -829,7 +829,8 @@ export default {
     "city": "Gütersloh",
     "keyCity": "5754008",
     "wahlkreise": [
-      "131"
+      "131",
+      "132"
     ]
   },
   "5158008": {

@@ -1,8 +1,6 @@
-import request from 'request-promise-native';
 import { buttonPostback } from '../lib/facebook';
 
 
-import urls from '../lib/urls';
 import wahlkreisById from '../data/wahlkreisById';
 import wahlkreiseByCity from '../data/wahlkreiseByCity';
 import wahlkreiseByZip from '../data/wahlkreiseByZip';
@@ -54,13 +52,8 @@ export const handleWahlkreis = async (chat, payload) => {
 const handleWahlkreis_ = async (chat, wahlkreisId) => {
     const wahlkreis = wahlkreisById[wahlkreisId];
 
-    const response = await request.get({
-        uri: urls.candidatesByWahlkreisId(wahlkreis.id),
-        json: true,
-    });
-
-    const candidates = response.data.map((c) => {
-        return `${c.kandidatVorname} ${c.kandidatName}, ${c.kandidatPartei}`;
+    const candidates = wahlkreis.kandidaten.map((c) => {
+        return `  • ${c.vorname} ${c.nachname}, ${c.partei}`;
     });
 
     const moreUrl = `https://www1.wdr.de//kandidatencheck/2021/wdr-bundestagswahl/app/kandidatencheck144.html?wahlkreisid=${wahlkreis.id}&wt_mc=fb`;
