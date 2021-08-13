@@ -1,10 +1,8 @@
-import moment from 'moment';
-import 'moment-timezone';
-
 import { buttonPostback } from '../lib/facebook';
 import { byCities, byZipCodes } from '../data/locationMappings';
 import { handleCity as handleCityCorona } from './actionLocationCorona';
 import { handleCity as handleCityWeather } from './actionLocationWeather';
+import { handleCity as handleCityCandidates } from './actionLocationCandidates';
 import { handleAGS as handleAGSSchools } from './actionLocationSchools';
 import { newsfeedStart } from './actionNewsfeed';
 
@@ -25,7 +23,10 @@ export const handleLocation = async (chat, payload, options = {}) => {
         locationName = byZipCodes[zipCode].city;
     }
 
-    const location = byCities[locationName];
+    const location = byCities[locationName] && {
+        ...byCities[locationName],
+        zipCode: zipCode || undefined,
+    };
 
     // If we didn't find the city, inform user about most likely cause if possible
     if (!location && (locationName || zipCode)) {
@@ -48,6 +49,8 @@ https://m.me/tagesschau`);
         return handleCityWeather(chat, location);
     } else if (options.type === 'schools') {
         return handleAGSSchools(chat, location.keyCity);
+    } else if (options.type === 'candidates') {
+        return handleCityCandidates(chat, location);
     } else if (options.type === 'regions' ) {
         return newsfeedStart(
             chat,
@@ -63,6 +66,19 @@ https://m.me/tagesschau`);
 const chooseLocation = async (chat, location) => {
     const messageText = 'Was interessiert dich?';
 
+    const buttonCandidates = buttonPostback(
+        'Kandidatencheck',
+        {
+            action: 'location_candidates',
+            ags: location.keyCity,
+            track: {
+                category: 'Feature',
+                event: 'Location',
+                label: 'Choose',
+                subType: 'Kandidatencheck',
+            },
+        });
+
     const buttonCorona = buttonPostback(
         'Corona-Fallzahlen',
         {
@@ -76,12 +92,9 @@ const chooseLocation = async (chat, location) => {
             },
         });
 
-    let buttonText = 'Regionale News';
-    if (moment.now() - moment('2020-11-21')< 7*24*60*60*1000) {
-        buttonText = '✨Neu✨ ' + buttonText;
-    }
+    /*
     const buttonRegions = buttonPostback(
-        buttonText,
+        'Regionale News',
         {
             action: 'location_region',
             ags: location.keyCity,
@@ -92,6 +105,7 @@ const chooseLocation = async (chat, location) => {
                 subType: 'Regionale News',
             },
         });
+    */
 
     const buttonWeather = buttonPostback(
         'Wetter',
@@ -108,8 +122,8 @@ const chooseLocation = async (chat, location) => {
 
 
     const buttons = [
+        buttonCandidates,
         buttonCorona,
-        buttonRegions,
         buttonWeather,
     ];
 
