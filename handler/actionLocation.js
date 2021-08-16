@@ -71,6 +71,7 @@ const chooseLocation = async (chat, location) => {
         {
             action: 'location_candidates',
             ags: location.keyCity,
+            zip: location.zipCode,
             track: {
                 category: 'Feature',
                 event: 'Location',
