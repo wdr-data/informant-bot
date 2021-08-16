@@ -21,5 +21,7 @@ export const handleLocationWeather = async (chat, payload) => {
 
 export const handleLocationCandidates = async (chat, payload) => {
     const location = byAGS[payload.ags];
+    location.zipCode = payload.zip;
+
     return handleCityCandidates(chat, location);
 };
