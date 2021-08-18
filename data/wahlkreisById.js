@@ -266,7 +266,7 @@ export default {
       },
       {
         "nachname": "Georgiou",
-        "partei": "MLPD",
+        "partei": "Einzelbewerber:in",
         "vorname": "Gabriele"
       },
       {
@@ -339,6 +339,57 @@ export default {
         "nachname": "Winterich",
         "partei": "AfD",
         "vorname": "Michael"
+      }
+    ]
+  },
+  "136": {
+    "id": "136",
+    "wahlkreisName": "Höxter – Gütersloh III – Lippe II",
+    "kandidaten": [
+      {
+        "nachname": "Fröhlingsdorf",
+        "partei": "dieBasis",
+        "vorname": "Sandra"
+      },
+      {
+        "nachname": "Haase",
+        "partei": "CDU",
+        "vorname": "Christian"
+      },
+      {
+        "nachname": "Kros",
+        "partei": "SPD",
+        "vorname": "Ulrich"
+      },
+      {
+        "nachname": "Kuffner",
+        "partei": "FDP",
+        "vorname": "Tanja"
+      },
+      {
+        "nachname": "Lange",
+        "partei": "AfD",
+        "vorname": "Klaus"
+      },
+      {
+        "nachname": "Riesmeier",
+        "partei": "GRÜNE",
+        "vorname": "Nik"
+      },
+      {
+        "nachname": "Schröder",
+        "partei": "Freie Wähler",
+        "vorname": "Michael"
+      },
+      {
+        "nachname": "Thiel",
+        "partei": "Die PARTEI",
+        "vorname": "Annalena"
+      },
+      {
+        "nachname": "Wolf",
+        "partei": "DIE LINKE",
+        "vorname": "Alina"
       }
     ]
   },
@@ -917,6 +968,11 @@ export default {
         "vorname": "Thorsten"
       },
       {
+        "nachname": "Klimczak",
+        "partei": "Einzelbewerber",
+        "vorname": "Thorsten"
+      },
+      {
         "nachname": "Renner",
         "partei": "AfD",
         "vorname": "Martin Erwin"
@@ -1325,57 +1381,6 @@ export default {
       }
     ]
   },
-  "136": {
-    "id": "136",
-    "wahlkreisName": "Höxter – Gütersloh III – Lippe II",
-    "kandidaten": [
-      {
-        "nachname": "Fröhlingsdorf",
-        "partei": "dieBasis",
-        "vorname": "Sandra"
-      },
-      {
-        "nachname": "Haase",
-        "partei": "CDU",
-        "vorname": "Christian"
-      },
-      {
-        "nachname": "Kros",
-        "partei": "SPD",
-        "vorname": "Ulrich"
-      },
-      {
-        "nachname": "Kuffner",
-        "partei": "FDP",
-        "vorname": "Tanja"
-      },
-      {
-        "nachname": "Lange",
-        "partei": "AfD",
-        "vorname": "Klaus"
-      },
-      {
-        "nachname": "Riesmeier",
-        "partei": "GRÜNE",
-        "vorname": "Nik"
-      },
-      {
-        "nachname": "Schröder",
-        "partei": "Freie Wähler",
-        "vorname": "Michael"
-      },
-      {
-        "nachname": "Thiel",
-        "partei": "Die PARTEI",
-        "vorname": "Annalena"
-      },
-      {
-        "nachname": "Wolf",
-        "partei": "DIE LINKE",
-        "vorname": "Alina"
-      }
-    ]
-  },
   "92": {
     "id": "92",
     "wahlkreisName": "Euskirchen – Rhein-Erft-Kreis II",
@@ -1666,11 +1671,6 @@ export default {
         "vorname": "Lars"
       },
       {
-        "nachname": "Michael",
-        "partei": "FDP",
-        "vorname": "Terwiesche"
-      },
-      {
         "nachname": "Raboteau",
         "partei": "MLPD",
         "vorname": "Genja"
@@ -1694,6 +1694,11 @@ export default {
         "nachname": "Schubert",
         "partei": "DIE LINKE",
         "vorname": "Sebastian"
+      },
+      {
+        "nachname": "Terwiesche",
+        "partei": "FDP",
+        "vorname": "Michael"
       }
     ]
   },
@@ -1820,7 +1825,7 @@ export default {
       },
       {
         "nachname": "Kramer",
-        "partei": "parteilos",
+        "partei": "Einzelbewerber:in",
         "vorname": "Peter Heinrich"
       },
       {
@@ -2353,6 +2358,11 @@ export default {
         "vorname": "Laura"
       },
       {
+        "nachname": "Linde",
+        "partei": "FREIE WÄHLER",
+        "vorname": "Horst Günter"
+      },
+      {
         "nachname": "Meister",
         "partei": "MLPD",
         "vorname": "Roland"
@@ -2427,6 +2437,57 @@ export default {
         "nachname": "Vöhringer",
         "partei": "MLPD",
         "vorname": "Anna"
+      }
+    ]
+  },
+  "137": {
+    "id": "137",
+    "wahlkreisName": "Paderborn",
+    "kandidaten": [
+      {
+        "nachname": "Arlt",
+        "partei": "FREIE WÄHLER",
+        "vorname": "Günter"
+      },
+      {
+        "nachname": "Blienert",
+        "partei": "SPD",
+        "vorname": "Burkhard"
+      },
+      {
+        "nachname": "Koch",
+        "partei": "AfD",
+        "vorname": "Günter"
+      },
+      {
+        "nachname": "Linnemann",
+        "partei": "CDU",
+        "vorname": "Carsten"
+      },
+      {
+        "nachname": "Löper",
+        "partei": "dieBasis",
+        "vorname": "Anna"
+      },
+      {
+        "nachname": "Martens",
+        "partei": "Die PARTEI",
+        "vorname": "Rosanna"
+      },
+      {
+        "nachname": "Schlüter",
+        "partei": "GRÜNE",
+        "vorname": "Jörg"
+      },
+      {
+        "nachname": "Schu",
+        "partei": "DIE LINKE",
+        "vorname": "Martina"
+      },
+      {
+        "nachname": "Özmen",
+        "partei": "FDP",
+        "vorname": "Roze"
       }
     ]
   },
@@ -2812,7 +2873,7 @@ export default {
       },
       {
         "nachname": "Bilo",
-        "partei": "parteilos",
+        "partei": "Einzelbewerber:in",
         "vorname": "Horst"
       },
       {
@@ -2867,57 +2928,6 @@ export default {
       }
     ]
   },
-  "137": {
-    "id": "137",
-    "wahlkreisName": "Paderborn",
-    "kandidaten": [
-      {
-        "nachname": "Arlt",
-        "partei": "FREIE WÄHLER",
-        "vorname": "Günter"
-      },
-      {
-        "nachname": "Blienert",
-        "partei": "SPD",
-        "vorname": "Burkhard"
-      },
-      {
-        "nachname": "Koch",
-        "partei": "AfD",
-        "vorname": "Günter"
-      },
-      {
-        "nachname": "Linnemann",
-        "partei": "CDU",
-        "vorname": "Carsten"
-      },
-      {
-        "nachname": "Löper",
-        "partei": "dieBasis",
-        "vorname": "Anna"
-      },
-      {
-        "nachname": "Martens",
-        "partei": "Die PARTEI",
-        "vorname": "Rosanna"
-      },
-      {
-        "nachname": "Schlüter",
-        "partei": "GRÜNE",
-        "vorname": "Jörg"
-      },
-      {
-        "nachname": "Schu",
-        "partei": "DIE LINKE",
-        "vorname": "Martina"
-      },
-      {
-        "nachname": "Özmen",
-        "partei": "FDP",
-        "vorname": "Roze"
-      }
-    ]
-  },
   "105": {
     "id": "105",
     "wahlkreisName": "Mettmann II",
@@ -2969,11 +2979,11 @@ export default {
       },
       {
         "nachname": "Richter",
-        "partei": "parteilos",
+        "partei": "Einzelbewerber:in",
         "vorname": "Jason"
       },
       {
-        "nachname": "Roetgers",
+        "nachname": "Roetger",
         "partei": "dieBasis",
         "vorname": "Editha"
       },

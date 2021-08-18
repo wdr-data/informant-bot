@@ -467,7 +467,7 @@ export default {
     "city": "Detmold",
     "keyCity": "5766020",
     "wahlkreise": [
-      "136"
+      "135"
     ]
   },
   "5170008": {
@@ -829,8 +829,7 @@ export default {
     "city": "Gütersloh",
     "keyCity": "5754008",
     "wahlkreise": [
-      "131",
-      "132"
+      "131"
     ]
   },
   "5158008": {
@@ -2199,7 +2198,7 @@ export default {
     "city": "Schloß Holte-Stukenbrock",
     "keyCity": "5754036",
     "wahlkreise": [
-      "137"
+      "136"
     ]
   },
   "5958040": {

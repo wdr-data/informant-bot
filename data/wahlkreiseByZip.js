@@ -219,19 +219,19 @@ export default {
   "32756": {
     "city": "Detmold",
     "wahlkreise": [
-      "136"
+      "135"
     ]
   },
   "32758": {
     "city": "Detmold",
     "wahlkreise": [
-      "136"
+      "135"
     ]
   },
   "32760": {
     "city": "Detmold",
     "wahlkreise": [
-      "136"
+      "135"
     ]
   },
   "32791": {
@@ -386,7 +386,9 @@ export default {
   },
   "33333": {
     "city": "Gütersloh",
-    "wahlkreise": ["132"]
+    "wahlkreise": [
+      "131"
+    ]
   },
   "33334": {
     "city": "Gütersloh",
@@ -547,7 +549,7 @@ export default {
   "33758": {
     "city": "Schloß Holte-Stukenbrock",
     "wahlkreise": [
-      "137"
+      "136"
     ]
   },
   "33775": {
