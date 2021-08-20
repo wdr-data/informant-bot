@@ -52,6 +52,13 @@ export const handleWahlkreis = async (chat, payload) => {
 const handleWahlkreis_ = async (chat, wahlkreisId) => {
     const wahlkreis = wahlkreisById[wahlkreisId];
 
+    chat.track({
+        category: 'Feature',
+        event: 'Location',
+        label: 'Kandidatencheck',
+        subType: wahlkreis.wahlkreisName,
+    });
+
     const candidates = wahlkreis.kandidaten.map((c) => {
         return `  • ${c.vorname} ${c.nachname}, ${c.partei}`;
     });
