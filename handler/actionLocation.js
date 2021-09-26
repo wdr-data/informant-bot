@@ -1,3 +1,5 @@
+import moment from 'moment-timezone';
+
 import { buttonPostback } from '../lib/facebook';
 import { byCities, byZipCodes } from '../data/locationMappings';
 import { handleCity as handleCityCorona } from './actionLocationCorona';
@@ -66,8 +68,12 @@ https://m.me/tagesschau`);
 const chooseLocation = async (chat, location) => {
     const messageText = 'Was interessiert dich?';
 
+    let buttonCandidatesText = 'Kandidatencheck';
+    if (moment() - moment('2021-09-26T18:00:00+02:00') > 0 ) {
+        buttonCandidatesText = 'Bundestagswahl';
+    }
     const buttonCandidates = buttonPostback(
-        'Kandidatencheck',
+        buttonCandidatesText,
         {
             action: 'location_candidates',
             ags: location.keyCity,
@@ -76,7 +82,7 @@ const chooseLocation = async (chat, location) => {
                 category: 'Feature',
                 event: 'Location',
                 label: 'Choose',
-                subType: 'Kandidatencheck',
+                subType: buttonCandidatesText,
             },
         });
 

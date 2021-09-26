@@ -1,5 +1,7 @@
-import { buttonPostback } from '../lib/facebook';
+import moment from 'moment-timezone';
 
+import { buttonPostback } from '../lib/facebook';
+import { payloadFaq } from './payloadFaq';
 
 import wahlkreisById from '../data/wahlkreisById';
 import wahlkreiseByCity from '../data/wahlkreiseByCity';
@@ -7,6 +9,11 @@ import wahlkreiseByZip from '../data/wahlkreiseByZip';
 
 
 export const handleCity = async (chat, location) => {
+    if (moment() - moment('2021-09-26T18:00:00+02:00') > 0 ) {
+        const payload = { action: 'faq', slug: 'election' };
+        return payloadFaq(chat, payload);
+    }
+
     let wahlkreisIds;
 
     if (location.zipCode) {
